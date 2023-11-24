@@ -1,0 +1,68 @@
+@import 'colors';
+@import 'index';
+.button-component {
+  min-height: 5.4rem;
+  border-radius: 100px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 0 3rem;
+  background-color: #0376c9;
+  border: 1px solid #0376c9;
+
+  &.secondary {
+    color: #0376c9;
+    background-color: #fff;
+    border: 1px solid #0376c9;
+  }
+  &.disabled {
+    // opacity: 0.3;
+     background-color: #0376c942;
+    pointer-events: none;
+    border: 1px solid #0376c980;
+  }
+}
+.input-group-component {
+  width: 100%;
+  .label-con {
+    display: flex;
+    justify-content: space-between;
+    // background-color: red;
+    // margin: auto;
+    width: 100%;
+    // margin-bottom: 1rem;
+    label {
+      flex: 1 1 0%;
+      text-align: left;
+      padding: 1rem 0;
+      // background-color: pink;
+      // margin: auto;
+    }
+    button {
+      // margin: auto;
+      color: #0376c9;
+      border: none;
+      margin: 1rem 0;
+    }
+  }
+  input {
+    max-height: 5rem;
+    height: 5rem;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #24272a;
+    border: 1px solid #bbc0c5;
+    margin-bottom: 1rem;
+  }
+  p {
+    text-align: left;
+
+    font-size: 1.2rem;
+    font-weight: 600;
+    span {
+      color: #28a745;
+    }
+  }
+}

@@ -2,10 +2,16 @@
 @import 'colors';
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
+$thic900: 'THICCCBOI-Black';
 $thic800: 'THICCCBOI-ExtraBold';
 $thic700: 'THICCCBOI-Bold';
 $thic600: 'THICCCBOI-SemiBold';
 $thic500: 'THICCCBOI-Medium';
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+}
 html {
   font-size: 62.5%;
 }
@@ -17,42 +23,50 @@ body {
 h1 {
   font-size: 60px;
   font-family: 'THICCCBOI-ExtraBold';
+  color: #24272a;
 }
 
 h2 {
   font-size: 40px;
   font-family: 'THICCCBOI-ExtraBold';
+  color: #24272a;
 }
 
 h3 {
   font-size: 24px;
   font-family: 'THICCCBOI-ExtraBold';
+  color: #24272a;
 }
 
 h4 {
   font-size: 18px;
   font-family: 'THICCCBOI-ExtraBold';
+  color: #24272a;
 }
 h5 {
   font-size: 18px;
-  font-family: 'THICCCBOI-Bold';
+  font-family: 'THICCCBOI-Medium';
+  color: #24272a;
 }
-
+p {
+  font-weight: 400;
+  font-size: 18px;
+  font-family: 'THICCCBOI-Medium';
+}
+label {
+  font-size: 1.4rem;
+  font-weight: 900;
+  font-family: 'THICCCBOI-Black';
+  color: #24272a;
+}
 a {
   text-decoration: none !important;
 }
-
-p,
-div {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-}
-
 button {
   background-color: transparent;
   border: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .primary-btn {
@@ -150,59 +164,4 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
-}
-
-@media screen and (max-width: '800px') {
-  h1 {
-    font-size: 40px;
-  }
-
-  h2 {
-    font-size: 28px;
-  }
-
-  h3 {
-    font-size: 20px;
-  }
-
-  h4 {
-    font-size: 16px;
-  }
-
-  p,
-  div {
-    font-size: 16px;
-  }
-
-  .pri-btn {
-    font-size: 14px !important;
-  }
-
-  .primary-btn {
-    width: 193px;
-    height: 52px;
-  }
-}
-.custom-toastify {
-  .Toastify__toast--error,
-  .Toastify__toast--success,
-  .Toastify__toast--warning {
-    width: 400px !important;
-    border-left: 8px solid !important;
-  }
-  .Toastify__toast--success {
-    border-left-color: #36743d !important;
-    background-color: #f1fef1 !important;
-    color: #163c29;
-  }
-  .Toastify__toast--error {
-    border-left-color: #e74c3c !important;
-    background-color: #fbe9e9 !important;
-    color: #a4251a !important;
-  }
-  .Toastify__toast--warning {
-    border-left-color: #f1c40f !important;
-    background-color: #fef6cf !important;
-    color: #af5f26 !important;
-  }
 }
