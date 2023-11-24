@@ -17,7 +17,7 @@
   }
   &.disabled {
     // opacity: 0.3;
-     background-color: #0376c942;
+    background-color: #0376c942;
     pointer-events: none;
     border: 1px solid #0376c980;
   }
@@ -64,5 +64,22 @@
     span {
       color: #28a745;
     }
+  }
+}
+.seed-phrase-component {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+  p {
+  }
+  .phrase {
+    border-radius: 1.4rem;
+    height: 3.2rem;
+    width: 12rem;
+    border: 1px solid #d6d9dc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 }

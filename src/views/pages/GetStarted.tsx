@@ -7,6 +7,7 @@ import { LiaTimesSolid } from 'react-icons/lia';
 import { FaEye } from 'react-icons/fa';
 import Button from '../components/molecules/Button';
 import InputGroup from '../components/molecules/InputGroup';
+import SeedPhrase from '../components/molecules/SeedPhrase';
 function GetStarted() {
   const [step, setStep] = useState('3');
 
@@ -385,12 +386,29 @@ function GetStarted() {
                       </ul>
                     </div>
                     <div className='password-box'>
-                      <div className='overlay'></div>
-                      <div className='overlay-2'>
-                        <FaEye className='icon' />
-                        <p>Make sure nobody's looking</p>
+                      {!showSeedPhrase && (
+                        <>
+                          <div className='overlay'></div>
+                          <div className='overlay-2'>
+                            <FaEye className='icon' />
+                            <p>Make sure nobody's looking</p>
+                          </div>
+                        </>
+                      )}
+                      <div className='content'>
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='Hello' number={1} />
                       </div>
-                      <div className='content'>hekk</div>
                     </div>
                     <Button
                       text='Reveal Secret Recovery Phrase'
