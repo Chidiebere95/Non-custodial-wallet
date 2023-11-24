@@ -4,6 +4,7 @@ import logo2 from '../../assets/images/forum1.jpeg';
 import { useEffect, useState } from 'react';
 import { IoMdCheckmark } from 'react-icons/io';
 import { LiaTimesSolid } from 'react-icons/lia';
+import { FaEye } from 'react-icons/fa';
 import Button from '../components/molecules/Button';
 import InputGroup from '../components/molecules/InputGroup';
 function GetStarted() {
@@ -16,6 +17,8 @@ function GetStarted() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [stage, setStage] = useState('2');
+  const [showSecretKeyTab, setShowSecretKeyTab] = useState(true);
+  const [showSeedPhrase, setShowSeedPhrase] = useState(true);
 
   const [foxStyle, setFoxStyle] = useState({ transform: 'rotate(0deg)' });
 
@@ -310,7 +313,7 @@ function GetStarted() {
                     </div>
                   </div>
                 )}
-                {stage === '2' && (
+                {stage === '2' && !showSecretKeyTab && (
                   <div className='stage-2'>
                     <h3 className='title'>Secure your wallet</h3>
                     <h5 className='info'>
@@ -321,13 +324,13 @@ function GetStarted() {
                     <div className='video-wrapper'></div>
                     <div className='btns'>
                       <Button
-                        text='Remind me later (Not recommended)'
+                        text='Remind me later (not recommended)'
                         variant='secondary'
                         // onClick={() => setStep('2')}
                       />
                       <Button
-                        text='Secure my wallet (Recommended)'
-                        onClick={() => setStep('3')}
+                        text='Secure my wallet (recommended)'
+                        onClick={() => setShowSecretKeyTab(true)}
                       />
                     </div>
                     <div className='qstions-wrapper'>
@@ -362,6 +365,37 @@ function GetStarted() {
                         trying to scam you and steal your wallet funds.
                       </h5>
                     </div>
+                  </div>
+                )}
+                {stage === '2' && showSecretKeyTab && (
+                  <div className='stage-2 secret-key'>
+                    <h3 className='title'>
+                      Write down your Secret Recovery Phrase
+                    </h3>
+                    <p className='info'>
+                      Write down this 12-word Secret Recovery Phrase and save it
+                      in a place that you trust and only you can access.
+                    </p>
+                    <div className='tips'>
+                      <h5>Tips:</h5>
+                      <ul>
+                        <li>Save in a password manager</li>
+                        <li>Store in a safe deposit box</li>
+                        <li>Write down and store in multiple secret places</li>
+                      </ul>
+                    </div>
+                    <div className='password-box'>
+                      <div className='overlay'></div>
+                      <div className='overlay-2'>
+                        <FaEye className='icon' />
+                        <p>Make sure nobody's looking</p>
+                      </div>
+                      <div className='content'>hekk</div>
+                    </div>
+                    <Button
+                      text='Reveal Secret Recovery Phrase'
+                      onClick={() => setShowSecretKeyTab(true)}
+                    />
                   </div>
                 )}
               </div>
