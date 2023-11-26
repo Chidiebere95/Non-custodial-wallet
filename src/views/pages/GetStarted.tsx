@@ -1,15 +1,19 @@
 import '../../assets/scss/get-started.scss';
 import logo from '../../assets/images/logo.svg';
 import logo2 from '../../assets/images/forum1.jpeg';
+import confetti from '../../assets/images/tada.png';
 import { useEffect, useState } from 'react';
 import { IoMdCheckmark } from 'react-icons/io';
 import { LiaTimesSolid } from 'react-icons/lia';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
+import { BiSolidCopy } from 'react-icons/bi';
 import Button from '../components/molecules/Button';
 import InputGroup from '../components/molecules/InputGroup';
-import SeedPhrase from '../components/molecules/SeedPhrase';
+import SeedPhrase, { SeedPhrase2 } from '../components/molecules/SeedPhrase';
+import { useNavigate } from 'react-router-dom';
 function GetStarted() {
-  const [step, setStep] = useState('3');
+  const navigate = useNavigate();
+  const [step, setStep] = useState('5');
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +25,9 @@ function GetStarted() {
   const [showSecretKeyTab, setShowSecretKeyTab] = useState(true);
   const [showSeedPhrase, setShowSeedPhrase] = useState(true);
 
+  // step 5
+  const [stage2, setStage2] = useState('1');
+
   const [foxStyle, setFoxStyle] = useState({ transform: 'rotate(0deg)' });
 
   const handleMouseMove = (e: any) => {
@@ -28,6 +35,7 @@ function GetStarted() {
     const mouseY = e.clientY;
 
     const fox = document.getElementById('fox');
+
     if (fox) {
       const foxX = fox!.getBoundingClientRect().left + fox!.offsetWidth / 2;
       const foxY = fox!.getBoundingClientRect().top + fox!.offsetHeight / 2;
@@ -396,25 +404,180 @@ function GetStarted() {
                         </>
                       )}
                       <div className='content'>
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
-                        <SeedPhrase phrase='Hello' number={1} />
+                        <SeedPhrase phrase='man' number={1} />
+                        <SeedPhrase phrase='car' number={2} />
+                        <SeedPhrase phrase='people' number={3} />
+                        <SeedPhrase phrase='angry' number={4} />
+                        <SeedPhrase phrase='jack' number={5} />
+                        <SeedPhrase phrase='orange' number={6} />
+                        <SeedPhrase phrase='fat' number={7} />
+                        <SeedPhrase phrase='direction' number={8} />
+                        <SeedPhrase phrase='enumerating' number={9} />
+                        <SeedPhrase phrase='danger' number={10} />
+                        <SeedPhrase phrase='boot' number={11} />
+                        <SeedPhrase phrase='wisdom' number={12} />
+                      </div>
+                    </div>
+                    <div className='password-box-btns'>
+                      <button
+                        onClick={() => setShowSeedPhrase(!showSeedPhrase)}
+                      >
+                        {showSeedPhrase ? (
+                          <>
+                            <FaRegEyeSlash />
+                            Hide seed phrase
+                          </>
+                        ) : (
+                          <>
+                            <FaEye />
+                            Reveal seed phrase
+                          </>
+                        )}
+                      </button>
+                      <button>
+                        <BiSolidCopy />
+                        Copy to clipboard
+                      </button>
+                    </div>
+                    <Button
+                      text='Next'
+                      onClick={() => setStage('3')}
+                      width='30rem'
+                    />
+                  </div>
+                )}
+                {stage === '3' && (
+                  <div className='stage-2 secret-key'>
+                    <h3 className='title'>Confirm Secret Recovery Phrase</h3>
+                    <p className='info'>Confirm Secret Recovery Phrase</p>
+
+                    <div className='password-box'>
+                      {!showSeedPhrase && (
+                        <>
+                          <div className='overlay'></div>
+                          <div className='overlay-2'>
+                            <FaEye className='icon' />
+                            <p>Make sure nobody's looking</p>
+                          </div>
+                        </>
+                      )}
+                      <div className='content'>
+                        <SeedPhrase phrase='man' number={1} />
+                        <SeedPhrase phrase='car' number={2} />
+                        <SeedPhrase2 phrase='people' number={3} />
+                        <SeedPhrase2 phrase='angry' number={4} />
+                        <SeedPhrase phrase='jack' number={5} />
+                        <SeedPhrase phrase='orange' number={6} />
+                        <SeedPhrase phrase='fat' number={7} />
+                        <SeedPhrase2 phrase='direction' number={8} />
+                        <SeedPhrase phrase='enumerating' number={9} />
+                        <SeedPhrase phrase='danger' number={10} />
+                        <SeedPhrase phrase='boot' number={11} />
+                        <SeedPhrase phrase='wisdom' number={12} />
                       </div>
                     </div>
                     <Button
-                      text='Reveal Secret Recovery Phrase'
-                      onClick={() => setShowSecretKeyTab(true)}
+                      text='Confirm'
+                      onClick={() => setStep('4')}
+                      width='30rem'
+                      height='5.4rem'
+                      // disabled
                     />
                   </div>
+                )}
+              </div>
+            </div>
+          )}
+          {step === '4' && (
+            <div className='step-4'>
+              <div className='img-con'>
+                <img src={confetti} alt='' />
+              </div>
+              <h3 className='title'>Wallet creation successful</h3>
+              <p className='info'>
+                You’ve successfully protected your wallet. Keep your Secret
+                Recovery Phrase safe and secret -- it’s your responsibility!
+              </p>
+              <p className='remember'>Remember:</p>
+              <ul>
+                <li>MetaMask can’t recover your Secret Recovery Phrase.</li>
+                <li>
+                  MetaMask will never ask you for your Secret Recovery Phrase.
+                </li>
+                <li>
+                  <span className='bold'>
+                    Never share your Secret Recovery Phrase{' '}
+                  </span>
+                  with anyone or risk your funds being stolen
+                </li>
+                <li>
+                  <span className='learn-more'>Learn more</span>
+                </li>
+              </ul>
+              <div className='btns'>
+                <Button
+                  text='Advanced configurations'
+                  onClick={() => setStep('2')}
+                  variant='link'
+                />
+                <Button
+                  text='Got it!'
+                  onClick={() => setStep('2')}
+                  variant='primary'
+                  height='5.2rem'
+                  width='25rem'
+                />
+              </div>
+            </div>
+          )}
+          {step === '5' && (
+            <div className='step-5'>
+              <h3 className='title'>Your metamsak install is complete!</h3>
+              {stage2 === '1' && (
+                <div className='stage-2-1'>
+                  <p className='info'>
+                    Pin metamsak on your browser so it's accessible and easy to
+                    view transaction confirmations
+                  </p>
+                  <div className='img-con'>h</div>
+                </div>
+              )}
+              {stage2 === '2' && (
+                <div className='stage-2-2'>
+                  <p className='info info-2'>
+                    You can open metamsak by clicking on the extension and
+                    access your wallet within 1 click
+                  </p>
+                  <p className='info'>
+                    Click browser extension to access it instantly
+                  </p>
+                  <div className='img-con'>h</div>
+                </div>
+              )}
+              <div className='tab-indicators'>
+                <div
+                  className={`tab-indicator ${stage2 === '1' && 'active'}`}
+                ></div>
+                <div
+                  className={`tab-indicator ${stage2 === '2' && 'active'}`}
+                ></div>
+              </div>
+              <div className='btns'>
+                {stage2 === '1' && (
+                  <Button
+                    text='Next'
+                    onClick={() => setStage2('2')}
+                    variant='primary'
+                    width='25rem'
+                  />
+                )}
+                {stage2 === '2' && (
+                  <Button
+                    text='Done'
+                    onClick={() => navigate('/')}
+                    variant='primary'
+                    width='25rem'
+                  />
                 )}
               </div>
             </div>
