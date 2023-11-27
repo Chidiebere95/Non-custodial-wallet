@@ -8,9 +8,6 @@ $thic700: 'THICCCBOI-Bold';
 $thic600: 'THICCCBOI-SemiBold';
 $thic500: 'THICCCBOI-Medium';
 
-$color1: #0376c9;
-$color2: #f2f4f6;
-
 * {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box; /* Firefox, other Gecko */
@@ -71,6 +68,7 @@ button {
   border: 0;
   padding: 0;
   cursor: pointer;
+  color: #24272a;
 }
 
 .primary-btn {
@@ -168,4 +166,9 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

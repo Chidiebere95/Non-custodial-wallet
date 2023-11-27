@@ -2,7 +2,6 @@
 @import 'index';
 @import 'get-started';
 
-
 .button-component {
   min-height: 4.5rem;
   border-radius: 100px;
@@ -12,6 +11,10 @@
   padding: 0 3rem;
   background-color: #0376c9;
   border: 1px solid #0376c9;
+  margin: 0 auto;
+  // text-align: center;
+  display: flex;
+  justify-content: center !important;
 
   &.secondary {
     color: #0376c9;
@@ -105,7 +108,7 @@
       outline: none;
     }
   }
-  .phrase-2{
+  .phrase-2 {
     border: 2px solid $color1;
   }
 }

@@ -11,6 +11,7 @@ import Button from '../components/molecules/Button';
 import InputGroup from '../components/molecules/InputGroup';
 import SeedPhrase, { SeedPhrase2 } from '../components/molecules/SeedPhrase';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/atoms/Logo';
 function GetStarted() {
   const navigate = useNavigate();
   const [step, setStep] = useState('5');
@@ -60,10 +61,7 @@ function GetStarted() {
     <div className='get-started-wrapper'>
       <div className='container'>
         <div className='get-started-header'>
-          <div className='logo-con'>
-            <img src={logo} />
-            <p>Petamask</p>
-          </div>
+          <Logo />
           <select>
             <option value='English'>English</option>
             <option value='French'>French</option>
