@@ -1,4 +1,4 @@
-import '../../assets/scss/get-started.scss';
+import { ethers } from 'ethers';
 import logo from '../../assets/images/logo.svg';
 import logo2 from '../../assets/images/forum1.jpeg';
 import confetti from '../../assets/images/tada.png';
@@ -12,9 +12,10 @@ import InputGroup from '../components/molecules/InputGroup';
 import SeedPhrase, { SeedPhrase2 } from '../components/molecules/SeedPhrase';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../components/atoms/Logo';
+import '../../assets/scss/get-started.scss';
 function GetStarted() {
   const navigate = useNavigate();
-  const [step, setStep] = useState('5');
+  const [step, setStep] = useState('1');
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -22,15 +23,17 @@ function GetStarted() {
 
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [stage, setStage] = useState('2');
-  const [showSecretKeyTab, setShowSecretKeyTab] = useState(true);
-  const [showSeedPhrase, setShowSeedPhrase] = useState(true);
+  const [stage, setStage] = useState('1');
+  const [showSecretKeyTab, setShowSecretKeyTab] = useState(false);
+  const [showSeedPhrase, setShowSeedPhrase] = useState(false);
+
+  const [seedPhrase, setSeedPhrase] = useState('');
+  const [seedPhraseFinal, setSeedPhraseFinal] = useState('');
 
   // step 5
   const [stage2, setStage2] = useState('1');
 
   const [foxStyle, setFoxStyle] = useState({ transform: 'rotate(0deg)' });
-
   const handleMouseMove = (e: any) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
@@ -46,7 +49,36 @@ function GetStarted() {
       setFoxStyle({ transform: `rotate(${angleDeg}deg)` });
     }
   };
+  const handleSecretKeyTab = () => {
+    console.log('secret');
 
+    setShowSecretKeyTab(true);
+
+    // Generate a random mnemonic (12-word phrase)
+
+    const mnemonic = ethers.Wallet.createRandom().mnemonic.phrase;
+    setSeedPhrase(mnemonic);
+  };
+  const handleFinal = () => {
+    const obj = { user: 'Account 1', data: seedPhraseFinal };
+    localStorage.setItem('wallet', JSON.stringify(obj));
+    navigate('/dashboard');
+  };
+  useEffect(() => {
+    if (seedPhrase) {
+      // Create a wallet from the mnemonic
+      const wallet = ethers.Wallet.fromMnemonic(seedPhrase);
+
+      // Retrieve the private key
+      const privateKey = wallet.privateKey;
+
+      // Retrieve the public key
+      const publicKey = wallet.address;
+      console.log('Mnemonic:', seedPhrase);
+      console.log('Private Key:', privateKey);
+      console.log('Public Key (Address):', publicKey);
+    }
+  }, [seedPhrase]);
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
     return () => {
@@ -54,8 +86,8 @@ function GetStarted() {
     };
   }, []);
 
-  console.log('password', password);
-  console.log('confirm password', confirmPassword);
+  console.log('seedphrasefinal', seedPhraseFinal);
+  // console.log('confirm password', confirmPassword);
 
   return (
     <div className='get-started-wrapper'>
@@ -97,11 +129,13 @@ function GetStarted() {
                 <Button
                   text='Create a new wallet'
                   onClick={() => setStep('2')}
+                  width='100%'
                 />
                 <Button
                   text='Import an existing wallet'
                   onClick={() => setStep('2')}
                   variant='secondary'
+                  width='100%'
                 />
               </div>
             </div>
@@ -181,11 +215,16 @@ function GetStarted() {
               </div>
 
               <div className='get-started-confirm'>
-                <Button text='I agree' onClick={() => setStep('3')} />
+                <Button
+                  text='I agree'
+                  onClick={() => setStep('3')}
+                  width='100%'
+                />
                 <Button
                   text=' No thanks'
                   onClick={() => setStep('1')}
                   variant='secondary'
+                  width='100%'
                 />
               </div>
             </div>
@@ -267,8 +306,8 @@ function GetStarted() {
                   <div className='stage-1'>
                     <h3 className='title'>Create password</h3>
                     <p className='info'>
-                      This password will unlock your MetaMask wallet only on
-                      this device. MetaMask can not recover this password.
+                      This password will unlock your petamask wallet only on
+                      this device. petamask can not recover this password.
                     </p>
                     <div className='con'>
                       <div className='input-groups'>
@@ -304,7 +343,7 @@ function GetStarted() {
                           <input type='checkbox' />
                         </div>
                         <p>
-                          I understand that MetaMask cannot recover this
+                          I understand that petamask cannot recover this
                           password for me. Learn more
                         </p>
                       </div>
@@ -337,7 +376,7 @@ function GetStarted() {
                       />
                       <Button
                         text='Secure my wallet (recommended)'
-                        onClick={() => setShowSecretKeyTab(true)}
+                        onClick={handleSecretKeyTab}
                       />
                     </div>
                     <div className='qstions-wrapper'>
@@ -362,7 +401,7 @@ function GetStarted() {
                         <h5>Should I share my Secret Recovery Phrase?</h5>
                         <p>
                           Never, ever share your Secret Recovery Phrase, not
-                          even with MetaMask!
+                          even with petamask!
                         </p>
                       </div>
                     </div>
@@ -402,8 +441,14 @@ function GetStarted() {
                         </>
                       )}
                       <div className='content'>
-                        <SeedPhrase phrase='man' number={1} />
-                        <SeedPhrase phrase='car' number={2} />
+                        {seedPhrase?.split(' ').map((item, index) => (
+                          <SeedPhrase
+                            key={index}
+                            phrase={item}
+                            number={index + 1}
+                          />
+                        ))}
+                        {/* <SeedPhrase phrase='car' number={2} />
                         <SeedPhrase phrase='people' number={3} />
                         <SeedPhrase phrase='angry' number={4} />
                         <SeedPhrase phrase='jack' number={5} />
@@ -413,7 +458,7 @@ function GetStarted() {
                         <SeedPhrase phrase='enumerating' number={9} />
                         <SeedPhrase phrase='danger' number={10} />
                         <SeedPhrase phrase='boot' number={11} />
-                        <SeedPhrase phrase='wisdom' number={12} />
+                        <SeedPhrase phrase='wisdom' number={12} /> */}
                       </div>
                     </div>
                     <div className='password-box-btns'>
@@ -450,7 +495,7 @@ function GetStarted() {
                     <p className='info'>Confirm Secret Recovery Phrase</p>
 
                     <div className='password-box'>
-                      {!showSeedPhrase && (
+                      {/* {!showSeedPhrase && (
                         <>
                           <div className='overlay'></div>
                           <div className='overlay-2'>
@@ -458,9 +503,30 @@ function GetStarted() {
                             <p>Make sure nobody's looking</p>
                           </div>
                         </>
-                      )}
+                      )} */}
                       <div className='content'>
-                        <SeedPhrase phrase='man' number={1} />
+                        {seedPhrase?.split(' ').map((item, index) => {
+                          if (index === 2 || index === 4 || index === 7) {
+                            return (
+                              <SeedPhrase2
+                                seedPhrase={seedPhrase}
+                                key={index}
+                                phrase={item}
+                                number={index + 1}
+                                setSeedPhraseFinal={setSeedPhraseFinal}
+                              />
+                            );
+                          } else {
+                            return (
+                              <SeedPhrase
+                                key={index}
+                                phrase={item}
+                                number={index + 1}
+                              />
+                            );
+                          }
+                        })}
+                        {/* <SeedPhrase phrase='man' number={1} />
                         <SeedPhrase phrase='car' number={2} />
                         <SeedPhrase2 phrase='people' number={3} />
                         <SeedPhrase2 phrase='angry' number={4} />
@@ -471,7 +537,7 @@ function GetStarted() {
                         <SeedPhrase phrase='enumerating' number={9} />
                         <SeedPhrase phrase='danger' number={10} />
                         <SeedPhrase phrase='boot' number={11} />
-                        <SeedPhrase phrase='wisdom' number={12} />
+                        <SeedPhrase phrase='wisdom' number={12} /> */}
                       </div>
                     </div>
                     <Button
@@ -479,7 +545,7 @@ function GetStarted() {
                       onClick={() => setStep('4')}
                       width='30rem'
                       height='5.4rem'
-                      // disabled
+                      disabled={seedPhrase !== seedPhraseFinal}
                     />
                   </div>
                 )}
@@ -498,9 +564,9 @@ function GetStarted() {
               </p>
               <p className='remember'>Remember:</p>
               <ul>
-                <li>MetaMask can’t recover your Secret Recovery Phrase.</li>
+                <li>petamask can’t recover your Secret Recovery Phrase.</li>
                 <li>
-                  MetaMask will never ask you for your Secret Recovery Phrase.
+                  petamask will never ask you for your Secret Recovery Phrase.
                 </li>
                 <li>
                   <span className='bold'>
@@ -515,12 +581,14 @@ function GetStarted() {
               <div className='btns'>
                 <Button
                   text='Advanced configurations'
-                  onClick={() => setStep('2')}
+                  // onClick={() => setStep('5')}
+                  // onClick={() => setStep('5')}
                   variant='link'
                 />
                 <Button
                   text='Got it!'
-                  onClick={() => setStep('2')}
+                  // onClick={() => setStep('5')}
+                  onClick={handleFinal}
                   variant='primary'
                   height='5.2rem'
                   width='25rem'
@@ -572,7 +640,7 @@ function GetStarted() {
                 {stage2 === '2' && (
                   <Button
                     text='Done'
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/dashboard')}
                     variant='primary'
                     width='25rem'
                   />

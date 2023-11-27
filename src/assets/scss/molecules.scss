@@ -14,6 +14,7 @@
   margin: 0 auto;
   // text-align: center;
   display: flex;
+  align-items: center;
   justify-content: center !important;
 
   &.secondary {
@@ -66,6 +67,9 @@
     color: #24272a;
     border: 1px solid #bbc0c5;
     margin-bottom: 1rem;
+    &.error {
+      border: 1px solid #d73847;
+    }
   }
   p {
     text-align: left;
@@ -74,6 +78,9 @@
     font-weight: 600;
     span {
       color: #28a745;
+    }
+    &.passwords-not-match {
+      color: #d73847;
     }
   }
 }

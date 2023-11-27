@@ -212,7 +212,8 @@
           justify-content: center;
           margin-bottom: 3rem;
           button {
-            width: 16rem;
+            // width: 16rem;
+
             height: 3.2rem;
             padding: 0 1.6rem;
             border-radius: 3rem;
@@ -223,6 +224,7 @@
             align-items: center;
             color: $color1;
             font-size: 1.6rem;
+            column-gap: 1rem;
             .img-con {
               height: 1.6rem;
               width: 1.6rem;
@@ -270,7 +272,6 @@
           }
         }
         .tab-btns {
-          // background-color: rgba(0, 128, 0, 0.079);
           display: grid;
           grid-template-columns: repeat(3, 1fr);
 
@@ -285,6 +286,89 @@
               border-bottom: 2px solid $color1;
               color: $color1;
             }
+          }
+        }
+        .tabs {
+          .tab-1 {
+            padding: 2rem 0;
+            min-height: 50rem;
+            .tokens {
+              margin-bottom: 3rem;
+              .token {
+                display: flex;
+                align-items: center;
+                column-gap: 1rem;
+                height: 8rem;
+                background-color: transparent;
+                cursor: pointer;
+                &:hover {
+                  background-color: #fafafa;
+                }
+                cursor: pointer;
+                .img-con {
+                  width: 4rem;
+                  height: 4rem;
+                  border-radius: 50%;
+                  overflow: hidden;
+                  img {
+                    min-width: 100%;
+                    min-height: 100%;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                  }
+                }
+                .details {
+                  flex: 1 1 0%;
+                  display: flex;
+                  justify-content: space-between;
+                  .balance-con {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 0.5rem;
+                    .balance {
+                      display: flex;
+                      column-gap: 0.5rem;
+                    }
+                  }
+                  .equivalent {
+                    display: flex;
+                    column-gap: 0.5rem;
+                  }
+                }
+                h5 {
+                  font-size: 1.6rem;
+                }
+              }
+            }
+            .btns {
+              display: flex;
+              flex-direction: column;
+              row-gap: 3rem;
+              align-items: flex-start;
+              button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                column-gap: 1rem;
+                font-family: $thic700;
+                font-size: 1.8rem;
+                color: $color1;
+                span {
+                  border-bottom: 2px solid transparent;
+                }
+                &:hover {
+                  span {
+                    border-bottom: 2px solid $color1;
+                  }
+                }
+              }
+            }
+          }
+          .tab-2,
+          .tab-3 {
+            padding: 2rem 0;
+            min-height: 30rem;
           }
         }
       }

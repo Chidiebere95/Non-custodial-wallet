@@ -34,6 +34,9 @@ const InputGroup = ({
         id='password'
         type={showPassword ? 'text' : 'password'}
         value={onChange ? password : confirmPassword}
+        // className={`${
+        //   onChangeConfirmPassword && password !== confirmPassword && 'error'
+        // }`}
         onChange={(e) => {
           if (onChange) {
             onChange(e);
@@ -50,7 +53,9 @@ const InputGroup = ({
       )}
       {onChangeConfirmPassword &&
         confirmPassword &&
-        password !== confirmPassword && <p>Passwords do not match</p>}
+        password !== confirmPassword && (
+          <p className='passwords-not-match'>Passwords do not match</p>
+        )}
     </div>
   );
 };
