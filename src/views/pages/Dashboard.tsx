@@ -119,6 +119,7 @@ function Dashboard() {
                   <FaChevronDown />
                 </div>
               </button>
+              
               {showNetworksModal && (
                 <div
                   className='modal'
