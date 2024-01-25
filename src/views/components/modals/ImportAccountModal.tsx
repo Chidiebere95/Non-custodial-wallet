@@ -28,19 +28,38 @@ const ImportAccountModal = ({ closeModal, onClickBackBtn }: Iprops) => {
         </div>
       </div>
       <div className='body'>
+        <p>
+          Imported accounts won’t be associated with your MetaMask Secret
+          Recovery Phrase. Learn more about imported accounts <span>here</span>
+        </p>
+        <div className='select-type'>
+          <label htmlFor='type'>Select Type</label>
+          <select name='type' id='type' className='custom-select'>
+            <option value='private-key'> Private Key </option>
+            <option value='json-file'> JSON File </option>
+          </select>
+        </div>
+        <div className='private-key'>
+          <label htmlFor='private-key'>
+            Enter your private key string here
+          </label>
+          <input type='text' id='private-key' />
+        </div>
         <div className='btns'>
-          <button>
-            <FaPlus />
-            <span>Add a new account</span>
-          </button>
-          <button>
-            <BiImport />
-            <span>Import account</span>
-          </button>
-          <button>
-            <PiGitFork />
-            <span>Add hardware wallet</span>
-          </button>
+          <Button
+            text='Cancel'
+            width='100%'
+            // onClick={onClickBtn}
+            variant='secondary'
+            height='5.4rem'
+          />
+          <Button
+            text='Import'
+            width='100%'
+            onClick={closeModal}
+            variant='primary'
+            height='5.4rem'
+          />
         </div>
       </div>
     </div>

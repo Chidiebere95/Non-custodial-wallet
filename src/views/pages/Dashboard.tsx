@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
+import Wallet from 'ethereumjs-wallet';
+import EthUtil from 'ethereumjs-util';
+
 import Logo from '../components/atoms/Logo';
 import eth from '../../assets/images/eth_logo.png';
 import lineaGoerli from '../../assets/images/linea-logo-testnet.png';
@@ -98,6 +101,33 @@ function Dashboard() {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
+
+  const [accounts, setAccounts] = useState([]);
+  const [activeAccount, setActiveAccount] = useState({
+    name: 'account 2',
+    publicKey: '',
+    balance: '',
+  });
+  // const getPublicKey = () => {
+  //   const privateKeyString =
+  //     '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71'; // ensure '0x' prefix
+
+  //   const privateKeyBuffer = EthUtil.toBuffer(privateKeyString);
+
+  //   // Ensure the private key is 32 bytes long
+  //   if (privateKeyBuffer.length !== 32) {
+  //     console.error('Invalid private key length');
+  //     process.exit(1);
+  //   }
+
+  //   const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
+  //   const publicKey = wallet.getPublicKeyString();
+  //   const address = wallet.getAddressString();
+
+  //   console.log('Public Key:', publicKey);
+  //   console.log('Address:', address);
+  // };
+  useEffect(() => {}, []);
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
@@ -138,6 +168,13 @@ function Dashboard() {
                   <FaChevronDown />
                 </div>
               </button>
+              {/* <button>
+                <img src={accountDefault} alt='network logo' />
+                <p>Account 1</p>
+                <div className='icon-con center'>
+                  <FaChevronDown />
+                </div>
+              </button> */}
             </div>
             <div className='more'>
               <button>
@@ -152,9 +189,10 @@ function Dashboard() {
                   await navigator.clipboard.writeText(walletAddress);
                 }}
               >
-                {`${walletAddress.substring(0, 6)}...${walletAddress.substring(
+                {/* {`${walletAddress.substring(0, 6)}...${walletAddress.substring(
                   35
-                )}`}
+                )}`} */}
+                {`0x4838B...5f97`}
                 <div className='icon-con center'>
                   <BiSolidCopy />
                 </div>
@@ -252,7 +290,7 @@ function Dashboard() {
                     </button>
                     <button>
                       <BiSolidMessageDots />
-                      <span>petamask Support</span>
+                      <span>Metamask Support</span>
                     </button>
                   </div>
                 </div>

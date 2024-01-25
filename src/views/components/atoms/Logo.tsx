@@ -5,7 +5,7 @@ const Logo = (): JSX.Element => {
   return (
     <div className='logo-con'>
       <img src={logo} />
-      <p>Petamask</p>
+      <p>Metamask</p>
     </div>
   );
 };

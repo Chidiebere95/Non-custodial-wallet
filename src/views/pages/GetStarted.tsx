@@ -107,13 +107,13 @@ function GetStarted() {
               <div className='content content-1'>
                 <h1>Lets get started</h1>
                 <p>
-                  Trusted by millions, Petamask is a secure wallet making the
+                  Trusted by millions, Metamask is a secure wallet making the
                   world of web3 accessible to all.
                 </p>
                 <div className='get-started-mascot'>
                   <img
                     src={logo}
-                    alt='Petamask Fox'
+                    alt='Metamask Fox'
                     style={foxStyle}
                     id='fox'
                   />
@@ -122,7 +122,7 @@ function GetStarted() {
               <div className='get-started-terms-wrapper'>
                 <input type='checkbox' />
                 <p>
-                  I agree to Petamask's <span>Terms of use</span>
+                  I agree to Metamask's <span>Terms of use</span>
                 </p>
               </div>
               <div className='get-started-buttons'>
@@ -143,15 +143,15 @@ function GetStarted() {
           {step === '2' && (
             <div className='get-started-metametrics'>
               <div className=' desc'>
-                <h1>Help us improve Petamask</h1>
+                <h1>Help us improve Metamask</h1>
                 <div className='info'>
                   <p>
-                    Petamask would like to gather usage data to better
-                    understand how our users interact with Petamask. This data
+                    Metamask would like to gather usage data to better
+                    understand how our users interact with Metamask. This data
                     will be used to provide the service, which includes
                     improving the service based on your use.
                   </p>
-                  <p>Petamask will...</p>
+                  <p>Metamask will...</p>
                 </div>
                 <ul className='get-started-desc'>
                   <li>
@@ -202,11 +202,11 @@ function GetStarted() {
                   </p>
                   <p>
                     * When you use Infura as your default RPC provider in
-                    Petamask, Infura will collect your IP address and your
+                    Metamask, Infura will collect your IP address and your
                     Ethereum wallet address when you send a transaction. We
                     don’t store this information in a way that allows our
                     systems to associate those two pieces of data. For more
-                    information on how Petamask and Infura interact from a data
+                    information on how Metamask and Infura interact from a data
                     collection perspective, see our update here. For more
                     information on our privacy practices in general, see our
                     Privacy Policy here.
@@ -306,8 +306,8 @@ function GetStarted() {
                   <div className='stage-1'>
                     <h3 className='title'>Create password</h3>
                     <p className='info'>
-                      This password will unlock your petamask wallet only on
-                      this device. petamask can not recover this password.
+                      This password will unlock your Metamask wallet only on
+                      this device. Metamask can not recover this password.
                     </p>
                     <div className='con'>
                       <div className='input-groups'>
@@ -343,7 +343,7 @@ function GetStarted() {
                           <input type='checkbox' />
                         </div>
                         <p>
-                          I understand that petamask cannot recover this
+                          I understand that Metamask cannot recover this
                           password for me. Learn more
                         </p>
                       </div>
@@ -401,7 +401,7 @@ function GetStarted() {
                         <h5>Should I share my Secret Recovery Phrase?</h5>
                         <p>
                           Never, ever share your Secret Recovery Phrase, not
-                          even with petamask!
+                          even with Metamask!
                         </p>
                       </div>
                     </div>
@@ -564,9 +564,9 @@ function GetStarted() {
               </p>
               <p className='remember'>Remember:</p>
               <ul>
-                <li>petamask can’t recover your Secret Recovery Phrase.</li>
+                <li>Metamask can’t recover your Secret Recovery Phrase.</li>
                 <li>
-                  petamask will never ask you for your Secret Recovery Phrase.
+                  Metamask will never ask you for your Secret Recovery Phrase.
                 </li>
                 <li>
                   <span className='bold'>
