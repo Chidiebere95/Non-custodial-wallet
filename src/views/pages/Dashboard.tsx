@@ -17,6 +17,11 @@ import { AiOutlineLineChart } from 'react-icons/ai';
 import { SiDovecot } from 'react-icons/si';
 import { FiRefreshCw } from 'react-icons/fi';
 import '../../assets/scss/dashboard.scss';
+import Modal from '../components/molecules/Modal';
+import NetworksModal from '../components/modals/NetworksModal';
+import AccountsModal from '../components/modals/AccountsModal';
+import AccountModal from '../components/modals/AccountModal';
+import ImportAccountModal from '../components/modals/ImportAccountModal';
 
 function Dashboard() {
   const [mnemonic, setMnemonic] = useState('');
@@ -69,7 +74,6 @@ function Dashboard() {
 
     if (walletAddress) {
       console.log('true', walletAddress);
-
       const usersWalletAddress = walletAddress;
       const getBalance = async () => {
         try {
@@ -90,6 +94,9 @@ function Dashboard() {
 
   const navigate = useNavigate();
   const [showNetworksModal, setShowNetworksModal] = useState(false);
+  const [showAccountsModal, setShowAccountsModal] = useState(false);
+  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showImportAccountModal, setShowImportAccountModal] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
   return (
     <div className='dashboard-wrapper'>
@@ -118,110 +125,12 @@ function Dashboard() {
                 <div className='icon-con center'>
                   <FaChevronDown />
                 </div>
-                
               </button>
-
-              {showNetworksModal && (
-                <div
-                  className='modal'
-                  onClick={(e: any) => {
-                    if (!e.target.closest('.modal-content')) {
-                      setShowNetworksModal(false);
-                    } else if (e.target.closest('.close-modal')) {
-                      setShowNetworksModal(false);
-                    } else {
-                      console.log('modal-content');
-                    }
-                  }}
-                >
-                  <div className='modal-content'>
-                    <div className='header'>
-                      <h5>Select a network</h5>
-                      <div className='close-modal center'>
-                        <LiaTimesSolid />
-                      </div>
-                    </div>
-                    <div className='body'>
-                      <div className='networks-wrapper'>
-                        <div
-                          className={`network ${
-                            network === 'ethereum-mainnet' && 'active'
-                          }`}
-                          onClick={() => {
-                            setNetwork('ethereum-mainnet');
-                            setShowNetworksModal(false);
-                          }}
-                        >
-                          <div className='line'></div>
-                          <div className='wrapper'>
-                            <img src={eth} alt='network logo' className='' />
-                            <p>Ethereum Mainnet</p>
-                          </div>
-                        </div>
-                        <div
-                          className={`network ${
-                            network === 'ethereum-goerli' && 'active'
-                          }`}
-                          onClick={() => {
-                            setNetwork('ethereum-goerli');
-                            setShowNetworksModal(false);
-                          }}
-                        >
-                          <div className='line'></div>
-                          <div className='wrapper'>
-                            <img src={eth} alt='network logo' className='' />
-                            <p>Ethereum Goerli</p>
-                          </div>
-                        </div>
-                        <div
-                          className={`network ${
-                            network === 'base-goerli' && 'active'
-                          }`}
-                          onClick={() => {
-                            setNetwork('base-goerli');
-                            setShowNetworksModal(false);
-                          }}
-                        >
-                          <div className='line'></div>
-                          <div className='wrapper'>
-                            <img src={eth} alt='network logo' className='' />
-                            <p>Base Goerli</p>
-                          </div>
-                        </div>
-                        <div
-                          className={`network ${
-                            network === 'optimism-goerli' && 'active'
-                          }`}
-                          onClick={() => {
-                            setNetwork('optimism-goerli');
-                            setShowNetworksModal(false);
-                          }}
-                        >
-                          <div className='line'></div>
-                          <div className='wrapper'>
-                            <img
-                              src={lineaGoerli}
-                              alt='network logo'
-                              className=''
-                            />
-                            <p>Optimism Goerli</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='btn'>
-                        <Button
-                          text='Add network'
-                          width='100%'
-                          // onClick={() => setStep('2')}
-                          variant='secondary'
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
-            <div className='accounts'>
+            <div
+              className='accounts'
+              onClick={() => setShowAccountsModal(true)}
+            >
               <button>
                 <img src={accountDefault} alt='network logo' />
                 <p>Account 1</p>
@@ -364,6 +273,49 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      {showNetworksModal && (
+        <Modal closeModal={() => setShowNetworksModal(false)}>
+          <NetworksModal
+            closeModal={() => setShowNetworksModal(false)}
+            network={network}
+            setNetwork={setNetwork}
+          />
+        </Modal>
+      )}
+      {showAccountsModal && (
+        <Modal closeModal={() => setShowAccountsModal(false)}>
+          <AccountsModal
+            closeModal={() => setShowAccountsModal(false)}
+            onClickBtn={() => {
+              setShowAccountsModal(false);
+              setShowAccountModal(true);
+            }}
+          />
+        </Modal>
+      )}
+      {showAccountModal && (
+        <Modal closeModal={() => setShowAccountModal(false)}>
+          <AccountModal
+            closeModal={() => setShowAccountModal(false)}
+            onClickBackBtn={() => {
+              setShowAccountsModal(true);
+              setShowAccountModal(false);
+            }}
+            setShowImportAccountModal={setShowImportAccountModal}
+          />
+        </Modal>
+      )}
+      {showImportAccountModal && (
+        <Modal closeModal={() => setShowImportAccountModal(false)}>
+          <ImportAccountModal
+            closeModal={() => setShowImportAccountModal(false)}
+            onClickBackBtn={() => {
+              setShowAccountModal(true);
+              setShowImportAccountModal(false);
+            }}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
