@@ -108,25 +108,25 @@ function Dashboard() {
     publicKey: '',
     balance: '',
   });
-  // const getPublicKey = () => {
-  //   const privateKeyString =
-  //     '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71'; // ensure '0x' prefix
+  const getPublicKey = () => {
+    const privateKeyString =
+      '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71'; // ensure '0x' prefix
 
-  //   const privateKeyBuffer = EthUtil.toBuffer(privateKeyString);
+    const privateKeyBuffer = EthUtil.toBuffer(privateKeyString);
 
-  //   // Ensure the private key is 32 bytes long
-  //   if (privateKeyBuffer.length !== 32) {
-  //     console.error('Invalid private key length');
-  //     process.exit(1);
-  //   }
+    // Ensure the private key is 32 bytes long
+    if (privateKeyBuffer.length !== 32) {
+      console.error('Invalid private key length');
+      process.exit(1);
+    }
 
-  //   const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
-  //   const publicKey = wallet.getPublicKeyString();
-  //   const address = wallet.getAddressString();
+    const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
+    const publicKey = wallet.getPublicKeyString();
+    const address = wallet.getAddressString();
 
-  //   console.log('Public Key:', publicKey);
-  //   console.log('Address:', address);
-  // };
+    console.log('Public Key:', publicKey);
+    console.log('Address:', address);
+  };
   useEffect(() => {}, []);
   return (
     <div className='dashboard-wrapper'>
