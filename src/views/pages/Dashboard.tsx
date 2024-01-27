@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
-import Wallet from 'ethereumjs-wallet';
+
+import { Wallet } from 'ethers';
+// import Wallet from 'ethereumjs-wallet';
 import EthUtil from 'ethereumjs-util';
 
 import Logo from '../components/atoms/Logo';
@@ -25,45 +26,80 @@ import NetworksModal from '../components/modals/NetworksModal';
 import AccountsModal from '../components/modals/AccountsModal';
 import AccountModal from '../components/modals/AccountModal';
 import ImportAccountModal from '../components/modals/ImportAccountModal';
-
+import {
+  providerBaseGoerli,
+  providerEthereumMainnet,
+  providerOptimismGoerli,
+  providerPolygonMumbai,
+} from '../../utils/providerUrls';
+// import {providerBaseGoerli} from
 function Dashboard() {
+  const { ethers } = require('ethers');
+  const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
   const [network, setNetwork] = useState('base-goerli');
+
+  //
+  const [showNetworksModal, setShowNetworksModal] = useState(false);
+  const [showAccountsModal, setShowAccountsModal] = useState(false);
+  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showImportAccountModal, setShowImportAccountModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('tokens');
   const [balance, setBalance] = useState(0);
 
-  const { ethers } = require('ethers');
-  const providerBaseGoerli = new ethers.providers.JsonRpcProvider(
-    'https://quick-ultra-spring.base-goerli.discover.quiknode.pro/4aa8545e854b5a9e8722015e9ace2a9855282395/'
-  );
-  const providerOptimismGoerli = new ethers.providers.JsonRpcProvider(
-    'https://old-special-star.optimism-goerli.discover.quiknode.pro/844ca5af827239572b018eccd62bba16a07c34c1/'
-  );
-  const providerEthereumMainnet = new ethers.providers.JsonRpcProvider(
-    'https://practical-necessary-mountain.discover.quiknode.pro/b7b754637febb9825b7a78a42f400edcc4909393/'
-  );
-  const providerPolygonMumbai = new ethers.providers.JsonRpcProvider(
-    'https://wild-capable-star.matic-testnet.discover.quiknode.pro/2c6b5d10c7c08f7afc6ed0814e7ba78de8d64652/'
-  );
+  const [accounts, setAccounts] = useState<
+    Array<{ name: string; address: string }>
+  >([]);
+  const [activeAccount, setActiveAccount] = useState<{
+    name: string;
+    address: string;
+  }>({ name: '', address: '' });
 
+  const getPublicKey = () => {
+    const { Wallet } = require('ethers');
+    // Replace 'yourPrivateKey' with the actual private key
+    const privateKey =
+      '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71';
+    const wallet = new Wallet(privateKey);
+    const publicKey = wallet.publicKey;
+    const address = wallet.address;
+    const p = wallet.privateKey;
+    console.log('Public Key:', publicKey);
+    console.log('private Key:', p);
+    console.log('Wallet Address:', address);
+  };
   useEffect(() => {
+    console.log('one');
     const walletTemp = localStorage.getItem('wallet');
     if (walletTemp) {
       const walletDetails = JSON.parse(walletTemp);
       console.log('walletdetails', walletDetails);
-
       const { data } = walletDetails;
-      setMnemonic(data);
-      // Create a wallet from the mnemonic
       const wallet = ethers.Wallet.fromMnemonic(data);
       // Retrieve the private key
       const privateKey = wallet.privateKey;
       // Retrieve the public key
-      const publicKey = wallet.address;
-      setWalletAddress(publicKey);
+      const address = wallet.address;
+      setActiveAccount({ name: 'Account 1', address });
+      setAccounts([{ name: 'Account 1', address }]);
+      setMnemonic(data);
+    } else {
+      // setActiveAccount({
+      //   name: 'Account 1',
+      //   address: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
+      // });
+      setAccounts([
+        {
+          name: 'Account 1',
+          address: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
+        },
+      ]);
     }
   }, []);
+
   useEffect(() => {
+    console.log('2');
     let providerMain: any;
     if (network === 'ethereum-mainnet') {
       providerMain = providerEthereumMainnet;
@@ -75,63 +111,34 @@ function Dashboard() {
       providerMain = providerOptimismGoerli;
     }
 
-    if (walletAddress) {
-      console.log('true', walletAddress);
-      const usersWalletAddress = walletAddress;
-      const getBalance = async () => {
-        try {
-          let balance = await providerMain.getBalance(usersWalletAddress);
-          balance = ethers.utils.formatEther(balance);
-          console.log('balance', balance);
-          setBalance(balance);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getBalance();
+    const getBalance = async () => {
+      try {
+        let balance = await providerMain.getBalance(activeAccount.address);
+        balance = ethers.utils.formatEther(balance);
+        console.log('balance', balance);
+        setBalance(balance);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBalance();
+  }, [network]);
+
+  // console.log('accounts befor useeffect', accounts);
+
+  useEffect(() => {
+    if (accounts.length > 0) {
+      console.log('3');
+      setActiveAccount(accounts[accounts.length - 1]);
     }
-  }, [walletAddress, network]);
+  }, [accounts]);
 
-  console.log('walletaddress', walletAddress);
-  console.log('network', network);
-
-  const navigate = useNavigate();
-  const [showNetworksModal, setShowNetworksModal] = useState(false);
-  const [showAccountsModal, setShowAccountsModal] = useState(false);
-  const [showAccountModal, setShowAccountModal] = useState(false);
-  const [showImportAccountModal, setShowImportAccountModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('tokens');
-
-  const [accounts, setAccounts] = useState([]);
-  const [activeAccount, setActiveAccount] = useState({
-    name: 'account 2',
-    publicKey: '',
-    balance: '',
-  });
-  const getPublicKey = () => {
-    const privateKeyString =
-      '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71'; // ensure '0x' prefix
-
-    const privateKeyBuffer = EthUtil.toBuffer(privateKeyString);
-
-    // Ensure the private key is 32 bytes long
-    if (privateKeyBuffer.length !== 32) {
-      console.error('Invalid private key length');
-      process.exit(1);
-    }
-
-    const wallet = Wallet.fromPrivateKey(privateKeyBuffer);
-    const publicKey = wallet.getPublicKeyString();
-    const address = wallet.getAddressString();
-
-    console.log('Public Key:', publicKey);
-    console.log('Address:', address);
-  };
-  useEffect(() => {}, []);
+  console.log('activeAccount', activeAccount);
+  // console.log('accounts', accounts);
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
-        <div className='dashboard-header'>
+        <div className='dashboard-header' onClick={() => getPublicKey()}>
           <Logo />
         </div>
         <div className='dashboard-box'>
@@ -163,7 +170,7 @@ function Dashboard() {
             >
               <button>
                 <img src={accountDefault} alt='network logo' />
-                <p>Account 1</p>
+                <p>{activeAccount.name}</p>
                 <div className='icon-con center'>
                   <FaChevronDown />
                 </div>
@@ -189,10 +196,10 @@ function Dashboard() {
                   await navigator.clipboard.writeText(walletAddress);
                 }}
               >
-                {/* {`${walletAddress.substring(0, 6)}...${walletAddress.substring(
-                  35
-                )}`} */}
-                {`0x4838B...5f97`}
+                {`${activeAccount.address.substring(
+                  0,
+                  6
+                )}...${activeAccount.address.substring(35)}`}
                 <div className='icon-con center'>
                   <BiSolidCopy />
                 </div>
