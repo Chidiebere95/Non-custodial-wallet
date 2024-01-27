@@ -44,6 +44,8 @@ const AccountsModal = ({
   >([]);
 
   const getBalance = async (account: { name: string; address: string }) => {
+    console.log('getbalance###########');
+
     let symbol;
     if (network === 'ethereum-mainnet') {
       symbol = 'ETH';
@@ -63,7 +65,17 @@ const AccountsModal = ({
       let balance = await providerMain.getBalance(account.address);
       balance = ethers.utils.formatEther(balance);
       const accountTemp = { ...account, balance, symbol };
-      setAccountsUpdated([...accountsUpdated, accountTemp]);
+      const accountsAll = [...accountsUpdated, accountTemp];
+
+      const sortedArray = accountsAll.filter(
+        (obj: any, index: any, array: any) => {
+          // Check if the index of the current object is the first occurrence of that ID
+          return (
+            array.findIndex((item: any) => item.value === obj.value) === index
+          );
+        }
+      );
+      setAccountsUpdated(sortedArray);
     } catch (error) {
       console.log(error);
     }
