@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
 import accountDefault from '../../../assets/images/account-default.png';
@@ -14,8 +15,44 @@ import { PiGitFork } from 'react-icons/pi';
 interface Iprops {
   closeModal: () => void;
   onClickBackBtn: () => void;
+  // accounts: Array<{ address: string; name: string }>;
+  accounts: {
+    name: string;
+    address: string;
+  }[];
+  setAccounts: React.Dispatch<
+    React.SetStateAction<
+      {
+        name: string;
+        address: string;
+      }[]
+    >
+  >;
 }
-const ImportAccountModal = ({ closeModal, onClickBackBtn }: Iprops) => {
+const ImportAccountModal = ({
+  closeModal,
+  onClickBackBtn,
+  accounts,
+  setAccounts,
+}: Iprops) => {
+  const [privateKey, setPrivateKey] = useState('');
+  const handleImport = () => {
+    const { Wallet } = require('ethers');
+    // Replace 'yourPrivateKey' with the actual private key
+    // const privateKey =
+    //   '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71';
+    // console.log('privatekey', privateKey);
+
+    const wallet = new Wallet(privateKey);
+    const publicKey = wallet.publicKey;
+    const address = wallet.address;
+    const privateKey2 = wallet.privateKey;
+
+    const newAccount = { name: `Account ${accounts.length + 1}`, address };
+    setAccounts([...accounts, newAccount]);
+    setPrivateKey('');
+    closeModal();
+  };
   return (
     <div className='modal-content-wrapper import-account-modal'>
       <div className='header'>
@@ -43,20 +80,27 @@ const ImportAccountModal = ({ closeModal, onClickBackBtn }: Iprops) => {
           <label htmlFor='private-key'>
             Enter your private key string here
           </label>
-          <input type='text' id='private-key' />
+          <input
+            type='text'
+            id='private-key'
+            value={privateKey}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPrivateKey(e.target.value)
+            }
+          />
         </div>
         <div className='btns'>
           <Button
             text='Cancel'
             width='100%'
-            // onClick={onClickBtn}
+            onClick={closeModal}
             variant='secondary'
             height='5.4rem'
           />
           <Button
             text='Import'
             width='100%'
-            onClick={closeModal}
+            onClick={handleImport}
             variant='primary'
             height='5.4rem'
           />

@@ -32,7 +32,6 @@ import {
   providerOptimismGoerli,
   providerPolygonMumbai,
 } from '../../utils/providerUrls';
-// import {providerBaseGoerli} from
 function Dashboard() {
   const { ethers } = require('ethers');
   const navigate = useNavigate();
@@ -56,21 +55,7 @@ function Dashboard() {
     address: string;
   }>({ name: '', address: '' });
 
-  const getPublicKey = () => {
-    const { Wallet } = require('ethers');
-    // Replace 'yourPrivateKey' with the actual private key
-    const privateKey =
-      '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71';
-    const wallet = new Wallet(privateKey);
-    const publicKey = wallet.publicKey;
-    const address = wallet.address;
-    const p = wallet.privateKey;
-    console.log('Public Key:', publicKey);
-    console.log('private Key:', p);
-    console.log('Wallet Address:', address);
-  };
   useEffect(() => {
-    console.log('one');
     const walletTemp = localStorage.getItem('wallet');
     if (walletTemp) {
       const walletDetails = JSON.parse(walletTemp);
@@ -98,47 +83,47 @@ function Dashboard() {
     }
   }, []);
 
+  const [providerMain, setProviderMain] = useState<any>();
   useEffect(() => {
-    console.log('2');
-    let providerMain: any;
+    let provider: any;
     if (network === 'ethereum-mainnet') {
-      providerMain = providerEthereumMainnet;
+      provider = providerEthereumMainnet;
+      setProviderMain(providerEthereumMainnet);
     } else if (network === 'base-goerli') {
-      providerMain = providerBaseGoerli;
+      provider = providerBaseGoerli;
+      setProviderMain(providerBaseGoerli);
     } else if (network === 'polygon-mumbai') {
-      providerMain = providerPolygonMumbai;
+      provider = providerPolygonMumbai;
+      setProviderMain(providerPolygonMumbai);
     } else if (network === 'optimism-goerli') {
-      providerMain = providerOptimismGoerli;
+      provider = providerOptimismGoerli;
+      setProviderMain(providerOptimismGoerli);
     }
 
     const getBalance = async () => {
       try {
         let balance = await providerMain.getBalance(activeAccount.address);
         balance = ethers.utils.formatEther(balance);
-        console.log('balance', balance);
         setBalance(balance);
       } catch (error) {
         console.log(error);
       }
     };
     getBalance();
-  }, [network]);
-
-  // console.log('accounts befor useeffect', accounts);
+  }, [network, activeAccount]);
 
   useEffect(() => {
     if (accounts.length > 0) {
-      console.log('3');
       setActiveAccount(accounts[accounts.length - 1]);
     }
   }, [accounts]);
 
-  console.log('activeAccount', activeAccount);
-  // console.log('accounts', accounts);
+  // console.log('activeAccount', activeAccount);
+  console.log('accounts', accounts);
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
-        <div className='dashboard-header' onClick={() => getPublicKey()}>
+        <div className='dashboard-header'>
           <Logo />
         </div>
         <div className='dashboard-box'>
@@ -335,6 +320,10 @@ function Dashboard() {
               setShowAccountsModal(false);
               setShowAccountModal(true);
             }}
+            accounts={accounts}
+            setAccounts={setAccounts}
+            providerMain={providerMain}
+            network={network}
           />
         </Modal>
       )}
@@ -358,6 +347,8 @@ function Dashboard() {
               setShowAccountModal(true);
               setShowImportAccountModal(false);
             }}
+            accounts={accounts}
+            setAccounts={setAccounts}
           />
         </Modal>
       )}
