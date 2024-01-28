@@ -19,12 +19,16 @@ interface Iprops {
   accounts: {
     name: string;
     address: string;
+    balance: string | number;
+    symbol: string;
   }[];
   setAccounts: React.Dispatch<
     React.SetStateAction<
       {
         name: string;
         address: string;
+        balance: string | number;
+        symbol: string;
       }[]
     >
   >;
@@ -38,18 +42,13 @@ const ImportAccountModal = ({
   const [privateKey, setPrivateKey] = useState('');
   const handleImport = () => {
     const { Wallet } = require('ethers');
-    // Replace 'yourPrivateKey' with the actual private key
-    // const privateKey =
-    //   '0xdb27f3a86e3aabf7367790b17ddc8b535f8734020ea866f455c31aad099b1b71';
-    // console.log('privatekey', privateKey);
-
     const wallet = new Wallet(privateKey);
     const publicKey = wallet.publicKey;
     const address = wallet.address;
     const privateKey2 = wallet.privateKey;
 
     const newAccount = { name: `Account ${accounts.length + 1}`, address };
-    setAccounts([...accounts, newAccount]);
+    setAccounts([...(accounts as any), newAccount]);
     setPrivateKey('');
     closeModal();
   };

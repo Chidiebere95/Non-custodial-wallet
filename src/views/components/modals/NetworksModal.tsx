@@ -34,7 +34,7 @@ const NetworksModal = ({ network, setNetwork, closeModal }: Iprops) => {
               <p>Ethereum Mainnet</p>
             </div>
           </div>
-          <div
+          {/* <div
             className={`network ${network === 'ethereum-goerli' && 'active'}`}
             onClick={() => {
               setNetwork('ethereum-goerli');
@@ -46,7 +46,7 @@ const NetworksModal = ({ network, setNetwork, closeModal }: Iprops) => {
               <img src={eth} alt='network logo' className='' />
               <p>Ethereum Goerli</p>
             </div>
-          </div>
+          </div> */}
           <div
             className={`network ${network === 'base-goerli' && 'active'}`}
             onClick={() => {

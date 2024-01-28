@@ -32,6 +32,7 @@ import {
   providerOptimismGoerli,
   providerPolygonMumbai,
 } from '../../utils/providerUrls';
+import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
 function Dashboard() {
   const { ethers } = require('ethers');
   const navigate = useNavigate();
@@ -41,20 +42,35 @@ function Dashboard() {
 
   //
   const [showNetworksModal, setShowNetworksModal] = useState(false);
-  const [showAccountsModal, setShowAccountsModal] = useState(false);
+  const [showAccountsModal, setShowAccountsModal] = useState(true);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
   const [balance, setBalance] = useState(0);
 
   const [accounts, setAccounts] = useState<
-    Array<{ name: string; address: string }>
+    Array<{
+      name: string;
+      address: string;
+      balance: string | number;
+      symbol: string;
+    }>
   >([]);
   const [activeAccount, setActiveAccount] = useState<{
     name: string;
     address: string;
-  }>({ name: '', address: '' });
+    balance: string | number;
+    symbol: string;
+  }>({ name: '', address: '', balance: '', symbol: 'ETH' });
 
+  const [accountsUpdated, setAccountsUpdated] = useState<
+    {
+      name: string;
+      address: string;
+      balance: string | number;
+      symbol: string;
+    }[]
+  >([]);
   useEffect(() => {
     const walletTemp = localStorage.getItem('wallet');
     if (walletTemp) {
@@ -66,18 +82,16 @@ function Dashboard() {
       const privateKey = wallet.privateKey;
       // Retrieve the public key
       const address = wallet.address;
-      setActiveAccount({ name: 'Account 1', address });
-      setAccounts([{ name: 'Account 1', address }]);
+      setActiveAccount({ name: 'Account 1', address, balance: '', symbol: '' });
+      setAccounts([{ name: 'Account 1', address, balance: '', symbol: '' }]);
       setMnemonic(data);
     } else {
-      // setActiveAccount({
-      //   name: 'Account 1',
-      //   address: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
-      // });
       setAccounts([
         {
           name: 'Account 1',
           address: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
+          balance: '',
+          symbol: '',
         },
       ]);
     }
@@ -89,6 +103,9 @@ function Dashboard() {
     if (network === 'ethereum-mainnet') {
       provider = providerEthereumMainnet;
       setProviderMain(providerEthereumMainnet);
+    } else if (network === 'ethereum-goerli') {
+      provider = providerEthereumMainnet;
+      setProviderMain(providerBaseGoerli);
     } else if (network === 'base-goerli') {
       provider = providerBaseGoerli;
       setProviderMain(providerBaseGoerli);
@@ -97,29 +114,50 @@ function Dashboard() {
       setProviderMain(providerPolygonMumbai);
     } else if (network === 'optimism-goerli') {
       provider = providerOptimismGoerli;
+      console.log('optimism url', providerOptimismGoerli);
+
       setProviderMain(providerOptimismGoerli);
     }
 
     const getBalance = async () => {
       try {
-        let balance = await providerMain.getBalance(activeAccount.address);
+        let balance = await provider.getBalance(activeAccount.address);
         balance = ethers.utils.formatEther(balance);
+        // console.log('active account', activeAccount);
+        // console.log('network', network);
+        // console.log('balance here', balance);
+
         setBalance(balance);
       } catch (error) {
         console.log(error);
       }
     };
     getBalance();
-  }, [network, activeAccount]);
+    console.log('accounts', accounts);
+    console.log('network', network);
+    console.log('provider', provider);
+
+    const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
+      const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
+        accounts,
+        network,
+        provider
+      );
+      // console.log('addMorePropertiesToAccount', addMorePropertiesToAccount);
+      setAccountsUpdated(addMorePropertiesToAccount);
+    };
+
+    addMorePropertiesToAccountsFunc();
+  }, [network, activeAccount, accounts]);
 
   useEffect(() => {
     if (accounts.length > 0) {
       setActiveAccount(accounts[accounts.length - 1]);
     }
-  }, [accounts]);
+  }, [accounts, network]);
 
   // console.log('activeAccount', activeAccount);
-  console.log('accounts', accounts);
+  // console.log('network', network);
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
@@ -178,7 +216,7 @@ function Dashboard() {
             <div className='wallet-address'>
               <button
                 onClick={async () => {
-                  await navigator.clipboard.writeText(walletAddress);
+                  await navigator.clipboard.writeText(activeAccount.address);
                 }}
               >
                 {`${activeAccount.address.substring(
@@ -191,8 +229,8 @@ function Dashboard() {
               </button>
             </div>
             <div className='account-balance'>
-              <h2>{balance}</h2>
-              <h2>ETH</h2>
+              <h2>{balance.toString().substring(0, 5)}</h2>
+              <h2>{activeAccount?.symbol ?? 'ETH'}</h2>
             </div>
             <div className='action-btns center'>
               <div className='btn'>
@@ -324,6 +362,8 @@ function Dashboard() {
             setAccounts={setAccounts}
             providerMain={providerMain}
             network={network}
+            accountsUpdated={accountsUpdated}
+            setActiveAccount={setActiveAccount}
           />
         </Modal>
       )}
