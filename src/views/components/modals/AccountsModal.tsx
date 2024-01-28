@@ -42,11 +42,26 @@ const AccountsModal = ({
       symbol: string;
     }[]
   >([]);
+  const [accountsUpdated2, setAccountsUpdated2] = useState<
+    {
+      name: string;
+      address: string;
+      balance: string | number;
+      symbol: string;
+    }[]
+  >([]);
+  const [accountsUpdatedMain, setAccountsUpdatedMain] = useState<
+    {
+      name: string;
+      address: string;
+      balance: string | number;
+      symbol: string;
+    }[]
+  >([]);
 
-  const getBalance = async (account: { name: string; address: string }) => {
+  const getBalance = async (accounts: { name: string; address: string }[]) => {
     console.log('getbalance###########');
-
-    let symbol;
+    let symbol: string;
     if (network === 'ethereum-mainnet') {
       symbol = 'ETH';
     } else if (network === 'ethereum-goerli') {
@@ -60,22 +75,38 @@ const AccountsModal = ({
     } else {
       symbol = '';
     }
-
     try {
-      let balance = await providerMain.getBalance(account.address);
-      balance = ethers.utils.formatEther(balance);
-      const accountTemp = { ...account, balance, symbol };
-      const accountsAll = [...accountsUpdated, accountTemp];
+      const getBalance = async () => {
+        const tempArray: {
+          name: string;
+          address: string;
+          balance: string | number;
+          symbol: string;
+        }[] = [];
+        accounts.forEach(async (account) => {
+          let balance = await providerMain.getBalance(account.address);
+          balance = ethers.utils.formatEther(balance);
+          const accountTemp = { ...account, balance, symbol };
+          console.log('accounttemp', accountTemp);
+          tempArray.push(accountTemp);
+          console.log('tempArray', tempArray);
 
-      const sortedArray = accountsAll.filter(
-        (obj: any, index: any, array: any) => {
-          // Check if the index of the current object is the first occurrence of that ID
-          return (
-            array.findIndex((item: any) => item.value === obj.value) === index
-          );
-        }
-      );
-      setAccountsUpdated(sortedArray);
+          setAccountsUpdated([...tempArray]);
+        });
+      };
+      getBalance();
+      // console.log('tempArray', tempArray);
+
+      // const sortedArray = tempArray.filter(
+      //   (obj: any, index: any, array: any) => {
+      //     // Check if the index of the current object is the first occurrence of that ID
+      //     return (
+      //       array.findIndex((item: any) => item.value === obj.value) === index
+      //     );
+      //   }
+      // );
+      // console.log('sortedArray', sortedArray);
+      // setAccountsUpdated(sortedArray);
     } catch (error) {
       console.log(error);
     }
@@ -83,13 +114,21 @@ const AccountsModal = ({
 
   useEffect(() => {
     console.log('accounts', accounts);
-
-    accounts.forEach((account) => {
-      getBalance(account);
-    });
+    getBalance(accounts);
   }, []);
-  console.log('accountsUpdated', accountsUpdated);
-
+  // useEffect(() => {
+  //   const sortedArray = accountsUpdated.filter(
+  //     (obj: any, index: any, array: any) => {
+  //       return (
+  //         array.findIndex((item: any) => item.value === obj.value) === index
+  //       );
+  //     }
+  //   );
+  //   setAccountsUpdatedMain(sortedArray);
+  // }, [accountsUpdated]);
+  console.log('accountsUpdatedddsd', accountsUpdated);
+  console.log('accountsUpdatedMain', accountsUpdatedMain);
+  console.log('accountsUpdated223', accountsUpdated2);
   return (
     <div className='modal-content-wrapper accounts-modal'>
       <div className='header'>
@@ -100,8 +139,9 @@ const AccountsModal = ({
       </div>
       <div className='body'>
         <div className='accounts-wrapper'>
-          {accountsUpdated.map((account) => (
+          {accountsUpdated.map((account, index) => (
             <div
+              key={index}
               className={`account ${
                 'ethereum-mainnet' === 'ethereum-mainnet' && 'active'
               }`}
