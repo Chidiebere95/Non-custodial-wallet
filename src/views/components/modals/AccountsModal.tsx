@@ -35,6 +35,12 @@ interface Iprops {
     balance: string | number;
     symbol: string;
   }[];
+  activeAccount: {
+    name: string;
+    address: string;
+    balance: string | number;
+    symbol: string;
+  };
   setActiveAccount: React.Dispatch<
     React.SetStateAction<{
       name: string;
@@ -53,6 +59,7 @@ const AccountsModal = ({
   network,
   accountsUpdated,
   setActiveAccount,
+  activeAccount,
 }: Iprops) => {
   return (
     <div className='modal-content-wrapper accounts-modal'>
@@ -68,7 +75,7 @@ const AccountsModal = ({
             <div
               key={index}
               className={`account ${
-                'ethereum-mainnet' === 'ethereum-mainnet' && 'active'
+                account.address === activeAccount.address && 'active'
               }`}
               onClick={() => {
                 setActiveAccount(account);

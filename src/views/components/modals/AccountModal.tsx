@@ -11,16 +11,42 @@ import { FaChevronLeft, FaPlus } from 'react-icons/fa';
 import { FiRefreshCw } from 'react-icons/fi';
 import { BiImport, BiSolidMessageDots } from 'react-icons/bi';
 import { PiGitFork } from 'react-icons/pi';
+import { Wallet, ethers } from 'ethers';
 interface Iprops {
   closeModal: () => void;
   onClickBackBtn: () => void;
   setShowImportAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
+  accounts: {
+    name: string;
+    address: string;
+    balance: string | number;
+    symbol: string;
+  }[];
+  setAccounts: React.Dispatch<
+    React.SetStateAction<
+      {
+        name: string;
+        address: string;
+        balance: string | number;
+        symbol: string;
+      }[]
+    >
+  >;
 }
 const AccountModal = ({
   closeModal,
   onClickBackBtn,
   setShowImportAccountModal,
+  accounts,
+  setAccounts,
 }: Iprops) => {
+  const handleAddANewAccount = () => {
+    const wallet = ethers.Wallet.createRandom();
+    const address = wallet.address;
+    const newAccount = { name: `Account ${accounts.length + 1}`, address };
+    setAccounts([...(accounts as any), newAccount]);
+    closeModal();
+  };
   return (
     <div className='modal-content-wrapper account-modal'>
       <div className='header'>
@@ -34,7 +60,7 @@ const AccountModal = ({
       </div>
       <div className='body'>
         <div className='btns'>
-          <button>
+          <button onClick={handleAddANewAccount}>
             <FaPlus />
             <span>Add a new account</span>
           </button>

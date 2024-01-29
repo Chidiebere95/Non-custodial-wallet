@@ -363,6 +363,7 @@ function Dashboard() {
             providerMain={providerMain}
             network={network}
             accountsUpdated={accountsUpdated}
+            activeAccount={activeAccount}
             setActiveAccount={setActiveAccount}
           />
         </Modal>
@@ -376,6 +377,8 @@ function Dashboard() {
               setShowAccountModal(false);
             }}
             setShowImportAccountModal={setShowImportAccountModal}
+            accounts={accounts}
+            setAccounts={setAccounts}
           />
         </Modal>
       )}
