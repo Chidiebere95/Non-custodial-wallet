@@ -42,7 +42,7 @@ function Dashboard() {
 
   //
   const [showNetworksModal, setShowNetworksModal] = useState(false);
-  const [showAccountsModal, setShowAccountsModal] = useState(true);
+  const [showAccountsModal, setShowAccountsModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
@@ -229,8 +229,8 @@ function Dashboard() {
               </button>
             </div>
             <div className='account-balance'>
-              <h2>{balance.toString().substring(0, 5)}</h2>
-              <h2>{activeAccount?.symbol ?? 'ETH'}</h2>
+              <h2>{balance.toString().substring(0, 6)}</h2>
+              <h2>{activeAccount?.symbol || 'ETH'}</h2>
             </div>
             <div className='action-btns center'>
               <div className='btn'>
