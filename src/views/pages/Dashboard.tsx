@@ -232,6 +232,7 @@ function Dashboard() {
               <h2>{balance.toString().substring(0, 6)}</h2>
               <h2>{activeAccount?.symbol || 'ETH'}</h2>
             </div>
+
             <div className='action-btns center'>
               <div className='btn'>
                 <div className='icon-con center'>
