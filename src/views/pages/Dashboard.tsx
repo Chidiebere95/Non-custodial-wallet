@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Wallet } from 'ethers';
 // import Wallet from 'ethereumjs-wallet';
@@ -33,8 +33,19 @@ import {
   providerPolygonMumbai,
 } from '../../utils/providerUrls';
 import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
+import Swap from '../components/dashboard-page-components/Swap';
 function Dashboard() {
   const { ethers } = require('ethers');
+  const params = useParams();
+  console.log('prams', params);
+  var hashText = window.location.hash;
+  console.log(hashText);
+  // Remove the leading '#' symbol if present
+  hashText = hashText.substring(1);
+
+  // Now, hashText contains the text after the hash
+  console.log(hashText);
+
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
@@ -46,6 +57,7 @@ function Dashboard() {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
+  const [actionMain, setActionMain] = useState('');
   const [balance, setBalance] = useState(0);
 
   const [accounts, setAccounts] = useState<
@@ -213,134 +225,137 @@ function Dashboard() {
               </button>
             </div>
           </div>
-          <div className='box-content'>
-            <div className='wallet-address'>
-              <button
-                onClick={async () => {
-                  await navigator.clipboard.writeText(activeAccount.address);
-                }}
-              >
-                {`${activeAccount.address.substring(
-                  0,
-                  6
-                )}...${activeAccount.address.substring(35)}`}
-                <div className='icon-con center'>
-                  <BiSolidCopy />
-                </div>
-              </button>
-            </div>
-            <div className='account-balance'>
-              <h2>{balance.toString().substring(0, 6)}</h2>
-              <h2>{activeAccount?.symbol || 'ETH'}</h2>
-            </div>
+          {actionMain === '' && (
+            <div className='box-content'>
+              <div className='wallet-address'>
+                <button
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(activeAccount.address);
+                  }}
+                >
+                  {`${activeAccount.address.substring(
+                    0,
+                    6
+                  )}...${activeAccount.address.substring(35)}`}
+                  <div className='icon-con center'>
+                    <BiSolidCopy />
+                  </div>
+                </button>
+              </div>
+              <div className='account-balance'>
+                <h2>{balance.toString().substring(0, 6)}</h2>
+                <h2>{activeAccount?.symbol || 'ETH'}</h2>
+              </div>
 
-            <div className='action-btns center'>
-              <div className='btn'>
-                <div className='icon-con center'>
-                  <PiPlusMinusBold />
+              <div className='action-btns center'>
+                <div className='btn'>
+                  <div className='icon-con center'>
+                    <PiPlusMinusBold />
+                  </div>
+                  <p>Buy & Sell</p>
                 </div>
-                <p>Buy & Sell</p>
-              </div>
-              <div className='btn'>
-                <div className='icon-con center'>
-                  <MdOutlineArrowOutward />
+                <div className='btn'>
+                  <div className='icon-con center'>
+                    <MdOutlineArrowOutward />
+                  </div>
+                  <p>Send</p>
                 </div>
-                <p>Send</p>
-              </div>
-              <div className='btn'>
-                <div className='icon-con center'>
-                  <GoArrowSwitch />
+                <div className='btn'>
+                  <div className='icon-con center'>
+                    <GoArrowSwitch />
+                  </div>
+                  <p>Swap</p>
                 </div>
-                <p>Swap</p>
-              </div>
-              <div className='btn'>
-                <div className='icon-con center'>
-                  <SiDovecot />
+                <div className='btn'>
+                  <div className='icon-con center'>
+                    <SiDovecot />
+                  </div>
+                  <p>Bridge</p>
                 </div>
-                <p>Bridge</p>
-              </div>
-              <div className='btn'>
-                <div className='icon-con center'>
-                  <AiOutlineLineChart />
+                <div className='btn'>
+                  <div className='icon-con center'>
+                    <AiOutlineLineChart />
+                  </div>
+                  <p>Portfolio</p>
                 </div>
-                <p>Portfolio</p>
               </div>
-            </div>
-            <div className='tab-btns'>
-              <button
-                className={`${activeTab === 'tokens' && 'active'}`}
-                onClick={() => setActiveTab('tokens')}
-              >
-                Tokens
-              </button>
-              <button
-                className={`${activeTab === 'nfts' && 'active'}`}
-                onClick={() => setActiveTab('nfts')}
-              >
-                NFTs
-              </button>
-              <button
-                className={`${activeTab === 'activity' && 'active'}`}
-                onClick={() => setActiveTab('activity')}
-              >
-                Activity
-              </button>
-            </div>
-            <div className='tabs'>
-              {activeTab === 'tokens' && (
-                <div className='tab-1'>
-                  <div className='tokens'>
-                    <div className='token'>
-                      <div className='img-con'>
-                        <img src={eth} alt='' />
-                      </div>
-                      <div className='details'>
-                        <div className='balance-con'>
-                          <h5>Ethereum</h5>
-                          <div className='balance'>
-                            <p>0</p>
-                            <p>ETH</p>
-                          </div>
+              <div className='tab-btns'>
+                <button
+                  className={`${activeTab === 'tokens' && 'active'}`}
+                  onClick={() => setActiveTab('tokens')}
+                >
+                  Tokens
+                </button>
+                <button
+                  className={`${activeTab === 'nfts' && 'active'}`}
+                  onClick={() => setActiveTab('nfts')}
+                >
+                  NFTs
+                </button>
+                <button
+                  className={`${activeTab === 'activity' && 'active'}`}
+                  onClick={() => setActiveTab('activity')}
+                >
+                  Activity
+                </button>
+              </div>
+              <div className='tabs'>
+                {activeTab === 'tokens' && (
+                  <div className='tab-1'>
+                    <div className='tokens'>
+                      <div className='token'>
+                        <div className='img-con'>
+                          <img src={eth} alt='' />
                         </div>
-                        <div className='equivalent'>
-                          <h5>
-                            $<span>0.00</span>
-                          </h5>
-                          <h5>USD</h5>
+                        <div className='details'>
+                          <div className='balance-con'>
+                            <h5>Ethereum</h5>
+                            <div className='balance'>
+                              <p>0</p>
+                              <p>ETH</p>
+                            </div>
+                          </div>
+                          <div className='equivalent'>
+                            <h5>
+                              $<span>0.00</span>
+                            </h5>
+                            <h5>USD</h5>
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <div className='btns'>
+                      <button>
+                        <FaPlus />
+                        <span>Import tokens</span>
+                      </button>
+                      <button>
+                        <FiRefreshCw />
+                        <span>Refresh list</span>
+                      </button>
+                      <button>
+                        <BiSolidMessageDots />
+                        <span>Metamask Support</span>
+                      </button>
+                    </div>
                   </div>
-                  <div className='btns'>
-                    <button>
-                      <FaPlus />
-                      <span>Import tokens</span>
-                    </button>
-                    <button>
-                      <FiRefreshCw />
-                      <span>Refresh list</span>
-                    </button>
-                    <button>
-                      <BiSolidMessageDots />
-                      <span>Metamask Support</span>
-                    </button>
+                )}
+                {activeTab === 'nfts' && (
+                  <div className='tab-2 center'>
+                    <h5>Nfts</h5>
                   </div>
-                </div>
-              )}
-              {activeTab === 'nfts' && (
-                <div className='tab-2 center'>
-                  <h5>Nfts</h5>
-                </div>
-              )}
-              {activeTab === 'activity' && (
-                <div className='tab-3 center'>
-                  <div className='activities'>
-                    <h5>Activities</h5>
+                )}
+                {activeTab === 'activity' && (
+                  <div className='tab-3 center'>
+                    <div className='activities'>
+                      <h5>Activities</h5>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
+          )}
+          {actionMain === 'swap' && <Swap />}
         </div>
       </div>
       {showNetworksModal && (
