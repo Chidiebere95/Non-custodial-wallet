@@ -2,29 +2,52 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
-import Button from '../molecules/Button';
+import Button, { Button2 } from '../molecules/Button';
+import img from '../../../assets/images/pre-swap-img.png';
+import { IoMdCheckmark } from 'react-icons/io';
 
 interface Iprops {
   closeModal: () => void;
-  onClickBtn: () => void;
 }
-const PreSwapModal = ({ closeModal, onClickBtn }: Iprops) => {
+const PreSwapModal = ({ closeModal }: Iprops) => {
   return (
     <div className='modal-content-wrapper pre-swap-modal'>
       <div className='header'>
         <h5>Smart swaps are here!</h5>
-        <div className='close-modal center'>
-          <LiaTimesSolid />
-        </div>
       </div>
       <div className='body'>
-        <div className='accounts-wrapper'>hello</div>
+        <div className='img-con'>
+          <img src={img} alt='' className='' />
+        </div>
+        <p>
+          MetaMask Swaps just got a whole lot smarter! Enabling Smart Swaps will
+          allow MetaMask to programmatically optimize your Swap to help:
+        </p>
+        <ul className='get-started-desc'>
+          <li>Minimize transaction costs</li>
+          <li>Reduce transaction failures</li>
+          <li>Eliminate stuck transactions</li>
+          <li>Prevent front-running *</li>
+        </ul>
+        <p className='info'>
+          *Smart Swaps will submit your transaction privately. You can opt-out
+          in advanced settings at any time. To learn more about Smart Swaps,
+          read our <span>FAQ and risk disclosure</span>
+        </p>
         <div className='btn'>
           <Button
-            text='Add Account or hardware wallet'
+            text='Enable Smart Swaps'
             width='100%'
-            onClick={onClickBtn}
-            variant='secondary'
+            onClick={() => {
+              closeModal();
+            }}
+            variant='primary'
+          />
+          <Button2
+            text='Manage in settings'
+            onClick={() => {
+              closeModal();
+            }}
           />
         </div>
       </div>

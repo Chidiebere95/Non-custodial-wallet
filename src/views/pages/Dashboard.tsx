@@ -161,6 +161,13 @@ function Dashboard() {
   }, [accounts, network]);
 
   useEffect(() => {
+    var hashText = window.location.hash;
+    hashText = hashText.substring(1);
+    if (hashText.includes('swap')) {
+      hashText = hashText.split('/')[0];
+    }
+    setActionMain(hashText);
+
     const handlePopstate = (event: PopStateEvent) => {
       var hashText = window.location.hash;
       hashText = hashText.substring(1);
@@ -169,6 +176,7 @@ function Dashboard() {
       }
       setActionMain(hashText);
     };
+
     window.addEventListener('popstate', handlePopstate);
     return () => {
       window.removeEventListener('popstate', handlePopstate);

@@ -7,6 +7,7 @@ interface IProps {
   width?: string;
   height?: string;
   disabled?: boolean;
+  underline?: boolean;
 }
 const Button = ({
   onClick,
@@ -15,16 +16,45 @@ const Button = ({
   width,
   height,
   disabled,
+  underline,
 }: IProps): JSX.Element => {
   return (
     <button
       onClick={disabled ? undefined : onClick}
       className={`button-component ${
-        variant === 'secondary' ? 'secondary' : variant === 'link' ? 'link' : ''
+        variant === 'secondary'
+          ? 'secondary'
+          : variant === 'link'
+          ? underline
+            ? 'link link-underline'
+            : 'link'
+          : ''
       } ${disabled && 'disabled'}`}
       style={{ width, height }}
     >
       {text}
+    </button>
+  );
+};
+interface IProps2 {
+  onClick?: () => void;
+  text: string;
+  width?: string;
+  height?: string;
+}
+export const Button2 = ({
+  onClick,
+  text,
+  width,
+  height,
+}: IProps2): JSX.Element => {
+  return (
+    <button
+      onClick={onClick}
+      className='button-component-2'
+      style={{ width, height }}
+    >
+      <span>{text}</span>
     </button>
   );
 };
