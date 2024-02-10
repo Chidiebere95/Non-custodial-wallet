@@ -22,46 +22,10 @@ import Modal from '../molecules/Modal';
 import PreSwapModal from '../modals/PreSwapModal';
 function Swap() {
   const [showPreSwapModal, setShowPreSwapModal] = useState(true);
-
-  // console.log('activeAccount', activeAccount);
-  // console.log('network', network);
   return (
     <div className='swap-wrapper'>
       <div className='container'>
         <div className='dashboard-box'>
-          <div className='box-header'>
-            <div className='networks'>
-              <button>
-                <img src={eth} alt='network logo' />
-                <p>swap</p>
-                <div className='icon-con center'>
-                  <FaChevronDown />
-                </div>
-              </button>
-            </div>
-            <div className='accounts'>
-              <button>
-                <img src={accountDefault} alt='network logo' />
-                <p>nsns</p>
-                <div className='icon-con center'>
-                  <FaChevronDown />
-                </div>
-              </button>
-
-              {/* <button>
-                <img src={accountDefault} alt='network logo' />
-                <p>Account 1</p>
-                <div className='icon-con center'>
-                  <FaChevronDown />
-                </div>
-              </button> */}
-            </div>
-            <div className='more'>
-              <button>
-                <MdMoreVert />
-              </button>
-            </div>
-          </div>
           {/* <div className='box-content'>
             <div className='wallet-address'>
               <button

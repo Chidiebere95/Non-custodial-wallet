@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Wallet } from 'ethers';
@@ -36,15 +37,6 @@ import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAcco
 import Swap from '../components/dashboard-page-components/Swap';
 function Dashboard() {
   const { ethers } = require('ethers');
-  const params = useParams();
-  console.log('prams', params);
-  var hashText = window.location.hash;
-  console.log(hashText);
-  // Remove the leading '#' symbol if present
-  hashText = hashText.substring(1);
-
-  // Now, hashText contains the text after the hash
-  console.log(hashText);
 
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
@@ -145,9 +137,9 @@ function Dashboard() {
       }
     };
     getBalance();
-    console.log('accounts', accounts);
-    console.log('network', network);
-    console.log('provider', provider);
+    // console.log('accounts', accounts);
+    // console.log('network', network);
+    // console.log('provider', provider);
 
     const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
       const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
@@ -168,8 +160,23 @@ function Dashboard() {
     }
   }, [accounts, network]);
 
+  useEffect(() => {
+    const handlePopstate = (event: PopStateEvent) => {
+      var hashText = window.location.hash;
+      hashText = hashText.substring(1);
+      if (hashText.includes('swap')) {
+        hashText = hashText.split('/')[0];
+      }
+      setActionMain(hashText);
+    };
+    window.addEventListener('popstate', handlePopstate);
+    return () => {
+      window.removeEventListener('popstate', handlePopstate);
+    };
+  }, []);
+
   // console.log('activeAccount', activeAccount);
-  // console.log('network', network);
+  console.log('actionMain', actionMain);
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
@@ -260,7 +267,15 @@ function Dashboard() {
                   </div>
                   <p>Send</p>
                 </div>
-                <div className='btn'>
+                <div
+                  className='btn'
+                  onClick={() => {
+                    var new_url = '/dashboard#swaps/prepare-swap-page';
+                    window.history.pushState({}, '', new_url);
+                    // window.location.hash = 'swaps/prepare-swap-page';
+                    setActionMain('swaps');
+                  }}
+                >
                   <div className='icon-con center'>
                     <GoArrowSwitch />
                   </div>
@@ -355,7 +370,7 @@ function Dashboard() {
               </div>
             </div>
           )}
-          {actionMain === 'swap' && <Swap />}
+          {actionMain === 'swaps' && <Swap />}
         </div>
       </div>
       {showNetworksModal && (
