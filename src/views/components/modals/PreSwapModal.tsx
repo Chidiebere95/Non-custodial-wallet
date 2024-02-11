@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import { LiaTimesSolid } from 'react-icons/lia';
+import React from 'react';
+
 import '../../../assets/scss/modals.scss';
 import Button, { Button2 } from '../molecules/Button';
 import img from '../../../assets/images/pre-swap-img.png';
-import { IoMdCheckmark } from 'react-icons/io';
 
 interface Iprops {
   closeModal: () => void;
