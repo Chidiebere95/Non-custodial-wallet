@@ -4,7 +4,7 @@ import '../../../../../assets/scss/atoms.scss';
 const SwapModalLoader = () => {
   return (
     <>
-      <div className='notifications-loader shadow-sm'>
+      <div className='swap-modal-loader shadow-sm'>
         <div className='card-top'>
           <div className='profile-photo skeleton-loader'></div>
           <div className='card-details'>
@@ -13,7 +13,7 @@ const SwapModalLoader = () => {
           </div>
         </div>
       </div>
-      <div className='notifications-loader shadow-sm'>
+      <div className='swap-modal-loader shadow-sm'>
         <div className='card-top'>
           <div className='profile-photo skeleton-loader'></div>
           <div className='card-details'>

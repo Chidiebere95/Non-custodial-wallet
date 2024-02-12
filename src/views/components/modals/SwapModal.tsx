@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 import { RootState } from '../../../store/store';
-import NotificationsLoader from '../atoms/skeleton-loaders/swap-page/SwapModalLoader';
+import SwapModalLoader from '../atoms/skeleton-loaders/swap-page/SwapModalLoader';
 
 interface Iprops {
   closeModal: () => void;
@@ -59,7 +59,7 @@ const SwapModal = ({ closeModal }: Iprops) => {
           {getAllTokens.status === 'base' ||
           getAllTokens.status === 'loading' ||
           true ? (
-            <NotificationsLoader />
+            <SwapModalLoader />
           ) : getAllTokens.status === 'successful' ? (
             <>
               {getAllTokens.data.length === 0 ? (
