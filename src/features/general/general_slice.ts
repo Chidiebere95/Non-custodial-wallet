@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import GeneralService from './general_service';
 import * as states from '../../utils/strings';
-
-const initialState = {
+interface IinitialState {
+  getAllTokens: {
+    status: string;
+    data: Array<any>;
+  };
+}
+const initialState: IinitialState = {
   getAllTokens: {
     status: states.BASE,
-    data: {},
+    data: [],
   },
 };
 export const triggerGetAllTokens = createAsyncThunk(
@@ -31,7 +36,7 @@ const generalSlice = createSlice({
     //get all tokens
     builder.addCase(triggerGetAllTokens.pending, (state) => {
       state.getAllTokens.status = states.LOADING;
-      state.getAllTokens.data = {};
+      state.getAllTokens.data = [];
     });
     builder.addCase(triggerGetAllTokens.fulfilled, (state, action) => {
       state.getAllTokens.status = states.SUCCESSFUL;
@@ -39,7 +44,7 @@ const generalSlice = createSlice({
     });
     builder.addCase(triggerGetAllTokens.rejected, (state) => {
       state.getAllTokens.status = states.ERROR;
-      state.getAllTokens.data = {};
+      state.getAllTokens.data = [];
     });
   },
 });

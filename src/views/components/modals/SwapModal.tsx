@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import '../../../assets/scss/modals.scss';
 import Button, { Button2 } from '../molecules/Button';
-import img from '../../../assets/images/pre-swap-img.png';
+import img from '../../../assets/images/eth_logo.png';
 import { LiaTimesSolid } from 'react-icons/lia';
 import { FaBaby, FaTimes } from 'react-icons/fa';
 import { RiSearchLine } from 'react-icons/ri';
@@ -17,8 +17,8 @@ interface Iprops {
 }
 const SwapModal = ({ closeModal }: Iprops) => {
   const dispatch: ThunkDispatch<any, void, AnyAction> = useDispatch();
-
   const { getAllTokens } = useSelector((state: RootState) => state.general);
+  const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     dispatch(triggerGetAllTokens());
   }, []);
@@ -37,26 +37,52 @@ const SwapModal = ({ closeModal }: Iprops) => {
           <div className='icon'>
             <RiSearchLine />
           </div>
-          <input type='text' id='search-swap-token' className='' />
-          <div className='icon clear'>
+          <input
+            type='text'
+            id='search-swap-token'
+            className=''
+            placeholder='Enter token name or paste address'
+            value={inputValue}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setInputValue(e.target.value)
+            }
+          />
+          <div
+            className={`icon clear ${inputValue.length > 0 && 'show'}`}
+            onClick={() => setInputValue('')}
+          >
             <LiaTimesSolid />
           </div>
         </label>
-        <p>
-          MetaMask Swaps just got a whole lot smarter! Enabling Smart Swaps will
-          allow MetaMask to programmatically optimize your Swap to help:
-        </p>
-        <ul className='get-started-desc'>
-          <li>Minimize transaction costs</li>
-          <li>Reduce transaction failures</li>
-          <li>Eliminate stuck transactions</li>
-          <li>Prevent front-running *</li>
-        </ul>
-        <p className='info'>
-          *Smart Swaps will submit your transaction privately. You can opt-out
-          in advanced settings at any time. To learn more about Smart Swaps,
-          read our <span>FAQ and risk disclosure</span>
-        </p>
+        <div className='tokens'>
+          {getAllTokens.status === 'base' ||
+          getAllTokens.status === 'loading' ? (
+            <>Loading...</>
+          ) : getAllTokens.status === 'successful' ? (
+            <>
+              {getAllTokens.data.length === 0 ? (
+                <></>
+              ) : (
+                <>
+                  {getAllTokens.data.map((token, index: number) => (
+                    <div key={index} className='token'>
+                      <img
+                        src={`https://roqqu.com/static/media/tokens/${token.symbol}.png`}
+                        alt=''
+                      />
+                      <div className='details'>
+                        <p className='symbol'>{token.symbol.toUpperCase()}</p>
+                        <p className='name'>{token.name}</p>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
         <div className='btn'>
           <Button
             text='Enable Smart Swaps'

@@ -77,7 +77,7 @@
             align-items: center;
             column-gap: 0.5rem;
             &:hover {
-              background-color: #fafafa;
+              background-color: $hover-bg-default;
             }
             img {
               height: 2.4rem;
@@ -201,7 +201,7 @@
                 background-color: transparent;
                 cursor: pointer;
                 &:hover {
-                  background-color: #fafafa;
+                  background-color: $hover-bg-default;
                 }
                 cursor: pointer;
                 .img-con {
