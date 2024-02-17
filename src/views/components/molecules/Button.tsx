@@ -8,6 +8,7 @@ interface IProps {
   height?: string;
   disabled?: boolean;
   underline?: boolean;
+  autoFalse?: boolean;
 }
 const Button = ({
   onClick,
@@ -17,6 +18,7 @@ const Button = ({
   height,
   disabled,
   underline,
+  autoFalse,
 }: IProps): JSX.Element => {
   return (
     <button
@@ -29,7 +31,7 @@ const Button = ({
             ? 'link link-underline'
             : 'link'
           : ''
-      } ${disabled && 'disabled'}`}
+      } ${disabled && 'disabled'} ${autoFalse && 'auto-false'}`}
       style={{ width, height }}
     >
       {text}

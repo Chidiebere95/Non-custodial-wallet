@@ -3,7 +3,12 @@ import { useState } from 'react';
 import '../../../assets/scss/dashboard-page-components.scss';
 import Modal from '../molecules/Modal';
 import PreSwapModal from '../modals/PreSwapModal';
-import { FaArrowAltCircleLeft, FaArrowDown, FaArrowLeft } from 'react-icons/fa';
+import {
+  FaArrowAltCircleLeft,
+  FaArrowDown,
+  FaArrowLeft,
+  FaExclamation,
+} from 'react-icons/fa';
 import { RiSettings4Fill } from 'react-icons/ri';
 import { IoSettingsSharp } from 'react-icons/io5';
 import {
@@ -19,7 +24,7 @@ import SwapModal from '../modals/SwapModal';
 
 function Swap() {
   const [showPreSwapModal, setShowPreSwapModal] = useState(false);
-  const [showSwapModal, setShowSwapModal] = useState(true);
+  const [showSwapModal, setShowSwapModal] = useState(false);
   const [swapDirection, setSwapDirection] = useState('');
   const [changeSwapDirection, setChangeSwapDirection] = useState(false);
 
@@ -32,64 +37,127 @@ function Swap() {
           <IoSettingsSharp className='swap-icon' />
         </div>
         <div className='box-content-swap'>
-          <div className='box'>
-            <div className='box-con box-con-1'>
-              <div className='token-wrapper'>
-                <div
-                  className='token-con'
-                  onClick={() => setShowSwapModal(true)}
-                >
-                  <img src={img} alt='' className='' />
-                  <p>ETH</p>
-                  <FaChevronDown />
+          <div className='main-con'>
+            <div className='box'>
+              <div className='box-con box-con-1'>
+                <div className='token-wrapper'>
+                  <div
+                    className='token-con'
+                    onClick={() => setShowSwapModal(true)}
+                  >
+                    <img src={img} alt='' className='' />
+                    <p>ETH</p>
+                    <FaChevronDown />
+                  </div>
+                  <div className='amount'>
+                    <input type='number' placeholder='0' />
+                  </div>
                 </div>
-                <div className='amount'>
-                  <input type='number' placeholder='0' />
+                <p className='balance-wrapper'>
+                  Balance: <span>0</span>
+                </p>
+              </div>
+              <div className='box-con '>
+                <div className='token-wrapper'>
+                  <div className='token-con'>
+                    <img src={img2} alt='' className='' />
+                    <p>DAI</p>
+                    <FaChevronDown />
+                  </div>
+                  <div className='amount'>
+                    <input type='number' placeholder='0' />
+                  </div>
+                </div>
+                <p className='balance-wrapper'>
+                  Balance: <span>0</span>
+                </p>
+              </div>
+              <div
+                className='swap-direction-btn'
+                onClick={() => setChangeSwapDirection(!changeSwapDirection)}
+              >
+                <HiOutlineArrowDown
+                  className={`swap-icon ${changeSwapDirection && 'rotate'}`}
+                />
+              </div>
+            </div>
+            <div className='details'>
+              <div className='insufficient-bal'>
+                <div className='left'></div>
+                <div className='info'>
+                  <div className='icon'>
+                    <FaExclamation />
+                  </div>
+                  <div className='other-contents'>
+                    <p className='insufficient'>Insufficient balance</p>
+                    <p className='unable'>
+                      We were unable to retrieve your DAI balance
+                    </p>
+                    <div className='btn-con'>
+                      <Button
+                        text='Buy more ETH'
+                        variant='link'
+                        autoFalse
+                        // height='auto'
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <p className='balance-wrapper'>
-                Balance: <span>0</span>
-              </p>
-            </div>
-            <div className='box-con '>
-              <div className='token-wrapper'>
-                <div className='token-con'>
-                  <img src={img2} alt='' className='' />
-                  <p>DAI</p>
-                  <FaChevronDown />
-                </div>
-                <div className='amount'>
-                  <input type='number' placeholder='0' />
+              <div className='new-quotes'>
+                <p>
+                  New quotes in: <span>0.11</span> s
+                </p>
+              </div>
+              <div className='quote-rate'>
+                <p className='title'>Quote rate</p>
+                <div className='deets'>
+                  <p>I DAI = 0.000122828 WETH</p>
                 </div>
               </div>
-              <p className='balance-wrapper'>
-                Balance: <span>0</span>
-              </p>
-            </div>
-            <div
-              className='swap-direction-btn'
-              onClick={() => setChangeSwapDirection(!changeSwapDirection)}
-            >
-              <HiOutlineArrowDown
-                className={`swap-icon ${changeSwapDirection && 'rotate'}`}
-              />
+              <div className='quote-rate'>
+                <p className='title'>
+                  Estimated gas fee{' '}
+                  <span>
+                    <FaExclamation />
+                  </span>
+                </p>
+                <div className='deets'>
+                  <p>0.0034 ETH</p>
+                  <p className='usd-equivalent'>$9.84</p>
+                </div>
+              </div>
+              <div className='max-fee'>
+                <div className='deets'>
+                  <p>Max fee:</p>
+                  <p className='max-fee-value'>$9.84</p>
+                </div>
+              </div>
+              <div className='bottom'>
+                <p>
+                  Includes a 0.875% MetaMask fee: <span>view all quotes</span>
+                </p>
+              </div>
+              {/* <div className='quote-rate'>
+                <p>Quote rate</p>
+                <div className='deets'>
+                  <p>I DAI = 0.000122828 WETH</p>
+                </div>
+              </div> */}
             </div>
           </div>
           <div className='btn'>
             <Button
-              text='Enable Smart Swaps'
+              text='Swap'
               width='100%'
               onClick={() => {
                 console.log('click');
               }}
               variant='primary'
             />
-            <Button2
-              text='Manage in settings'
-              onClick={() => {
-                console.log('click');
-              }}
-            />
+            <div className='terms'>
+              <p>Terms of service</p>
+            </div>
           </div>
         </div>
       </div>

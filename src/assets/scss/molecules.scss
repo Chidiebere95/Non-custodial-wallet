@@ -16,7 +16,6 @@
   display: flex;
   align-items: center;
   justify-content: center !important;
-
   &.secondary {
     color: #0376c9;
     background-color: #fff;
@@ -37,6 +36,11 @@
     background-color: #0376c942;
     pointer-events: none;
     border: 1px solid #0376c980;
+  }
+  &.auto-false {
+    margin: 0;
+    padding: 0;
+    min-height: 0;
   }
 }
 .button-component-2 {

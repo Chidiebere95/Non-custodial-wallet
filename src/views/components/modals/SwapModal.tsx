@@ -57,8 +57,7 @@ const SwapModal = ({ closeModal }: Iprops) => {
         </label>
         <div className='tokens'>
           {getAllTokens.status === 'base' ||
-          getAllTokens.status === 'loading' ||
-          true ? (
+          getAllTokens.status === 'loading' ? (
             <SwapModalLoader />
           ) : getAllTokens.status === 'successful' ? (
             <>

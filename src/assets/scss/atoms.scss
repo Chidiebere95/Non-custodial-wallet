@@ -94,39 +94,41 @@
   }
 }
 .swap-modal-loader {
-  padding: 2.9rem;
+  padding: 1rem;
   width: 100%;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   border-radius: 1.6rem;
   overflow: hidden;
   box-shadow: 0px 5.969581604003906px 16.714828491210938px 0px #080f340a;
+  display: flex;
+  align-items: center;
+  height: 5rem;
   @media screen and (max-width: '600px') {
-    padding: 1.9rem;
+    // padding: 1.9rem;
   }
   .card-top {
     display: flex;
-    column-gap: 2rem;
+    column-gap: 1rem;
     .profile-photo {
-      min-width: 5.5226rem;
-      min-height: 5.5226rem;
-      max-width: 5.5226rem;
-      max-height: 5.5226rem;
+      min-width: 2.4rem;
+      min-height: 2.4rem;
+      max-width: 2.4rem;
+      max-height: 2.4rem;
       border-radius: 50%;
       overflow: hidden;
     }
     .card-details {
       width: 100%;
       .name:empty {
-        width: 15rem;
-        height: 2rem;
+        width: 6rem;
+        height: 1.5rem;
         border-radius: 1.6rem;
-        margin-bottom: 1rem;
+        margin-bottom: .5rem;
       }
       .details:empty {
-        height: 1.8rem;
-        width: 80%;
+        height: 1.5rem;
+        width: 20rem;
         border-radius: 1.6rem;
-        margin-bottom: 1rem;
       }
     }
   }
