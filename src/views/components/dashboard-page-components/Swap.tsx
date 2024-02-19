@@ -130,7 +130,7 @@ function Swap() {
               <div className='max-fee'>
                 <div className='deets'>
                   <p>Max fee:</p>
-                  <p className='max-fee-value'>$9.84</p>
+                  <p className='max-fee-value'>0.038392</p>
                 </div>
               </div>
               <div className='bottom'>

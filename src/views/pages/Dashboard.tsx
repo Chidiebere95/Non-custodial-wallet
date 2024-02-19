@@ -35,6 +35,7 @@ import {
 } from '../../utils/providerUrls';
 import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
 import Swap from '../components/dashboard-page-components/Swap';
+import ImportTokensModal from '../components/modals/ImportTokensModal';
 function Dashboard() {
   const { ethers } = require('ethers');
 
@@ -48,6 +49,7 @@ function Dashboard() {
   const [showAccountsModal, setShowAccountsModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
+  const [showImportTokensModal, setShowImportTokensModal] = useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
   const [actionMain, setActionMain] = useState('');
   const [balance, setBalance] = useState(0);
@@ -348,7 +350,7 @@ function Dashboard() {
                       </div>
                     </div>
                     <div className='btns'>
-                      <button>
+                      <button onClick={() => setShowImportTokensModal(true)}>
                         <FaPlus />
                         <span>Import tokens</span>
                       </button>
@@ -432,6 +434,24 @@ function Dashboard() {
             }}
             accounts={accounts}
             setAccounts={setAccounts}
+          />
+        </Modal>
+      )}
+      {showImportTokensModal && (
+        <Modal closeModal={() => setShowImportTokensModal(false)}>
+          <ImportTokensModal
+            closeModal={() => setShowImportTokensModal(false)}
+            onClickBtn={() => {
+              setShowImportTokensModal(false);
+              setShowAccountModal(true);
+            }}
+            accounts={accounts}
+            setAccounts={setAccounts}
+            providerMain={providerMain}
+            network={network}
+            accountsUpdated={accountsUpdated}
+            activeAccount={activeAccount}
+            setActiveAccount={setActiveAccount}
           />
         </Modal>
       )}
