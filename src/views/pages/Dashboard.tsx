@@ -36,9 +36,12 @@ import {
 import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
 import Swap from '../components/dashboard-page-components/Swap';
 import ImportTokensModal from '../components/modals/ImportTokensModal';
+import ConfirmImportTokenModal from '../components/modals/ConfirmImportTokenModal';
+import { useDispatch } from 'react-redux';
+import { resetGetTokenDetails } from '../../features/general/general_slice';
 function Dashboard() {
   const { ethers } = require('ethers');
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
@@ -50,6 +53,8 @@ function Dashboard() {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showImportAccountModal, setShowImportAccountModal] = useState(false);
   const [showImportTokensModal, setShowImportTokensModal] = useState(false);
+  const [showConfirmImportTokenModal, setShowConfirmImportTokenModal] =
+    useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
   const [actionMain, setActionMain] = useState('');
   const [balance, setBalance] = useState(0);
@@ -186,7 +191,28 @@ function Dashboard() {
   }, []);
 
   // console.log('activeAccount', activeAccount);
-  console.log('actionMain', actionMain);
+  // console.log('actionMain', actionMain);
+
+  const [tokens, setTokens] = useState([
+    {
+      img: eth,
+      network: 'Ethereum',
+      symbol: 'ETH',
+      balance: '0',
+    },
+    {
+      img: eth,
+      network: 'Ethereum',
+      symbol: 'ETH',
+      balance: '0',
+    },
+    {
+      img: eth,
+      network: 'Ethereum',
+      symbol: 'ETH',
+      balance: '0',
+    },
+  ]);
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
@@ -328,26 +354,28 @@ function Dashboard() {
                 {activeTab === 'tokens' && (
                   <div className='tab-1'>
                     <div className='tokens'>
-                      <div className='token'>
-                        <div className='img-con'>
-                          <img src={eth} alt='' />
-                        </div>
-                        <div className='details'>
-                          <div className='balance-con'>
-                            <h5>Ethereum</h5>
-                            <div className='balance'>
-                              <p>0</p>
-                              <p>ETH</p>
+                      {tokens.map((token: any, index: number) => (
+                        <div className='token'>
+                          <div className='img-con'>
+                            <img src={token.img} alt='' />
+                          </div>
+                          <div className='details'>
+                            <div className='balance-con'>
+                              <h5>{token.network}</h5>
+                              <div className='balance'>
+                                <p>{token.balance}</p>
+                                <p>{token.symbol}</p>
+                              </div>
+                            </div>
+                            <div className='equivalent'>
+                              <h5>
+                                $<span>0.00</span>
+                              </h5>
+                              <h5>USD</h5>
                             </div>
                           </div>
-                          <div className='equivalent'>
-                            <h5>
-                              $<span>0.00</span>
-                            </h5>
-                            <h5>USD</h5>
-                          </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                     <div className='btns'>
                       <button onClick={() => setShowImportTokensModal(true)}>
@@ -438,23 +466,47 @@ function Dashboard() {
         </Modal>
       )}
       {showImportTokensModal && (
-        <Modal closeModal={() => setShowImportTokensModal(false)}>
+        <Modal
+          closeModal={() => {
+            setShowImportTokensModal(false);
+            dispatch(resetGetTokenDetails());
+          }}
+        >
           <ImportTokensModal
-            closeModal={() => setShowImportTokensModal(false)}
-            onClickBtn={() => {
+            closeModal={() => {
               setShowImportTokensModal(false);
-              setShowAccountModal(true);
+              dispatch(resetGetTokenDetails());
             }}
-            accounts={accounts}
-            setAccounts={setAccounts}
-            providerMain={providerMain}
-            network={network}
-            accountsUpdated={accountsUpdated}
-            activeAccount={activeAccount}
-            setActiveAccount={setActiveAccount}
+            setShowConfirmImportTokenModal={setShowConfirmImportTokenModal}
+            setShowImportTokensModal={setShowImportTokensModal}
+            tokens={tokens}
+            setTokens={setTokens}
+            // accounts={accounts}
+            // setAccounts={setAccounts}
+            // providerMain={providerMain}
+            // network={network}
+            // accountsUpdated={accountsUpdated}
+            // activeAccount={activeAccount}
+            // setActiveAccount={setActiveAccount}
           />
         </Modal>
       )}
+      {/* {showConfirmImportTokenModal && (
+        <Modal closeModal={() => setShowConfirmImportTokenModal(false)}>
+          <ConfirmImportTokenModal
+            closeModal={() => setShowConfirmImportTokenModal(false)}
+            setShowConfirmImportTokenModal={setShowConfirmImportTokenModal}
+            setShowImportTokensModal={setShowImportTokensModal}
+            // accounts={accounts}
+            // setAccounts={setAccounts}
+            // providerMain={providerMain}
+            // network={network}
+            // accountsUpdated={accountsUpdated}
+            // activeAccount={activeAccount}
+            // setActiveAccount={setActiveAccount}
+          />
+        </Modal>
+      )} */}
     </div>
   );
 }

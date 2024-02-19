@@ -409,6 +409,158 @@
     }
   }
 }
+.import-tokens-modal {
+  .body {
+    padding: 0 2rem;
+    .tabs-wrapper {
+      // padding: 0 4rem;
+      margin-bottom: 3rem;
+      p {
+        font-family: $thic600;
+        font-size: 1.9rem;
+        color: $color3;
+      }
+    }
+    .warning {
+      // height: 10rem;
+      background-color: $color5;
+      border-radius: 0.8rem;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 3rem;
+      .left {
+        height: 100%;
+        width: 0.5rem;
+        background-color: $color1;
+      }
+      .info {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 1.1rem;
+        height: 100%;
+        padding: 1rem 1rem 0 1rem;
+        width: 100%;
+        .icon {
+          background-color: $color1;
+          color: #fff;
+          width: 2.4rem;
+          height: 2.4rem;
+          min-width: 2.4rem;
+          min-height: 2.4rem;
+          border-radius: 50%;
+          overflow: hidden;
+          font-size: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .unable {
+          font-size: 1.8rem;
+          line-height: 120%;
+          margin-bottom: 1rem;
+          font-family: $thic600;
+          font-weight: 500;
+          color: #25272a;
+          span {
+            color: $color1;
+            cursor: pointer;
+            display: inline-block;
+            font-family: $thic700;
+          }
+        }
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.5rem;
+      margin-bottom: 2rem;
+      label {
+        font-size: 1.8rem;
+        font-family: $thic500;
+      }
+      input {
+        min-height: 5rem;
+        max-height: 10rem;
+        width: 100%;
+        padding: 1rem;
+        font-size: 2rem;
+        border-radius: 0.6rem;
+        border: 1px solid;
+      }
+    }
+    .btn {
+      // width: 90%;
+      margin: 5rem auto 2rem;
+    }
+  }
+}
+.confirm-import-token-modal {
+  .body {
+    padding: 0 2rem;
+    .tabs-wrapper {
+      // padding: 0 4rem;
+      margin-bottom: 3rem;
+      p {
+        font-family: $thic500;
+        font-size: 1.8rem;
+        color: $color3;
+      }
+    }
+    .details {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 90%;
+      .token {
+        p {
+          margin-bottom: 0.5rem;
+        }
+        div {
+          display: flex;
+          column-gap: 1.4rem;
+          align-items: center;
+          img {
+            min-width: 4rem;
+            min-height: 4rem;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            overflow: hidden;
+          }
+        }
+      }
+      .balance {
+        p {
+          margin-bottom: 0.5rem;
+        }
+        div {
+          display: flex;
+          column-gap: 1.4rem;
+          align-items: center;
+          // background-color: green;
+          height: 4.1rem;
+          img {
+            min-width: 4rem;
+            min-height: 4rem;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 5rem auto 2rem;
+      column-gap: 2rem;
+    }
+  }
+}
 // .custom-select {
 //   width: 250px; /* Adjust the width as needed */
 //   padding: 5px 25px 5px 5px; /* Add padding to all sides except the right (to avoid overlap with the arrow) */

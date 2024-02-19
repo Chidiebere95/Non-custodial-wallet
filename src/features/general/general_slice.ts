@@ -6,9 +6,17 @@ interface IinitialState {
     status: string;
     data: Array<any>;
   };
+  getTokenDetails: {
+    status: string;
+    data: any;
+  };
 }
 const initialState: IinitialState = {
   getAllTokens: {
+    status: states.BASE,
+    data: [],
+  },
+  getTokenDetails: {
     status: states.BASE,
     data: [],
   },
@@ -23,13 +31,23 @@ export const triggerGetAllTokens = createAsyncThunk(
     }
   }
 );
+export const triggerGetTokenDetails = createAsyncThunk(
+  'get-token-details',
+  async (params: any, thunkAPI) => {
+    try {
+      return await GeneralService.getTokenDetails(params);
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
 
 const generalSlice = createSlice({
   name: 'general',
   initialState,
   reducers: {
-    resetCreateForumPost: (state) => {
-      state.getAllTokens = initialState.getAllTokens;
+    resetGetTokenDetails: (state) => {
+      state.getTokenDetails = initialState.getTokenDetails;
     },
   },
   extraReducers: (builder) => {
@@ -46,8 +64,21 @@ const generalSlice = createSlice({
       state.getAllTokens.status = states.ERROR;
       state.getAllTokens.data = [];
     });
+    //get token details
+    builder.addCase(triggerGetTokenDetails.pending, (state) => {
+      state.getTokenDetails.status = states.LOADING;
+      state.getTokenDetails.data = [];
+    });
+    builder.addCase(triggerGetTokenDetails.fulfilled, (state: any, action) => {
+      state.getTokenDetails.status = states.SUCCESSFUL;
+      state.getTokenDetails.data = action.payload;
+    });
+    builder.addCase(triggerGetTokenDetails.rejected, (state) => {
+      state.getTokenDetails.status = states.ERROR;
+      state.getTokenDetails.data = [];
+    });
   },
 });
 
 export default generalSlice.reducer;
-export const {} = generalSlice.actions;
+export const { resetGetTokenDetails } = generalSlice.actions;
