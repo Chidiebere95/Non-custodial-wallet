@@ -481,32 +481,9 @@ function Dashboard() {
             setShowImportTokensModal={setShowImportTokensModal}
             tokens={tokens}
             setTokens={setTokens}
-            // accounts={accounts}
-            // setAccounts={setAccounts}
-            // providerMain={providerMain}
-            // network={network}
-            // accountsUpdated={accountsUpdated}
-            // activeAccount={activeAccount}
-            // setActiveAccount={setActiveAccount}
           />
         </Modal>
       )}
-      {/* {showConfirmImportTokenModal && (
-        <Modal closeModal={() => setShowConfirmImportTokenModal(false)}>
-          <ConfirmImportTokenModal
-            closeModal={() => setShowConfirmImportTokenModal(false)}
-            setShowConfirmImportTokenModal={setShowConfirmImportTokenModal}
-            setShowImportTokensModal={setShowImportTokensModal}
-            // accounts={accounts}
-            // setAccounts={setAccounts}
-            // providerMain={providerMain}
-            // network={network}
-            // accountsUpdated={accountsUpdated}
-            // activeAccount={activeAccount}
-            // setActiveAccount={setActiveAccount}
-          />
-        </Modal>
-      )} */}
     </div>
   );
 }
