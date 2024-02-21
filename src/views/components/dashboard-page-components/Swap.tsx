@@ -3,19 +3,10 @@ import { useState } from 'react';
 import '../../../assets/scss/dashboard-page-components.scss';
 import Modal from '../molecules/Modal';
 import PreSwapModal from '../modals/PreSwapModal';
-import {
-  FaArrowAltCircleLeft,
-  FaArrowDown,
-  FaArrowLeft,
-  FaExclamation,
-} from 'react-icons/fa';
+import { FaExclamation } from 'react-icons/fa';
 import { RiSettings4Fill } from 'react-icons/ri';
 import { IoSettingsSharp } from 'react-icons/io5';
-import {
-  FaArrowDownLong,
-  FaArrowLeftLong,
-  FaChevronDown,
-} from 'react-icons/fa6';
+import { FaChevronDown } from 'react-icons/fa6';
 import { HiOutlineArrowDown, HiOutlineArrowLeft } from 'react-icons/hi';
 import img from '../../../assets/images/eth_logo.png';
 import img2 from '../../../assets/images/linea-logo-mainnet.png';
