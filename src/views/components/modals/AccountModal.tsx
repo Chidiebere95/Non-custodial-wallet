@@ -1,17 +1,10 @@
 import React from 'react';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
-import accountDefault from '../../../assets/images/account-default.png';
-import lineaGoerli from '../../../assets/images/linea-logo-testnet.png';
-import ModalWrapper from '../molecules/Modal';
-import Button from '../molecules/Button';
-import { RiMore2Line } from 'react-icons/ri';
-import { IoMdMore } from 'react-icons/io';
 import { FaChevronLeft, FaPlus } from 'react-icons/fa';
-import { FiRefreshCw } from 'react-icons/fi';
-import { BiImport, BiSolidMessageDots } from 'react-icons/bi';
+import { BiImport } from 'react-icons/bi';
 import { PiGitFork } from 'react-icons/pi';
-import { Wallet, ethers } from 'ethers';
+import { ethers } from 'ethers';
 interface Iprops {
   closeModal: () => void;
   onClickBackBtn: () => void;

@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
 import accountDefault from '../../../assets/images/account-default.png';
-import lineaGoerli from '../../../assets/images/linea-logo-testnet.png';
-import ModalWrapper from '../molecules/Modal';
 import Button from '../molecules/Button';
-import { RiMore2Line } from 'react-icons/ri';
 import { IoMdMore } from 'react-icons/io';
 interface Iprops {
   closeModal: () => void;

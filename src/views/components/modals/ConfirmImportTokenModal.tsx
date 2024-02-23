@@ -3,12 +3,8 @@ import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
 import tokenImg from '../../../assets/images/account-default2.png';
-import lineaGoerli from '../../../assets/images/linea-logo-testnet.png';
-import ModalWrapper from '../molecules/Modal';
 import Button from '../molecules/Button';
-import { RiMore2Line } from 'react-icons/ri';
-import { IoMdMore } from 'react-icons/io';
-import { FaChevronLeft, FaExclamation } from 'react-icons/fa';
+import { FaChevronLeft } from 'react-icons/fa';
 interface Iprops {
   closeModal: () => void;
   setShowConfirmImportTokenModal: React.Dispatch<React.SetStateAction<boolean>>;
