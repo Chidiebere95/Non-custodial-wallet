@@ -8,7 +8,6 @@ export default class PostsService {
   static async getAllTokens() {
     const response: any = await get({
       url: apiRoutes.getAllTokens,
-      baseURL: process.env.REACT_APP_URL_2 || '',
     });
     if (response.status !== 'success') {
       throw new Error('Something went wrong');

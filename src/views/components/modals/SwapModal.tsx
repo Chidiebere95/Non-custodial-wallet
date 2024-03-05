@@ -16,6 +16,7 @@ import SwapModalLoader from '../atoms/skeleton-loaders/swap-page/SwapModalLoader
 interface Iprops {
   closeModal: () => void;
 }
+
 const SwapModal = ({ closeModal }: Iprops) => {
   const dispatch: ThunkDispatch<any, void, AnyAction> = useDispatch();
   const { getAllTokens } = useSelector((state: RootState) => state.general);

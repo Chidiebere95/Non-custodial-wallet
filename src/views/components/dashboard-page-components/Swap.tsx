@@ -13,7 +13,11 @@ import img2 from '../../../assets/images/linea-logo-mainnet.png';
 import Button, { Button2 } from '../molecules/Button';
 import SwapModal from '../modals/SwapModal';
 
-function Swap() {
+interface Iprops {
+  setActionMain: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function Swap({ setActionMain }: Iprops) {
   const [showPreSwapModal, setShowPreSwapModal] = useState(false);
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [swapDirection, setSwapDirection] = useState('');
@@ -23,7 +27,10 @@ function Swap() {
     <div className='swap-wrapper'>
       <div className='dashboard-box-swap'>
         <div className='box-header-swap'>
-          <HiOutlineArrowLeft className='swap-icon' />
+          <HiOutlineArrowLeft
+            className='swap-icon'
+            onClick={() => setActionMain('')}
+          />
           <p>Swap</p>
           <IoSettingsSharp className='swap-icon' />
         </div>

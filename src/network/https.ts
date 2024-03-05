@@ -1,18 +1,19 @@
 import axios from 'axios';
-const URL = process.env.REACT_APP_URL_2 || '';
+const URL = process.env.REACT_APP_URL || '';
 
 interface IProps {
   method: string;
   url: string;
   data: any;
+  baseURL: string;
 }
 
-async function ajax({ method = 'GET', url, data }: IProps) {
+async function ajax({ method = 'GET', url, data, baseURL }: IProps) {
   let result;
   const contentType = 'application/json';
 
   const axiosInstance = axios.create({
-    baseURL: URL,
+    baseURL: baseURL || URL,
     // timeout: 5000, // Set a timeout if needed
     headers: {
       'Content-Type': contentType,

@@ -213,6 +213,7 @@ function Dashboard() {
       balance: '0',
     },
   ]);
+  
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
@@ -222,7 +223,12 @@ function Dashboard() {
         <div className='dashboard-box'>
           <div className='box-header'>
             <div className='networks'>
-              <button onClick={() => setShowNetworksModal(true)}>
+              <button
+                onClick={() =>
+                  actionMain !== 'swaps' && setShowNetworksModal(true)
+                }
+                className={`${actionMain === 'swaps' && 'cursor-not-allowed'}`}
+              >
                 <img src={eth} alt='network logo' />
                 <p>
                   {network === 'ethereum-mainnet'
@@ -408,7 +414,7 @@ function Dashboard() {
               </div>
             </div>
           )}
-          {actionMain === 'swaps' && <Swap />}
+          {actionMain === 'swaps' && <Swap setActionMain={setActionMain} />}
         </div>
       </div>
       {showNetworksModal && (

@@ -58,6 +58,10 @@
               height: 1.6rem;
               width: 1.6rem;
             }
+            &.cursor-not-allowed {
+              cursor: not-allowed;
+              // pointer-events: none;
+            }
           }
         }
         .accounts {
