@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import '../../../assets/scss/dashboard-page-components.scss';
 import Modal from '../molecules/Modal';
@@ -12,6 +12,9 @@ import img from '../../../assets/images/eth_logo.png';
 import img2 from '../../../assets/images/linea-logo-mainnet.png';
 import Button, { Button2 } from '../molecules/Button';
 import SwapModal from '../modals/SwapModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { Web3 } from 'web3';
 
 interface Iprops {
   setActionMain: React.Dispatch<React.SetStateAction<string>>;
@@ -22,7 +25,29 @@ function Swap({ setActionMain }: Iprops) {
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [swapDirection, setSwapDirection] = useState('');
   const [changeSwapDirection, setChangeSwapDirection] = useState(false);
+  const { network } = useSelector((state: RootState) => state.network);
 
+  const [currentGasPrice, setCurrentGasPrice] = useState('34');
+
+  useEffect(() => {
+    const web3 = new Web3(new Web3.providers.HttpProvider(network.providerURL));
+
+    const getCurrentGasPrice = async () => {
+      try {
+        const gasPrice = await web3.eth.getGasPrice();
+        const gasPriceGwei = web3.utils.fromWei(gasPrice, 'gwei');
+
+        console.log('gasprice', gasPrice);
+        console.log('gasprice in gwei', gasPriceGwei);
+        setCurrentGasPrice(gasPriceGwei);
+        return;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCurrentGasPrice();
+  }, [network]);
+  const [inputFromValue, setInputFromValue] = useState('0');
   return (
     <div className='swap-wrapper'>
       <div className='dashboard-box-swap'>
@@ -48,7 +73,12 @@ function Swap({ setActionMain }: Iprops) {
                     <FaChevronDown />
                   </div>
                   <div className='amount'>
-                    <input type='number' placeholder='0' />
+                    <input
+                      type='number'
+                      placeholder='0'
+                      value={inputFromValue}
+                      onChange={(e) => setInputFromValue(e.target.value)}
+                    />
                   </div>
                 </div>
                 <p className='balance-wrapper'>
@@ -80,7 +110,7 @@ function Swap({ setActionMain }: Iprops) {
               </div>
             </div>
             <div className='details'>
-              <div className='insufficient-bal'>
+              {/* <div className='insufficient-bal'>
                 <div className='left'></div>
                 <div className='info'>
                   <div className='icon'>
@@ -101,7 +131,7 @@ function Swap({ setActionMain }: Iprops) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className='new-quotes'>
                 <p>
                   New quotes in: <span>0.11</span> s
@@ -121,14 +151,21 @@ function Swap({ setActionMain }: Iprops) {
                   </span>
                 </p>
                 <div className='deets'>
-                  <p>0.0034 ETH</p>
-                  <p className='usd-equivalent'>$9.84</p>
+                  <p>{(Number(currentGasPrice) / 3697).toFixed(10)} ETH</p>
+                  <p className='usd-equivalent'>
+                    ${Number(currentGasPrice).toFixed(2)}
+                  </p>
                 </div>
               </div>
               <div className='max-fee'>
                 <div className='deets'>
                   <p>Max fee:</p>
-                  <p className='max-fee-value'>0.038392</p>
+                  <p className='max-fee-value'>
+                    $
+                    {(Number(inputFromValue) + Number(currentGasPrice)).toFixed(
+                      2
+                    )}
+                  </p>
                 </div>
               </div>
               <div className='bottom'>

@@ -27,20 +27,18 @@ import NetworksModal from '../components/modals/NetworksModal';
 import AccountsModal from '../components/modals/AccountsModal';
 import AccountModal from '../components/modals/AccountModal';
 import ImportAccountModal from '../components/modals/ImportAccountModal';
-import {
-  providerBaseGoerli,
-  providerEthereumMainnet,
-  providerOptimismGoerli,
-  providerPolygonMumbai,
-} from '../../utils/providerUrls';
 import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
 import Swap from '../components/dashboard-page-components/Swap';
 import ImportTokensModal from '../components/modals/ImportTokensModal';
 import ConfirmImportTokenModal from '../components/modals/ConfirmImportTokenModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { resetGetTokenDetails } from '../../features/general/general_slice';
+import { RootState } from '../../store/store';
 function Dashboard() {
   const { ethers } = require('ethers');
+  const { network: networkRedux } = useSelector(
+    (state: RootState) => state.network
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
@@ -110,44 +108,38 @@ function Dashboard() {
 
   const [providerMain, setProviderMain] = useState<any>();
   useEffect(() => {
-    let provider: any;
-    if (network === 'ethereum-mainnet') {
-      provider = providerEthereumMainnet;
-      setProviderMain(providerEthereumMainnet);
-    } else if (network === 'ethereum-goerli') {
-      provider = providerEthereumMainnet;
-      setProviderMain(providerBaseGoerli);
-    } else if (network === 'base-goerli') {
-      provider = providerBaseGoerli;
-      setProviderMain(providerBaseGoerli);
-    } else if (network === 'polygon-mumbai') {
-      provider = providerPolygonMumbai;
-      setProviderMain(providerPolygonMumbai);
-    } else if (network === 'optimism-goerli') {
-      provider = providerOptimismGoerli;
-      console.log('optimism url', providerOptimismGoerli);
+    let provider: any = new ethers.providers.JsonRpcProvider(
+      networkRedux.providerURL
+    );
+    setProviderMain(provider);
 
-      setProviderMain(providerOptimismGoerli);
-    }
+    // if (networkRedux.name === 'ethereum-mainnet') {
+    //   provider = networkRedux.provider;
+    //   setProviderMain(networkRedux.provider);
+    // } else if (networkRedux.name === 'ethereum-goerli') {
+    //   provider = networkRedux.provider;
+    //   setProviderMain(networkRedux.provider);
+    // } else if (networkRedux.name === 'base-goerli') {
+    //   provider = networkRedux.provider;
+    //   setProviderMain(networkRedux.provider);
+    // } else if (networkRedux.name === 'polygon-mumbai') {
+    //   provider = networkRedux.provider;
+    //   setProviderMain(networkRedux.provider);
+    // } else if (networkRedux.name === 'optimism-goerli') {
+    //   provider = networkRedux.provider;
+    //   setProviderMain(networkRedux.provider);
+    // }
 
     const getBalance = async () => {
       try {
         let balance = await provider.getBalance(activeAccount.address);
         balance = ethers.utils.formatEther(balance);
-        // console.log('active account', activeAccount);
-        // console.log('network', network);
-        // console.log('balance here', balance);
-
         setBalance(balance);
       } catch (error) {
         console.log(error);
       }
     };
     getBalance();
-    // console.log('accounts', accounts);
-    // console.log('network', network);
-    // console.log('provider', provider);
-
     const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
       const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
         accounts,
@@ -159,7 +151,7 @@ function Dashboard() {
     };
 
     addMorePropertiesToAccountsFunc();
-  }, [network, activeAccount, accounts]);
+  }, [network, activeAccount, accounts, networkRedux]);
 
   useEffect(() => {
     if (accounts.length > 0) {
@@ -213,7 +205,7 @@ function Dashboard() {
       balance: '0',
     },
   ]);
-  
+
   return (
     <div className='dashboard-wrapper'>
       <div className='container'>
@@ -230,19 +222,7 @@ function Dashboard() {
                 className={`${actionMain === 'swaps' && 'cursor-not-allowed'}`}
               >
                 <img src={eth} alt='network logo' />
-                <p>
-                  {network === 'ethereum-mainnet'
-                    ? 'Ethereum Mainnet'
-                    : network === 'base-goerli'
-                    ? 'Base Goerli'
-                    : network === 'ethereum-goerli'
-                    ? 'Ethereum Goerli'
-                    : network === 'optimism-goerli'
-                    ? 'Optimism Goerli'
-                    : network === 'polygon-mumbai'
-                    ? 'Polygon Mumbai'
-                    : ''}
-                </p>
+                <p>{networkRedux.title}</p>
                 <div className='icon-con center'>
                   <FaChevronDown />
                 </div>
@@ -421,7 +401,7 @@ function Dashboard() {
         <Modal closeModal={() => setShowNetworksModal(false)}>
           <NetworksModal
             closeModal={() => setShowNetworksModal(false)}
-            network={network}
+            // network={network}
             setNetwork={setNetwork}
           />
         </Modal>
