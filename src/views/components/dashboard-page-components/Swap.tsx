@@ -15,6 +15,7 @@ import SwapModal from '../modals/SwapModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { Web3 } from 'web3';
+import { ethers } from 'ethers';
 
 interface Iprops {
   setActionMain: React.Dispatch<React.SetStateAction<string>>;
@@ -30,16 +31,55 @@ function Swap({ setActionMain }: Iprops) {
   const [currentGasPrice, setCurrentGasPrice] = useState('34');
 
   useEffect(() => {
-    const web3 = new Web3(new Web3.providers.HttpProvider(network.providerURL));
-
     const getCurrentGasPrice = async () => {
       try {
-        const gasPrice = await web3.eth.getGasPrice();
-        const gasPriceGwei = web3.utils.fromWei(gasPrice, 'gwei');
+        // const web3 = new Web3(
+        //   new Web3.providers.HttpProvider(network.providerURL)
+        // );
+        // const gasPrice = await web3.eth.getGasPrice();
+        // const gasPriceGwei = web3.utils.fromWei(gasPrice, 'gwei');
+        // const currentUSDEquivalent = 377;
+        // const rate = Number(gasPriceGwei) / Number(currentUSDEquivalent);
+        // // Gas price (USD) = BNB price (USD) * Gas price (gwei) * 0.000000001
+        // console.log('gasprice', gasPrice);
+        // console.log('gasprice in gwei', gasPriceGwei);
+        // setCurrentGasPrice(rate.toString());
 
-        console.log('gasprice', gasPrice);
-        console.log('gasprice in gwei', gasPriceGwei);
-        setCurrentGasPrice(gasPriceGwei);
+        const provider = new ethers.providers.JsonRpcProvider(
+          'https://rpc.ankr.com/eth'
+        ); // Replace with your BSC node URL
+
+        const gasPrice = await provider.getGasPrice();
+        const gasPriceGwei = ethers.utils.formatUnits(gasPrice, 'gwei');
+        const gasPriceEth = Number(gasPriceGwei) * 1e-9;
+
+        console.log(`Current Gas Price gwei: ${gasPriceGwei} Gwei`);
+        console.log(`Current Gas Price eth: ${gasPriceEth} eth`);
+
+        const gweiToBnbExchangeRate = 0.000000001; // Replace with the actual exchange rate
+
+        const gasPriceBnb = Number(gasPriceGwei) / 10000000000000000000;
+
+        console.log(`Gas Price in BNB: ${gasPriceBnb.toFixed(9)}`);
+        setCurrentGasPrice(gasPriceBnb.toString());
+
+        // const web3 = new Web3(network.providerURL);
+
+        // // Get current gas price in Wei
+        // web3.eth
+        //   .getGasPrice()
+        //   .then((gasPrice) => {
+        //     // Convert gas price from Wei to Gwei
+        //     const gasPriceGwei = web3.utils.fromWei(gasPrice, 'gwei');
+
+        //     console.log(`Current Gas Price: ${gasPriceGwei} Gwei`);
+        //     console.log('gasprice in gwei', gasPriceGwei);
+
+        //     setCurrentGasPrice(gasPriceGwei);
+        //   })
+        //   .catch((error) => {
+        //     console.error('Error getting gas price:', error);
+        //   });
         return;
       } catch (error) {
         console.log(error);
@@ -151,7 +191,7 @@ function Swap({ setActionMain }: Iprops) {
                   </span>
                 </p>
                 <div className='deets'>
-                  <p>{(Number(currentGasPrice) / 3697).toFixed(10)} ETH</p>
+                  <p>{(Number(currentGasPrice) / 377).toFixed(10)} ETH</p>
                   <p className='usd-equivalent'>
                     ${Number(currentGasPrice).toFixed(2)}
                   </p>
