@@ -28,13 +28,13 @@ import AccountsModal from '../components/modals/AccountsModal';
 import AccountModal from '../components/modals/AccountModal';
 import ImportAccountModal from '../components/modals/ImportAccountModal';
 import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
-import Swap from '../components/dashboard-page-components/Swap';
+import Swap from '../components/main/dashboard/swap/Swap';
 import ImportTokensModal from '../components/modals/ImportTokensModal';
 import ConfirmImportTokenModal from '../components/modals/ConfirmImportTokenModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetGetTokenDetails } from '../../features/general/general_slice';
 import { RootState } from '../../store/store';
-import Send from '../components/dashboard-page-components/send/Send';
+import Send from '../components/main/dashboard/send/Send';
 function Dashboard() {
   const { ethers } = require('ethers');
   const { networkDetails: networkRedux } = useSelector(
@@ -137,7 +137,7 @@ function Dashboard() {
         balance = ethers.utils.formatEther(balance);
         setBalance(balance);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getBalance();

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import accountDefault from '../../../../assets/images/account-default.png';
+import accountDefault from '../../../../../assets/images/account-default.png';
 import './Send.scss';
-import Modal from '../../molecules/Modal';
-import PreSwapModal from '../../modals/PreSwapModal';
-import SwapModal from '../../modals/SwapModal';
+import Modal from '../../../molecules/Modal';
+import PreSwapModal from '../../../modals/PreSwapModal';
+import SwapModal from '../../../modals/SwapModal';
 
-import InputGroup2 from '../../molecules/input-group-2/InputGroup2';
-import QRScanner from '../../molecules/qr-scanner/QRScanner';
+import InputGroup2 from '../../../molecules/input-group-2/InputGroup2';
+import QRScanner from '../../../molecules/qr-scanner/QRScanner';
 
 interface Iprops {
   setActionMain: React.Dispatch<React.SetStateAction<string>>;

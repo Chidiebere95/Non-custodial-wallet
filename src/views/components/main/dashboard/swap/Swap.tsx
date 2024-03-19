@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import '../../../assets/scss/dashboard-page-components.scss';
-import Modal from '../molecules/Modal';
-import PreSwapModal from '../modals/PreSwapModal';
+import './Swap.scss';
+import Modal from '../../../molecules/Modal';
+import PreSwapModal from '../../../modals/PreSwapModal';
 import { FaExclamation } from 'react-icons/fa';
 import { RiSettings4Fill } from 'react-icons/ri';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { FaChevronDown } from 'react-icons/fa6';
 import { HiOutlineArrowDown, HiOutlineArrowLeft } from 'react-icons/hi';
-import img from '../../../assets/images/eth_logo.png';
-import img2 from '../../../assets/images/linea-logo-mainnet.png';
-import Button, { Button2 } from '../molecules/Button';
-import SwapModal from '../modals/SwapModal';
+import img from '../../../../../assets/images/eth_logo.png';
+import img2 from '../../../../../assets/images/linea-logo-mainnet.png';
+import Button, { Button2 } from '../../../molecules/Button';
+import SwapModal from '../../../modals/SwapModal';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+import { RootState } from '../../../../../store/store';
 import { Web3 } from 'web3';
 import { ethers } from 'ethers';
 
