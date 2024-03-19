@@ -1,6 +1,7 @@
 import { configureStore, type Dispatch } from '@reduxjs/toolkit';
 import generalReducer from '../features/general/general_slice';
 import networkReducer from '../features/network/network_slice';
+import accountsReducer from '../features/accounts/accounts_slice';
 import thunkMiddleware from 'redux-thunk';
 import { setDispatchFunction } from './storeInstance';
 
@@ -8,6 +9,7 @@ const store = configureStore({
   reducer: {
     general: generalReducer,
     network: networkReducer,
+    accounts: accountsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

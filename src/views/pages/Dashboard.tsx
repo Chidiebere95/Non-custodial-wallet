@@ -35,11 +35,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetGetTokenDetails } from '../../features/general/general_slice';
 import { RootState } from '../../store/store';
 import Send from '../components/main/dashboard/send/Send';
+import { setAccountsRedux } from '../../features/accounts/accounts_slice';
+import { useGetBalance } from '../../utils/helpers';
 function Dashboard() {
   const { ethers } = require('ethers');
   const { networkDetails: networkRedux } = useSelector(
     (state: RootState) => state.network
   );
+  const { accountsRedux } = useSelector((state: RootState) => state.accounts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
@@ -72,6 +75,17 @@ function Dashboard() {
     balance: string | number;
     symbol: string;
   }>({ name: '', address: '', balance: '', symbol: 'ETH' });
+  const [activeAccountRedux, setActiveAccountRedux] = useState<{
+    name: string;
+    publicKey: string;
+    privateKey: string;
+    image: string;
+  }>({
+    name: '',
+    publicKey: '',
+    privateKey: '',
+    image: '',
+  });
 
   const [accountsUpdated, setAccountsUpdated] = useState<
     {
@@ -104,6 +118,16 @@ function Dashboard() {
           symbol: '',
         },
       ]);
+      dispatch(
+        setAccountsRedux([
+          {
+            name: 'Account 1',
+            publicKey: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
+            privatekey: '',
+            image: accountDefault,
+          },
+        ])
+      );
     }
   }, []);
 
@@ -114,33 +138,6 @@ function Dashboard() {
     );
     setProviderMain(provider);
 
-    // if (networkRedux.name === 'ethereum-mainnet') {
-    //   provider = networkRedux.provider;
-    //   setProviderMain(networkRedux.provider);
-    // } else if (networkRedux.name === 'ethereum-goerli') {
-    //   provider = networkRedux.provider;
-    //   setProviderMain(networkRedux.provider);
-    // } else if (networkRedux.name === 'base-goerli') {
-    //   provider = networkRedux.provider;
-    //   setProviderMain(networkRedux.provider);
-    // } else if (networkRedux.name === 'polygon-mumbai') {
-    //   provider = networkRedux.provider;
-    //   setProviderMain(networkRedux.provider);
-    // } else if (networkRedux.name === 'optimism-goerli') {
-    //   provider = networkRedux.provider;
-    //   setProviderMain(networkRedux.provider);
-    // }
-
-    const getBalance = async () => {
-      try {
-        let balance = await provider.getBalance(activeAccount.address);
-        balance = ethers.utils.formatEther(balance);
-        setBalance(balance);
-      } catch (error) {
-        // console.log(error);
-      }
-    };
-    getBalance();
     const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
       const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
         accounts,
@@ -156,11 +153,14 @@ function Dashboard() {
 
   useEffect(() => {
     if (accounts.length > 0) {
-      setActiveAccount(accounts[accounts.length - 1]);
+      // setActiveAccount(accounts[accounts.length - 1]);
     }
-  }, [accounts, network]);
-
+    if (accountsRedux.length > 0) {
+      setActiveAccountRedux(accountsRedux[accountsRedux.length - 1]);
+    }
+  }, [accounts, network, accountsRedux]);
   useEffect(() => {
+    console.log('useeffect');
     var hashText = window.location.hash;
     hashText = hashText.substring(1);
     if (hashText.includes('swap')) {
@@ -182,7 +182,7 @@ function Dashboard() {
       window.removeEventListener('popstate', handlePopstate);
     };
   }, []);
-
+  const balanceReactHook = useGetBalance();
   // console.log('activeAccount', activeAccount);
   // console.log('actionMain', actionMain);
 
@@ -206,6 +206,7 @@ function Dashboard() {
       balance: '0',
     },
   ]);
+  // hooks
 
   return (
     <div className='dashboard-wrapper'>
@@ -235,20 +236,12 @@ function Dashboard() {
               onClick={() => setShowAccountsModal(true)}
             >
               <button>
-                <img src={accountDefault} alt='network logo' />
-                <p>{activeAccount.name}</p>
+                <img src={activeAccountRedux.image} alt='network logo' />
+                <p>{activeAccountRedux.name}</p>
                 <div className='icon-con center'>
                   <FaChevronDown />
                 </div>
               </button>
-
-              {/* <button>
-                <img src={accountDefault} alt='network logo' />
-                <p>Account 1</p>
-                <div className='icon-con center'>
-                  <FaChevronDown />
-                </div>
-              </button> */}
             </div>
             <div className='more'>
               <button>
@@ -261,21 +254,23 @@ function Dashboard() {
               <div className='wallet-address'>
                 <button
                   onClick={async () => {
-                    await navigator.clipboard.writeText(activeAccount.address);
+                    await navigator.clipboard.writeText(
+                      activeAccountRedux.publicKey
+                    );
                   }}
                 >
-                  {`${activeAccount.address.substring(
+                  {`${activeAccountRedux.publicKey.substring(
                     0,
                     6
-                  )}...${activeAccount.address.substring(35)}`}
+                  )}...${activeAccountRedux.publicKey.substring(35)}`}
                   <div className='icon-con center'>
                     <BiSolidCopy />
                   </div>
                 </button>
               </div>
               <div className='account-balance'>
-                <h2>{balance.toString().substring(0, 6)}</h2>
-                <h2>{activeAccount?.symbol || 'ETH'}</h2>
+                <h2>{balanceReactHook.amount.substring(0, 6) || '0.0'}</h2>
+                <h2>{balanceReactHook.symbol || ''}</h2>
               </div>
 
               <div className='action-btns center'>

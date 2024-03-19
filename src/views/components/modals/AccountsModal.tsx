@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
 import accountDefault from '../../../assets/images/account-default.png';
 import Button from '../molecules/Button';
 import { IoMdMore } from 'react-icons/io';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 interface Iprops {
   closeModal: () => void;
   onClickBtn: () => void;
@@ -58,6 +60,10 @@ const AccountsModal = ({
   setActiveAccount,
   activeAccount,
 }: Iprops) => {
+  const { accountsRedux } = useSelector((state: RootState) => state.accounts);
+  useEffect(() => {
+    
+  }, []);
   return (
     <div className='modal-content-wrapper accounts-modal'>
       <div className='header'>
