@@ -15,6 +15,7 @@ import {
   providerEthereumSepoliaUrl,
   providerBscMainnetUrl,
   providerBscTestnetUrl,
+  providerPolygonMainnetUrl,
 } from '../../../utils/providerUrls';
 import { RootState } from '../../../store/store';
 interface Iprops {
@@ -23,9 +24,9 @@ interface Iprops {
   closeModal: () => void;
 }
 const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
-  const { network } = useSelector((state: RootState) => state.network);
+  const { networkDetails } = useSelector((state: RootState) => state.network);
   const dispatch = useDispatch<any>();
-  useEffect(() => {}, [network]);
+  useEffect(() => {}, [networkDetails]);
 
   const handleSetNetwork = (network: string) => {
     if (network === 'ethereum-mainnet') {
@@ -34,6 +35,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           name: network,
           title: 'Ethereum Mainnet',
           symbol: 'Eth',
+          usdValue: 4000,
           providerURL: providerEthereumMainnetUrl,
           tokenContractAddresses: [],
         })
@@ -44,6 +46,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           name: network,
           title: 'Ethereum Sepolia',
           symbol: 'Ethereum Sepolia Eth',
+          usdValue: 4000,
           providerURL: providerEthereumSepoliaUrl,
           tokenContractAddresses: [],
         })
@@ -54,6 +57,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           name: network,
           title: 'Binance Smart Chain',
           symbol: 'Bnb',
+          usdValue: 541,
           providerURL: providerBscMainnetUrl,
           tokenContractAddresses: [],
         })
@@ -64,7 +68,30 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           name: network,
           title: 'Binance Smart Chain Testnet',
           symbol: 'Bnb',
+          usdValue: 541,
           providerURL: providerBscTestnetUrl,
+          tokenContractAddresses: [],
+        })
+      );
+    } else if (network === 'polygon-mainnet') {
+      dispatch(
+        setNetworkRedux({
+          name: network,
+          title: 'Polygon Mainnet',
+          symbol: 'Matic',
+          usdValue: 1.2,
+          providerURL: providerPolygonMainnetUrl,
+          tokenContractAddresses: [],
+        })
+      );
+    } else if (network === 'polygon-testnet') {
+      dispatch(
+        setNetworkRedux({
+          name: network,
+          title: 'Polygon Testnet',
+          symbol: 'Matic Mumbai',
+          usdValue: 1.2,
+          providerURL: providerPolygonMumbaiUrl,
           tokenContractAddresses: [],
         })
       );
@@ -74,6 +101,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           name: network,
           title: 'Base Goerli',
           symbol: 'Base Goerli Eth',
+          usdValue: 0.0000001833,
           providerURL: providerBaseGoerliUrl,
           tokenContractAddresses: [],
         })
@@ -84,6 +112,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           name: network,
           title: 'Optimism Goerli',
           symbol: 'Optimism Goerli Eth',
+          usdValue: 4.34,
           providerURL: providerOptimismGoerliUrl,
           tokenContractAddresses: [],
         })
@@ -104,7 +133,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
         <div className='networks-wrapper'>
           <div
             className={`network ${
-              network.name === 'ethereum-mainnet' && 'active'
+              networkDetails.name === 'ethereum-mainnet' && 'active'
             }`}
             onClick={() => handleSetNetwork('ethereum-mainnet')}
           >
@@ -115,13 +144,25 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
             </div>
           </div>
           <div
-            className={`network ${network.name === 'bsc' && 'active'}`}
+            className={`network ${networkDetails.name === 'bsc' && 'active'}`}
             onClick={() => handleSetNetwork('bsc')}
           >
             <div className='line'></div>
             <div className='wrapper'>
               <img src={eth} alt='network logo' className='' />
               <p>BNB Chain</p>
+            </div>
+          </div>
+          <div
+            className={`network ${
+              networkDetails.name === 'polygon-mainnet' && 'active'
+            }`}
+            onClick={() => handleSetNetwork('polygon-mainnet')}
+          >
+            <div className='line'></div>
+            <div className='wrapper'>
+              <img src={eth} alt='network logo' className='' />
+              <p>Polygon</p>
             </div>
           </div>
           {/* <div
@@ -136,7 +177,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           </div> */}
           <div
             className={`network ${
-              network.name === 'ethereum-sepolia' && 'active'
+              networkDetails.name === 'ethereum-sepolia' && 'active'
             }`}
             onClick={() => handleSetNetwork('ethereum-sepolia')}
           >
@@ -147,7 +188,9 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
             </div>
           </div>
           <div
-            className={`network ${network.name === 'bsc-testnet' && 'active'}`}
+            className={`network ${
+              networkDetails.name === 'bsc-testnet' && 'active'
+            }`}
             onClick={() => handleSetNetwork('bsc-testnet')}
           >
             <div className='line'></div>
@@ -157,7 +200,21 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
             </div>
           </div>
           <div
-            className={`network ${network.name === 'base-goerli' && 'active'}`}
+            className={`network ${
+              networkDetails.name === 'polygon-testnet' && 'active'
+            }`}
+            onClick={() => handleSetNetwork('polygon-testnet')}
+          >
+            <div className='line'></div>
+            <div className='wrapper'>
+              <img src={lineaGoerli} alt='network logo' className='' />
+              <p>Polygon Testnet</p>
+            </div>
+          </div>
+          <div
+            className={`network ${
+              networkDetails.name === 'base-goerli' && 'active'
+            }`}
             onClick={() => handleSetNetwork('base-goerli')}
           >
             <div className='line'></div>
@@ -168,7 +225,7 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
           </div>
           <div
             className={`network ${
-              network.name === 'optimism-goerli' && 'active'
+              networkDetails.name === 'optimism-goerli' && 'active'
             }`}
             onClick={() => handleSetNetwork('optimism-goerli')}
           >

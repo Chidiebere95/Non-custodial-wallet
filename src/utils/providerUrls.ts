@@ -23,6 +23,8 @@ export const providerEthereumSepoliaUrl = 'https://rpc.ankr.com/eth_sepolia';
 export const providerBscMainnetUrl = 'https://rpc.ankr.com/bsc';
 export const providerBscTestnetUrl = 'https://rpc.ankr.com/bsc_testnet_chapel';
 
+export const providerPolygonMainnetUrl =
+  'https://g.w.lavanet.xyz:443/gateway/polygon1/rpc-http/d6e22eaf787c7c5a40a09248e91cd999';
 export const providerPolygonMumbaiUrl =
   'https://wild-capable-star.matic-testnet.discover.quiknode.pro/2c6b5d10c7c08f7afc6ed0814e7ba78de8d64652/';
 

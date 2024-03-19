@@ -26,15 +26,16 @@ function Swap({ setActionMain }: Iprops) {
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [swapDirection, setSwapDirection] = useState('');
   const [changeSwapDirection, setChangeSwapDirection] = useState(false);
-  const { network } = useSelector((state: RootState) => state.network);
+  const { networkDetails } = useSelector((state: RootState) => state.network);
 
   const [currentGasPrice, setCurrentGasPrice] = useState('34');
 
   useEffect(() => {
+    console.log('network', networkDetails);
     const getCurrentGasPrice = async () => {
       try {
         // const web3 = new Web3(
-        //   new Web3.providers.HttpProvider(network.providerURL)
+        //   new Web3.providers.HttpProvider(network.DetanetworkDetailsproviderURL)
         // );
         // const gasPrice = await web3.eth.getGasPrice();
         // const gasPriceGwei = web3.utils.fromWei(gasPrice, 'gwei');
@@ -46,22 +47,19 @@ function Swap({ setActionMain }: Iprops) {
         // setCurrentGasPrice(rate.toString());
 
         const provider = new ethers.providers.JsonRpcProvider(
-          'https://rpc.ankr.com/eth'
+          networkDetails.providerURL
         ); // Replace with your BSC node URL
 
         const gasPrice = await provider.getGasPrice();
         const gasPriceGwei = ethers.utils.formatUnits(gasPrice, 'gwei');
-        const gasPriceEth = Number(gasPriceGwei) * 1e-9;
+        // const gasPriceEth = Number(gasPriceGwei) * 1e-9;
 
         console.log(`Current Gas Price gwei: ${gasPriceGwei} Gwei`);
-        console.log(`Current Gas Price eth: ${gasPriceEth} eth`);
+        // console.log(`Current Gas Price eth: ${gasPriceEth} eth`);
 
-        const gweiToBnbExchangeRate = 0.000000001; // Replace with the actual exchange rate
-
-        const gasPriceBnb = Number(gasPriceGwei) / 10000000000000000000;
-
-        console.log(`Gas Price in BNB: ${gasPriceBnb.toFixed(9)}`);
-        setCurrentGasPrice(gasPriceBnb.toString());
+        const a =
+          (21000 * Number(gasPriceGwei) * networkDetails.usdValue) / 1000000000;
+        console.log('dollar price', networkDetails.title, a);
 
         // const web3 = new Web3(network.providerURL);
 
@@ -86,7 +84,7 @@ function Swap({ setActionMain }: Iprops) {
       }
     };
     getCurrentGasPrice();
-  }, [network]);
+  }, [networkDetails]);
   const [inputFromValue, setInputFromValue] = useState('0');
   return (
     <div className='swap-wrapper'>

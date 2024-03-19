@@ -34,9 +34,10 @@ import ConfirmImportTokenModal from '../components/modals/ConfirmImportTokenModa
 import { useDispatch, useSelector } from 'react-redux';
 import { resetGetTokenDetails } from '../../features/general/general_slice';
 import { RootState } from '../../store/store';
+import Send from '../components/dashboard-page-components/send/Send';
 function Dashboard() {
   const { ethers } = require('ethers');
-  const { network: networkRedux } = useSelector(
+  const { networkDetails: networkRedux } = useSelector(
     (state: RootState) => state.network
   );
   const dispatch = useDispatch();
@@ -217,7 +218,8 @@ function Dashboard() {
             <div className='networks'>
               <button
                 onClick={() =>
-                  actionMain !== 'swaps' && setShowNetworksModal(true)
+                  // actionMain !== 'swaps' && setShowNetworksModal(true)
+                  setShowNetworksModal(true)
                 }
                 className={`${actionMain === 'swaps' && 'cursor-not-allowed'}`}
               >
@@ -283,7 +285,15 @@ function Dashboard() {
                   </div>
                   <p>Buy & Sell</p>
                 </div>
-                <div className='btn'>
+                <div
+                  className='btn'
+                  onClick={() => {
+                    var new_url = '/dashboard#send';
+                    window.history.pushState({}, '', new_url);
+                    // window.location.hash = 'swaps/prepare-swap-page';
+                    setActionMain('send');
+                  }}
+                >
                   <div className='icon-con center'>
                     <MdOutlineArrowOutward />
                   </div>
@@ -395,6 +405,7 @@ function Dashboard() {
             </div>
           )}
           {actionMain === 'swaps' && <Swap setActionMain={setActionMain} />}
+          {actionMain === 'send' && <Send setActionMain={setActionMain} />}
         </div>
       </div>
       {showNetworksModal && (

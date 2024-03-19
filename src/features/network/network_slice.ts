@@ -3,18 +3,22 @@ import NetworkService from './network_service';
 import * as states from '../../utils/strings';
 import { providerEthereumMainnetUrl } from '../../utils/providerUrls';
 interface IinitialState {
-  network: {
+  networkDetails: {
     name: string;
     title: string;
+    symbol: string;
     providerURL: any;
+    usdValue: number;
     tokenContractAddresses: string[];
   };
 }
 const initialState: IinitialState = {
-  network: {
+  networkDetails: {
     name: 'ethereum-mainnet',
     title: 'Ethereum Mainnet',
+    symbol: 'Eth',
     providerURL: providerEthereumMainnetUrl,
+    usdValue: 4000,
     tokenContractAddresses: [],
   },
 };
@@ -24,7 +28,7 @@ const networkSlice = createSlice({
   initialState,
   reducers: {
     setNetwork: (state, action) => {
-      state.network = action.payload;
+      state.networkDetails = action.payload;
     },
   },
 });
