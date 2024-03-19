@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-
+import accountDefault from '../../../../assets/images/account-default.png';
 import './Send.scss';
 import Modal from '../../molecules/Modal';
 import PreSwapModal from '../../modals/PreSwapModal';
 import SwapModal from '../../modals/SwapModal';
 
-import InputGroup2 from '../../molecules/input-group/InputGroup';
+import InputGroup2 from '../../molecules/input-group-2/InputGroup2';
 import QRScanner from '../../molecules/qr-scanner/QRScanner';
 
 interface Iprops {
@@ -17,27 +17,52 @@ function Send({ setActionMain }: Iprops) {
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [scannedResult, setScannedResult] = useState('');
+  const [publicAddressInputValue, setPublicAddressInputValue] = useState('');
   console.log('showQRScanner', showQRScanner);
 
   return (
     <div className='send-wrapper'>
-      <div className='dashboard-box-swap'>
-        <div className='box-header-swap'>
+      <div className='dashboard-box-send'>
+        <div className='box-header-send'>
           <div className='hide'></div>
           <p className='title'>Send to</p>
           <div className='cancel'>
             <p>Cancel</p>
           </div>
         </div>
-        <div className='box-content-swap'>
-          <div className='main-con'>
-            <InputGroup2
-              showQRScanner={showQRScanner}
-              setShowQRScanner={setShowQRScanner}
-              placeHolder='Enter public address (0x) or ENS name'
-            />
+        <div className='box-content-send'>
+          <InputGroup2
+            showQRScanner={showQRScanner}
+            setShowQRScanner={setShowQRScanner}
+            placeHolder='Enter public address (0x) or ENS name'
+            name='public address'
+            publicAddressInputValue={publicAddressInputValue}
+            setPublicAddressInputValue={setPublicAddressInputValue}
+          />
+          <div className='wrapper'>
             {scannedResult && <p className='scanned result'>{scannedResult}</p>}
-            <div className='accounts'></div>
+            <div className='accounts-wrapper'>
+              <p className='title'>Your accounts</p>
+              <div className='accounts'>
+                <div className='account'>
+                  <img src={accountDefault} alt='' />
+                  <div className='details'>
+                    <p className='account-name'>Account 1</p>
+                    <p className='public-key'>0xc474...a3d1</p>
+                  </div>
+                </div>
+                <div className='account'>
+                  <img src={accountDefault} alt='' />
+                  <div className='details'>
+                    <p className='account-name'>Account 2</p>
+                    <p className='public-key'>0xc474...a3d1</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='contacts-wrapper'>
+              <p className='title'>Contacts</p>
+            </div>
           </div>
         </div>
       </div>
