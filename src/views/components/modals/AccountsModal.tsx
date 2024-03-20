@@ -1,68 +1,53 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
 import accountDefault from '../../../assets/images/account-default.png';
 import Button from '../molecules/Button';
 import { IoMdMore } from 'react-icons/io';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import {
+  addMorePropertiesToAccounts,
+  updateBalances,
+} from '../../../utils/addMorePropertiesToAccounts';
+import { setActiveAccount } from '../../../features/accounts/accounts_slice';
 interface Iprops {
   closeModal: () => void;
-  onClickBtn: () => void;
-  accounts: {
-    name: string;
-    address: string;
-    balance: string | number;
-    symbol: string;
-  }[];
-  setAccounts: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-        address: string;
-        balance: string | number;
-        symbol: string;
-      }[]
-    >
-  >;
-  providerMain: any;
-  network: string;
-  accountsUpdated: {
-    name: string;
-    address: string;
-    balance: string | number;
-    symbol: string;
-  }[];
-  activeAccount: {
-    name: string;
-    address: string;
-    balance: string | number;
-    symbol: string;
-  };
-  setActiveAccount: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      address: string;
-      balance: string | number;
-      symbol: string;
-    }>
-  >;
+  setShowAccountsModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AccountsModal = ({
   closeModal,
-  onClickBtn,
-  accounts,
-  setAccounts,
-  providerMain,
-  network,
-  accountsUpdated,
-  setActiveAccount,
-  activeAccount,
+  setShowAccountsModal,
+  setShowAccountModal,
 }: Iprops) => {
-  const { accountsRedux } = useSelector((state: RootState) => state.accounts);
+  const dispatch = useDispatch();
+  const { accounts, activeAccount } = useSelector(
+    (state: RootState) => state.accounts
+  );
+  const { activeNetwork } = useSelector((state: RootState) => state.network);
+
+  const [accountsUpdated, setAccountsUpdated] = useState<any>([]);
   useEffect(() => {
-    
+    // const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
+    //   const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
+    //     accounts,
+    //     activeNetwork
+    //   );
+    //   setAccountsUpdated(addMorePropertiesToAccount);
+    // };
+    // addMorePropertiesToAccountsFunc();
+
+    updateBalances(accounts, activeNetwork)
+      .then((updatedAccounts) => {
+        console.log(updatedAccounts);
+        setAccountsUpdated(updatedAccounts);
+        // Here you have the updated array with balances
+      })
+      .catch((error) => {
+        console.error('Error updating balances:', error);
+      });
   }, []);
   return (
     <div className='modal-content-wrapper accounts-modal'>
@@ -74,39 +59,39 @@ const AccountsModal = ({
       </div>
       <div className='body'>
         <div className='accounts-wrapper'>
-          {accountsUpdated.map((account, index) => (
+          {accountsUpdated.map((account: any, index: number) => (
             <div
               key={index}
               className={`account ${
-                account.address === activeAccount.address && 'active'
+                activeAccount.publicKey === account.publicKey && 'active'
               }`}
               onClick={() => {
-                setActiveAccount(account);
+                dispatch(setActiveAccount(account));
                 closeModal();
               }}
             >
               <div className='line'></div>
               <div className='wrapper'>
                 <div className='details'>
-                  <img src={accountDefault} alt='network logo' className='' />
+                  <img src={account.image} alt='network logo' className='' />
                   <div className='info'>
                     <p>{account.name}</p>
                     {/* <p>{account.address}</p> */}
                     <p>
-                      {`${account.address.substring(
+                      {`${account.publicKey.substring(
                         0,
                         6
-                      )}...${account.address.substring(36)}`}
+                      )}...${account.publicKey.substring(36)}`}
                     </p>
                   </div>
                 </div>
                 <div className='details details-2'>
                   <div className='info'>
                     <p>{`${account.balance.toString().substring(0, 7)} ${
-                      account.symbol
+                      activeNetwork.symbol
                     }`}</p>
                     <p>{`${account.balance.toString().substring(0, 7)} ${
-                      account.symbol
+                      activeNetwork.symbol
                     }`}</p>
                   </div>
                   <IoMdMore className='icon' />
@@ -119,7 +104,10 @@ const AccountsModal = ({
           <Button
             text='Add Account or hardware wallet'
             width='100%'
-            onClick={onClickBtn}
+            onClick={() => {
+              setShowAccountsModal(false);
+              setShowAccountModal(true);
+            }}
             variant='secondary'
           />
         </div>

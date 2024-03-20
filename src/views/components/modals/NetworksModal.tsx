@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setActiveNetwork,
   setNetwork as setNetworkRedux,
-} from '../../../features/network/network_slice';
+} from '../../../features/networks/networks_slice';
 import {
   providerBaseGoerliUrl,
   providerOptimismGoerliUrl,
@@ -59,111 +59,6 @@ const NetworksModal = ({ setNetwork, closeModal }: Iprops) => {
               </div>
             </div>
           ))}
-          {/* <div
-            className={`network ${
-              networkDetails.name === 'ethereum-mainnet' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('ethereum-mainnet')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={eth} alt='network logo' className='' />
-              <p>Ethereum Mainnet</p>
-            </div>
-          </div> */}
-
-          {/* <div
-            className={`network ${networkDetails.name === 'bsc' && 'active'}`}
-            onClick={() => handleSetNetwork('bsc')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={eth} alt='network logo' className='' />
-              <p>BNB Chain</p>
-            </div>
-          </div>
-          <div
-            className={`network ${
-              networkDetails.name === 'polygon-mainnet' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('polygon-mainnet')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={eth} alt='network logo' className='' />
-              <p>Polygon</p>
-            </div>
-          </div> */}
-          {/* <div
-            className={`network ${network === 'ethereum-goerli' && 'active'}`}
-            onClick={() => handleSetNetwork('ethereum-goerli')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={eth} alt='network logo' className='' />
-              <p>Ethereum Goerli</p>
-            </div>
-          </div> */}
-          {/* <div
-            className={`network ${
-              networkDetails.name === 'ethereum-sepolia' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('ethereum-sepolia')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={lineaGoerli} alt='network logo' className='' />
-              <p>Ethereum Sepolia</p>
-            </div>
-          </div>
-          <div
-            className={`network ${
-              networkDetails.name === 'bsc-testnet' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('bsc-testnet')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={lineaGoerli} alt='network logo' className='' />
-              <p>BNB Chain Testnet</p>
-            </div>
-          </div>
-          <div
-            className={`network ${
-              networkDetails.name === 'polygon-testnet' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('polygon-testnet')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={lineaGoerli} alt='network logo' className='' />
-              <p>Polygon Testnet</p>
-            </div>
-          </div>
-          <div
-            className={`network ${
-              networkDetails.name === 'base-goerli' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('base-goerli')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={eth} alt='network logo' className='' />
-              <p>Base Goerli</p>
-            </div>
-          </div>
-          <div
-            className={`network ${
-              networkDetails.name === 'optimism-goerli' && 'active'
-            }`}
-            onClick={() => handleSetNetwork('optimism-goerli')}
-          >
-            <div className='line'></div>
-            <div className='wrapper'>
-              <img src={lineaGoerli} alt='network logo' className='' />
-              <p>Optimism Goerli</p>
-            </div>
-          </div> */}
         </div>
         <div className='btn'>
           <Button

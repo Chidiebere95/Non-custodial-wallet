@@ -7,9 +7,7 @@ import EthUtil from 'ethereumjs-util';
 
 import Logo from '../components/atoms/Logo';
 import eth from '../../assets/images/eth_logo.png';
-import lineaGoerli from '../../assets/images/linea-logo-testnet.png';
 import accountDefault from '../../assets/images/account-default.png';
-import linea from '../../assets/images/linea-logo-mainnet.png';
 import { FaChevronDown, FaCopy, FaPlus } from 'react-icons/fa';
 import { MdMoreVert, MdOutlineArrowOutward } from 'react-icons/md';
 import { useEffect, useState } from 'react';
@@ -35,15 +33,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetGetTokenDetails } from '../../features/general/general_slice';
 import { RootState } from '../../store/store';
 import Send from '../components/main/dashboard/send/Send';
-import { setAccountsRedux } from '../../features/accounts/accounts_slice';
+import {
+  setAccounts,
+  setAccountsRedux,
+  setActiveAccount,
+} from '../../features/accounts/accounts_slice';
 import { useGetBalance } from '../../utils/helpers';
 function Dashboard() {
   const { ethers } = require('ethers');
-  const { networkDetails: networkRedux } = useSelector(
+  const { networkDetails: networkRedux, activeNetwork } = useSelector(
     (state: RootState) => state.network
   );
-  const { accountsRedux } = useSelector((state: RootState) => state.accounts);
-  const dispatch = useDispatch();
+  const { activeAccount } = useSelector((state: RootState) => state.accounts);
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
@@ -59,33 +61,15 @@ function Dashboard() {
     useState(false);
   const [activeTab, setActiveTab] = useState('tokens');
   const [actionMain, setActionMain] = useState('');
-  const [balance, setBalance] = useState(0);
 
-  const [accounts, setAccounts] = useState<
-    Array<{
-      name: string;
-      address: string;
-      balance: string | number;
-      symbol: string;
-    }>
-  >([]);
-  const [activeAccount, setActiveAccount] = useState<{
-    name: string;
-    address: string;
-    balance: string | number;
-    symbol: string;
-  }>({ name: '', address: '', balance: '', symbol: 'ETH' });
-  const [activeAccountRedux, setActiveAccountRedux] = useState<{
-    name: string;
-    publicKey: string;
-    privateKey: string;
-    image: string;
-  }>({
-    name: '',
-    publicKey: '',
-    privateKey: '',
-    image: '',
-  });
+  // const [accounts, setAccounts] = useState<
+  //   Array<{
+  //     name: string;
+  //     address: string;
+  //     balance: string | number;
+  //     symbol: string;
+  //   }>
+  // >([]);
 
   const [accountsUpdated, setAccountsUpdated] = useState<
     {
@@ -99,27 +83,35 @@ function Dashboard() {
     const walletTemp = localStorage.getItem('wallet');
     if (walletTemp) {
       const walletDetails = JSON.parse(walletTemp);
-      console.log('walletdetails', walletDetails);
       const { data } = walletDetails;
       const wallet = ethers.Wallet.fromMnemonic(data);
       // Retrieve the private key
       const privateKey = wallet.privateKey;
       // Retrieve the public key
-      const address = wallet.address;
-      setActiveAccount({ name: 'Account 1', address, balance: '', symbol: '' });
-      setAccounts([{ name: 'Account 1', address, balance: '', symbol: '' }]);
+      const publickKey = wallet.address;
+      setActiveAccount({
+        name: 'Account 1',
+        publickKey,
+        privateKey,
+        iamge: accountDefault,
+      });
+      dispatch(
+        setAccounts([
+          { name: 'Account 1', publickKey, privateKey, iamge: accountDefault },
+        ])
+      );
       setMnemonic(data);
     } else {
-      setAccounts([
-        {
-          name: 'Account 1',
-          address: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
-          balance: '',
-          symbol: '',
-        },
-      ]);
       dispatch(
-        setAccountsRedux([
+        setActiveAccount({
+          name: 'Account 1',
+          publicKey: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
+          privatekey: '',
+          image: accountDefault,
+        })
+      );
+      dispatch(
+        setAccounts([
           {
             name: 'Account 1',
             publicKey: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
@@ -131,34 +123,26 @@ function Dashboard() {
     }
   }, []);
 
-  const [providerMain, setProviderMain] = useState<any>();
-  useEffect(() => {
-    let provider: any = new ethers.providers.JsonRpcProvider(
-      networkRedux.providerURL
-    );
-    setProviderMain(provider);
+  // const [providerMain, setProviderMain] = useState<any>();
+  // useEffect(() => {
+  //   let provider: any = new ethers.providers.JsonRpcProvider(
+  //     networkRedux.providerURL
+  //   );
+  //   setProviderMain(provider);
 
-    const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
-      const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
-        accounts,
-        network,
-        provider
-      );
-      // console.log('addMorePropertiesToAccount', addMorePropertiesToAccount);
-      setAccountsUpdated(addMorePropertiesToAccount);
-    };
+  //   const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
+  //     const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
+  //       accounts,
+  //       network,
+  //       provider
+  //     );
+  //     // console.log('addMorePropertiesToAccount', addMorePropertiesToAccount);
+  //     setAccountsUpdated(addMorePropertiesToAccount);
+  //   };
 
-    addMorePropertiesToAccountsFunc();
-  }, [network, activeAccount, accounts, networkRedux]);
+  //   addMorePropertiesToAccountsFunc();
+  // }, [network, activeAccount, accounts, networkRedux]);
 
-  useEffect(() => {
-    if (accounts.length > 0) {
-      // setActiveAccount(accounts[accounts.length - 1]);
-    }
-    if (accountsRedux.length > 0) {
-      setActiveAccountRedux(accountsRedux[accountsRedux.length - 1]);
-    }
-  }, [accounts, network, accountsRedux]);
   useEffect(() => {
     console.log('useeffect');
     var hashText = window.location.hash;
@@ -224,8 +208,8 @@ function Dashboard() {
                 }
                 className={`${actionMain === 'swaps' && 'cursor-not-allowed'}`}
               >
-                <img src={eth} alt='network logo' />
-                <p>{networkRedux.title}</p>
+                <img src={activeNetwork.image} alt='network logo' />
+                <p>{activeNetwork.name}</p>
                 <div className='icon-con center'>
                   <FaChevronDown />
                 </div>
@@ -236,8 +220,8 @@ function Dashboard() {
               onClick={() => setShowAccountsModal(true)}
             >
               <button>
-                <img src={activeAccountRedux.image} alt='network logo' />
-                <p>{activeAccountRedux.name}</p>
+                <img src={activeAccount.image} alt='network logo' />
+                <p>{activeAccount.name}</p>
                 <div className='icon-con center'>
                   <FaChevronDown />
                 </div>
@@ -255,14 +239,14 @@ function Dashboard() {
                 <button
                   onClick={async () => {
                     await navigator.clipboard.writeText(
-                      activeAccountRedux.publicKey
+                      activeAccount.publicKey
                     );
                   }}
                 >
-                  {`${activeAccountRedux.publicKey.substring(
+                  {`${activeAccount.publicKey.substring(
                     0,
                     6
-                  )}...${activeAccountRedux.publicKey.substring(35)}`}
+                  )}...${activeAccount.publicKey.substring(35)}`}
                   <div className='icon-con center'>
                     <BiSolidCopy />
                   </div>
@@ -416,17 +400,8 @@ function Dashboard() {
         <Modal closeModal={() => setShowAccountsModal(false)}>
           <AccountsModal
             closeModal={() => setShowAccountsModal(false)}
-            onClickBtn={() => {
-              setShowAccountsModal(false);
-              setShowAccountModal(true);
-            }}
-            accounts={accounts}
-            setAccounts={setAccounts}
-            providerMain={providerMain}
-            network={network}
-            accountsUpdated={accountsUpdated}
-            activeAccount={activeAccount}
-            setActiveAccount={setActiveAccount}
+            setShowAccountsModal={setShowAccountsModal}
+            setShowAccountModal={setShowAccountModal}
           />
         </Modal>
       )}
@@ -434,13 +409,9 @@ function Dashboard() {
         <Modal closeModal={() => setShowAccountModal(false)}>
           <AccountModal
             closeModal={() => setShowAccountModal(false)}
-            onClickBackBtn={() => {
-              setShowAccountsModal(true);
-              setShowAccountModal(false);
-            }}
+            setShowAccountsModal={setShowAccountsModal}
+            setShowAccountModal={setShowAccountModal}
             setShowImportAccountModal={setShowImportAccountModal}
-            accounts={accounts}
-            setAccounts={setAccounts}
           />
         </Modal>
       )}
@@ -452,7 +423,6 @@ function Dashboard() {
               setShowAccountModal(true);
               setShowImportAccountModal(false);
             }}
-            accounts={accounts}
             setAccounts={setAccounts}
           />
         </Modal>

@@ -1,6 +1,6 @@
 import { configureStore, type Dispatch } from '@reduxjs/toolkit';
 import generalReducer from '../features/general/general_slice';
-import networkReducer from '../features/network/network_slice';
+import networkReducer from '../features/networks/networks_slice';
 import accountsReducer from '../features/accounts/accounts_slice';
 import thunkMiddleware from 'redux-thunk';
 import { setDispatchFunction } from './storeInstance';

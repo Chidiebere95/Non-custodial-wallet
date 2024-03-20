@@ -1,49 +1,61 @@
 import React from 'react';
 import { LiaTimesSolid } from 'react-icons/lia';
+import accountDefault from '../../../assets/images/account-default.png';
 import '../../../assets/scss/modals.scss';
 import { FaChevronLeft, FaPlus } from 'react-icons/fa';
 import { BiImport } from 'react-icons/bi';
 import { PiGitFork } from 'react-icons/pi';
 import { ethers } from 'ethers';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import {
+  setAccounts,
+  setAccountsRedux,
+  setActiveAccount,
+} from '../../../features/accounts/accounts_slice';
 interface Iprops {
   closeModal: () => void;
-  onClickBackBtn: () => void;
+  setShowAccountsModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
   setShowImportAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
-  accounts: {
-    name: string;
-    address: string;
-    balance: string | number;
-    symbol: string;
-  }[];
-  setAccounts: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-        address: string;
-        balance: string | number;
-        symbol: string;
-      }[]
-    >
-  >;
 }
 const AccountModal = ({
   closeModal,
-  onClickBackBtn,
+  setShowAccountsModal,
+  setShowAccountModal,
   setShowImportAccountModal,
-  accounts,
-  setAccounts,
 }: Iprops) => {
+  const dispatch = useDispatch();
+  const { accounts, activeAccount } = useSelector(
+    (state: RootState) => state.accounts
+  );
   const handleAddANewAccount = () => {
     const wallet = ethers.Wallet.createRandom();
-    const address = wallet.address;
-    const newAccount = { name: `Account ${accounts.length + 1}`, address };
-    setAccounts([...(accounts as any), newAccount]);
+    const publicKey = wallet.address;
+    const privateKey = wallet.privateKey;
+    const newAccount = {
+      name: `Account ${(accounts.length + 1).toString()}`,
+      publicKey,
+      privateKey,
+      image: accountDefault,
+    };
+    const updatedAccounts = [...accounts, newAccount];
+    console.log('updated accounts', updatedAccounts);
+
+    dispatch(setAccounts(updatedAccounts));
+    dispatch(setActiveAccount(newAccount));
     closeModal();
   };
   return (
     <div className='modal-content-wrapper account-modal'>
       <div className='header'>
-        <div className='back center' onClick={onClickBackBtn}>
+        <div
+          className='back center'
+          onClick={() => {
+            setShowAccountsModal(true);
+            setShowAccountModal(false);
+          }}
+        >
           <FaChevronLeft className='icon' />
         </div>
         <h5>Add acount</h5>

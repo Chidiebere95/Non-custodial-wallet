@@ -1,47 +1,53 @@
 import { ethers } from 'ethers';
 
 export const addMorePropertiesToAccounts = async (
-  accounts: { name: string; address: string }[],
-  network: string,
-  providerMain: any
+  accounts: any,
+  activeNetwork: any
 ) => {
-  let symbol: string;
-
-  if (network === 'ethereum-mainnet') {
-    symbol = 'ETH';
-  } else if (network === 'ethereum-goerli') {
-    symbol = 'Goerli ETH';
-  } else if (network === 'base-goerli') {
-    symbol = 'Goerli BASE';
-  } else if (network === 'optimism-goerli') {
-    symbol = 'Goerli OPT';
-  } else if (network === 'polygon-mumbai') {
-    symbol = 'mumbai MATIC';
-  } else {
-    symbol = '';
-  }
-
   try {
     const tempArray: {
-      name: string;
-      address: string;
       balance: string | number;
-      symbol: string;
     }[] = [];
+    // console.log('1');
+
+    let provider: any = new ethers.providers.JsonRpcProvider(
+      activeNetwork.providerURL
+    );
+    // console.log('2');
 
     await Promise.all(
-      accounts.map(async (account) => {
-        let balance = await providerMain.getBalance(account.address);
+      accounts.map(async (account: any) => {
+        let balance = await provider.getBalance(account.publicKey);
         balance = ethers.utils.formatEther(balance);
-        const accountTemp = { ...account, balance, symbol };
+        const accountTemp = { ...account, balance };
+        console.log('accountstemp', accountTemp);
+
         tempArray.push(accountTemp);
       })
     );
+    // console.log('3');
 
-    // console.log('tempArray#######################', tempArray);
+    console.log('accounts', accounts);
+    console.log('tempArray#######################', tempArray);
     return tempArray;
   } catch (error) {
     console.log(error);
     return [];
   }
 };
+
+export async function updateBalances(accounts: any, activeNetwork: any) {
+  let provider: any = new ethers.providers.JsonRpcProvider(
+    activeNetwork.providerURL
+  );
+  const updatedAccounts = await Promise.all(
+    accounts.map(async (account: any) => {
+      let balance = await provider.getBalance(account.publicKey);
+      balance = ethers.utils.formatEther(balance);
+      return { ...account, balance };
+    })
+  );
+
+  return updatedAccounts;
+}
+

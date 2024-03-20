@@ -9,6 +9,12 @@ interface IinitialState {
     privateKey: string;
     image: string;
   }[];
+  accounts: {
+    name: string;
+    publicKey: string;
+    privateKey: string;
+    image: string;
+  }[];
   activeAccount: {
     name: string;
     publicKey: string;
@@ -26,6 +32,14 @@ const initialState: IinitialState = {
     },
     { name: 'Account 2', publicKey: 'sksk', privateKey: 'jdjs', image: 's' },
   ],
+  accounts: [
+    {
+      name: 'Account 1',
+      publicKey: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
+      privateKey: '',
+      image: accountDefault,
+    },
+  ],
   activeAccount: {
     name: 'Account 1',
     publicKey: '0x88c6C46EBf353A52Bdbab708c23D0c81dAA8134A',
@@ -41,6 +55,9 @@ const accountsSlice = createSlice({
     setAccountsRedux: (state, action) => {
       state.accountsRedux = action.payload;
     },
+    setAccounts: (state, action) => {
+      state.accounts = action.payload;
+    },
     setActiveAccount: (state, action) => {
       state.activeAccount = action.payload;
     },
@@ -48,4 +65,5 @@ const accountsSlice = createSlice({
 });
 
 export default accountsSlice.reducer;
-export const { setAccountsRedux, setActiveAccount } = accountsSlice.actions;
+export const { setAccountsRedux, setAccounts, setActiveAccount } =
+  accountsSlice.actions;

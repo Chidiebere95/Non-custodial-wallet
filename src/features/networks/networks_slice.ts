@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as states from '../../utils/strings';
 import eth from '../../assets/images/eth_logo.png';
+import lineaGoerli from '../../assets/images/linea-logo-testnet.png';
 import {
   providerBaseGoerliUrl,
   providerBscMainnetUrl,
@@ -46,7 +47,7 @@ const initialState: IinitialState = {
       id: 'ethereum-sepolia',
       name: 'Ethereum Sepolia',
       symbol: 'Ethereum Sepolia Eth',
-      image: eth,
+      image: lineaGoerli,
       providerURL: providerEthereumSepoliaUrl,
       usdValue: 4000,
       tokenContractAddresses: [],

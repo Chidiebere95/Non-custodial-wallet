@@ -16,7 +16,7 @@ interface Iprops {
   closeModal: () => void;
   onClickBackBtn: () => void;
   // accounts: Array<{ address: string; name: string }>;
-  accounts: {
+  accounts?: {
     name: string;
     address: string;
     balance: string | number;
@@ -47,7 +47,7 @@ const ImportAccountModal = ({
     const address = wallet.address;
     const privateKey2 = wallet.privateKey;
 
-    const newAccount = { name: `Account ${accounts.length + 1}`, address };
+    const newAccount = { name: `Account ${accounts!.length + 1}`, address };
     setAccounts([...(accounts as any), newAccount]);
     setPrivateKey('');
     closeModal();

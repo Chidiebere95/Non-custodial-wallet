@@ -31,7 +31,7 @@ export const useGetBalance = () => {
       }
     };
     getBalance();
-  }, []);
+  }, [activeNetwork,activeAccount]);
 
   return data;
 };
