@@ -46,7 +46,7 @@ const initialState: IinitialState = {
     {
       id: 'ethereum-sepolia',
       name: 'Ethereum Sepolia',
-      symbol: 'Ethereum Sepolia Eth',
+      symbol: 'Sepolia Eth',
       image: lineaGoerli,
       providerURL: providerEthereumSepoliaUrl,
       usdValue: 4000,

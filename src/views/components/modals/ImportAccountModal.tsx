@@ -3,59 +3,55 @@ import { ethers } from 'ethers';
 import { LiaTimesSolid } from 'react-icons/lia';
 import '../../../assets/scss/modals.scss';
 import accountDefault from '../../../assets/images/account-default.png';
-import lineaGoerli from '../../../assets/images/linea-logo-testnet.png';
-import ModalWrapper from '../molecules/Modal';
 import Button from '../molecules/Button';
-import { RiMore2Line } from 'react-icons/ri';
-import { IoMdMore } from 'react-icons/io';
-import { FaChevronLeft, FaPlus } from 'react-icons/fa';
-import { FiRefreshCw } from 'react-icons/fi';
-import { BiImport, BiSolidMessageDots } from 'react-icons/bi';
-import { PiGitFork } from 'react-icons/pi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import {
+  setAccounts,
+  setActiveAccount,
+} from '../../../features/accounts/accounts_slice';
+import { FaChevronLeft } from 'react-icons/fa';
 interface Iprops {
   closeModal: () => void;
-  onClickBackBtn: () => void;
-  // accounts: Array<{ address: string; name: string }>;
-  accounts?: {
-    name: string;
-    address: string;
-    balance: string | number;
-    symbol: string;
-  }[];
-  setAccounts: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-        address: string;
-        balance: string | number;
-        symbol: string;
-      }[]
-    >
-  >;
+  setShowAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowImportAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ImportAccountModal = ({
   closeModal,
-  onClickBackBtn,
-  accounts,
-  setAccounts,
+  setShowAccountModal,
+  setShowImportAccountModal,
 }: Iprops) => {
-  const [privateKey, setPrivateKey] = useState('');
+  const dispatch = useDispatch();
+  const { accounts } = useSelector((state: RootState) => state.accounts);
+  const [privateKeyInputValue, setPrivateKeyInputValue] = useState('');
   const handleImport = () => {
     const { Wallet } = require('ethers');
-    const wallet = new Wallet(privateKey);
-    const publicKey = wallet.publicKey;
-    const address = wallet.address;
-    const privateKey2 = wallet.privateKey;
+    const wallet = new Wallet(privateKeyInputValue);
+    const publicKey = wallet.address;
+    const privateKey = wallet.privateKey;
 
-    const newAccount = { name: `Account ${accounts!.length + 1}`, address };
-    setAccounts([...(accounts as any), newAccount]);
-    setPrivateKey('');
+    const newAccount = {
+      name: `Account ${(accounts.length + 1).toString()}`,
+      publicKey,
+      privateKey,
+      image: accountDefault,
+    };
+    const updatedAccounts = [...accounts, newAccount];
+
+    dispatch(setAccounts(updatedAccounts));
+    dispatch(setActiveAccount(newAccount));
     closeModal();
   };
   return (
     <div className='modal-content-wrapper import-account-modal'>
       <div className='header'>
-        <div className='back center' onClick={onClickBackBtn}>
+        <div
+          className='back center'
+          onClick={() => {
+            setShowAccountModal(true);
+            setShowImportAccountModal(false);
+          }}
+        >
           <FaChevronLeft className='icon' />
         </div>
         <h5>Import acount</h5>
@@ -82,9 +78,9 @@ const ImportAccountModal = ({
           <input
             type='text'
             id='private-key'
-            value={privateKey}
+            value={privateKeyInputValue}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPrivateKey(e.target.value)
+              setPrivateKeyInputValue(e.target.value)
             }
           />
         </div>

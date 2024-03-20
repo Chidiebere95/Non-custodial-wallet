@@ -25,7 +25,6 @@ import NetworksModal from '../components/modals/NetworksModal';
 import AccountsModal from '../components/modals/AccountsModal';
 import AccountModal from '../components/modals/AccountModal';
 import ImportAccountModal from '../components/modals/ImportAccountModal';
-import { addMorePropertiesToAccounts } from '../../utils/addMorePropertiesToAccounts';
 import Swap from '../components/main/dashboard/swap/Swap';
 import ImportTokensModal from '../components/modals/ImportTokensModal';
 import ConfirmImportTokenModal from '../components/modals/ConfirmImportTokenModal';
@@ -37,14 +36,18 @@ import {
   setAccounts,
   setAccountsRedux,
   setActiveAccount,
+  setUpdatedAccounts,
 } from '../../features/accounts/accounts_slice';
-import { useGetBalance } from '../../utils/helpers';
+import { useGetBalance } from '../../utils/customHooks';
+import { updateBalances } from '../../utils/helpers';
 function Dashboard() {
   const { ethers } = require('ethers');
   const { networkDetails: networkRedux, activeNetwork } = useSelector(
     (state: RootState) => state.network
   );
-  const { activeAccount } = useSelector((state: RootState) => state.accounts);
+  const { activeAccount, accounts } = useSelector(
+    (state: RootState) => state.accounts
+  );
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
@@ -62,32 +65,13 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState('tokens');
   const [actionMain, setActionMain] = useState('');
 
-  // const [accounts, setAccounts] = useState<
-  //   Array<{
-  //     name: string;
-  //     address: string;
-  //     balance: string | number;
-  //     symbol: string;
-  //   }>
-  // >([]);
-
-  const [accountsUpdated, setAccountsUpdated] = useState<
-    {
-      name: string;
-      address: string;
-      balance: string | number;
-      symbol: string;
-    }[]
-  >([]);
   useEffect(() => {
     const walletTemp = localStorage.getItem('wallet');
     if (walletTemp) {
       const walletDetails = JSON.parse(walletTemp);
       const { data } = walletDetails;
       const wallet = ethers.Wallet.fromMnemonic(data);
-      // Retrieve the private key
       const privateKey = wallet.privateKey;
-      // Retrieve the public key
       const publickKey = wallet.address;
       setActiveAccount({
         name: 'Account 1',
@@ -123,26 +107,6 @@ function Dashboard() {
     }
   }, []);
 
-  // const [providerMain, setProviderMain] = useState<any>();
-  // useEffect(() => {
-  //   let provider: any = new ethers.providers.JsonRpcProvider(
-  //     networkRedux.providerURL
-  //   );
-  //   setProviderMain(provider);
-
-  //   const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
-  //     const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
-  //       accounts,
-  //       network,
-  //       provider
-  //     );
-  //     // console.log('addMorePropertiesToAccount', addMorePropertiesToAccount);
-  //     setAccountsUpdated(addMorePropertiesToAccount);
-  //   };
-
-  //   addMorePropertiesToAccountsFunc();
-  // }, [network, activeAccount, accounts, networkRedux]);
-
   useEffect(() => {
     console.log('useeffect');
     var hashText = window.location.hash;
@@ -166,9 +130,19 @@ function Dashboard() {
       window.removeEventListener('popstate', handlePopstate);
     };
   }, []);
+  useEffect(() => {
+    try {
+      const getUpdatedBalances = async () => {
+        const updatedAccounts = await updateBalances(accounts, activeNetwork);
+        dispatch(setUpdatedAccounts(updatedAccounts));
+      };
+      getUpdatedBalances();
+    } catch (error) {
+      console.error('Error updating balances:', error);
+    }
+  }, [accounts, activeNetwork]);
+
   const balanceReactHook = useGetBalance();
-  // console.log('activeAccount', activeAccount);
-  // console.log('actionMain', actionMain);
 
   const [tokens, setTokens] = useState([
     {
@@ -419,11 +393,8 @@ function Dashboard() {
         <Modal closeModal={() => setShowImportAccountModal(false)}>
           <ImportAccountModal
             closeModal={() => setShowImportAccountModal(false)}
-            onClickBackBtn={() => {
-              setShowAccountModal(true);
-              setShowImportAccountModal(false);
-            }}
-            setAccounts={setAccounts}
+            setShowAccountModal={setShowAccountModal}
+            setShowImportAccountModal={setShowImportAccountModal}
           />
         </Modal>
       )}

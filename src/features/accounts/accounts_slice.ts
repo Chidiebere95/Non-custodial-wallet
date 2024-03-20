@@ -21,6 +21,13 @@ interface IinitialState {
     privateKey: string;
     image: string;
   };
+  updatedAccounts: {
+    name: string;
+    publicKey: string;
+    privateKey: string;
+    image: string;
+    balance: string;
+  }[];
 }
 const initialState: IinitialState = {
   accountsRedux: [
@@ -46,6 +53,7 @@ const initialState: IinitialState = {
     privateKey: '',
     image: accountDefault,
   },
+  updatedAccounts: [],
 };
 
 const accountsSlice = createSlice({
@@ -61,9 +69,12 @@ const accountsSlice = createSlice({
     setActiveAccount: (state, action) => {
       state.activeAccount = action.payload;
     },
+    setUpdatedAccounts: (state, action) => {
+      state.updatedAccounts = action.payload;
+    },
   },
 });
 
 export default accountsSlice.reducer;
-export const { setAccountsRedux, setAccounts, setActiveAccount } =
+export const { setAccountsRedux, setAccounts, setActiveAccount, setUpdatedAccounts } =
   accountsSlice.actions;

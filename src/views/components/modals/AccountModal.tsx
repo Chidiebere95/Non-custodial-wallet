@@ -40,7 +40,6 @@ const AccountModal = ({
       image: accountDefault,
     };
     const updatedAccounts = [...accounts, newAccount];
-    console.log('updated accounts', updatedAccounts);
 
     dispatch(setAccounts(updatedAccounts));
     dispatch(setActiveAccount(newAccount));

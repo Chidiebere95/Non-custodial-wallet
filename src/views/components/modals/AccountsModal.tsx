@@ -7,11 +7,8 @@ import Button from '../molecules/Button';
 import { IoMdMore } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import {
-  addMorePropertiesToAccounts,
-  updateBalances,
-} from '../../../utils/addMorePropertiesToAccounts';
 import { setActiveAccount } from '../../../features/accounts/accounts_slice';
+import { updateBalances } from '../../../utils/helpers';
 interface Iprops {
   closeModal: () => void;
   setShowAccountsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,32 +20,12 @@ const AccountsModal = ({
   setShowAccountModal,
 }: Iprops) => {
   const dispatch = useDispatch();
-  const { accounts, activeAccount } = useSelector(
+  const { activeAccount, updatedAccounts } = useSelector(
     (state: RootState) => state.accounts
   );
   const { activeNetwork } = useSelector((state: RootState) => state.network);
 
-  const [accountsUpdated, setAccountsUpdated] = useState<any>([]);
-  useEffect(() => {
-    // const addMorePropertiesToAccountsFunc = async (): Promise<any> => {
-    //   const addMorePropertiesToAccount = await addMorePropertiesToAccounts(
-    //     accounts,
-    //     activeNetwork
-    //   );
-    //   setAccountsUpdated(addMorePropertiesToAccount);
-    // };
-    // addMorePropertiesToAccountsFunc();
 
-    updateBalances(accounts, activeNetwork)
-      .then((updatedAccounts) => {
-        console.log(updatedAccounts);
-        setAccountsUpdated(updatedAccounts);
-        // Here you have the updated array with balances
-      })
-      .catch((error) => {
-        console.error('Error updating balances:', error);
-      });
-  }, []);
   return (
     <div className='modal-content-wrapper accounts-modal'>
       <div className='header'>
@@ -59,7 +36,7 @@ const AccountsModal = ({
       </div>
       <div className='body'>
         <div className='accounts-wrapper'>
-          {accountsUpdated.map((account: any, index: number) => (
+          {updatedAccounts.map((account: any, index: number) => (
             <div
               key={index}
               className={`account ${
