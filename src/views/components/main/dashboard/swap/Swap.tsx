@@ -92,7 +92,14 @@ function Swap({ setActionMain }: Iprops) {
         <div className='box-header-swap'>
           <HiOutlineArrowLeft
             className='swap-icon'
-            onClick={() => setActionMain('')}
+            // onClick={() => setActionMain('')}
+            onClick={() => {
+              var new_url = '/dashboard';
+              window.history.pushState({}, '', new_url);
+              // did not work, the # was still there
+              // window.location.hash = '';
+              setActionMain('');
+            }}
           />
           <p>Swap</p>
           <IoSettingsSharp className='swap-icon' />

@@ -49,6 +49,10 @@ function Dashboard() {
     (state: RootState) => state.accounts
   );
   const dispatch = useDispatch<any>();
+  const params = useParams();
+  console.log('params', params);
+  console.log('url', window.location.href);
+
   const navigate = useNavigate();
   const [mnemonic, setMnemonic] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
@@ -108,7 +112,7 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    console.log('useeffect');
+    console.log('useeffect######2');
     var hashText = window.location.hash;
     hashText = hashText.substring(1);
     if (hashText.includes('swap')) {
@@ -116,13 +120,20 @@ function Dashboard() {
     }
     setActionMain(hashText);
 
+    // popstate means when you started using the browser <- or -> navigation
     const handlePopstate = (event: PopStateEvent) => {
+      console.log('popstate');
+
       var hashText = window.location.hash;
-      hashText = hashText.substring(1);
-      if (hashText.includes('swap')) {
-        hashText = hashText.split('/')[0];
+      if (hashText) {
+        hashText = hashText.substring(1);
+        if (hashText.includes('swap')) {
+          hashText = hashText.split('/')[0];
+        }
+        setActionMain(hashText);
+      } else {
+        setActionMain('');
       }
-      setActionMain(hashText);
     };
 
     window.addEventListener('popstate', handlePopstate);
@@ -241,9 +252,13 @@ function Dashboard() {
                 <div
                   className='btn'
                   onClick={() => {
-                    var new_url = '/dashboard#send';
-                    window.history.pushState({}, '', new_url);
-                    // window.location.hash = 'swaps/prepare-swap-page';
+                    // var new_url = '/dashboard#send';
+                    // window.history.pushState({}, '', new_url);
+
+                    // if you just want to update the #, you use this, but if you wanted to update the entire URL you use the commented one above. Both works but the above one feels like doing too much
+                    window.location.hash = 'send';
+
+                    // The window.location.hash does not update the actionMain state, it was just added to update the URL, so this was added too
                     setActionMain('send');
                   }}
                 >
@@ -255,9 +270,7 @@ function Dashboard() {
                 <div
                   className='btn'
                   onClick={() => {
-                    var new_url = '/dashboard#swaps/prepare-swap-page';
-                    window.history.pushState({}, '', new_url);
-                    // window.location.hash = 'swaps/prepare-swap-page';
+                    window.location.hash = 'swaps/prepare-swap-page';
                     setActionMain('swaps');
                   }}
                 >

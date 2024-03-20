@@ -1,0 +1,101 @@
+@import '../../../../assets/scss/colors.scss';
+@import '../../../../assets/scss/index.scss';
+
+.send-to-container {
+  // background-color: green;
+  .header {
+    height: 5.6rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.2rem;
+    // box-shadow: 0px 5.969581604003906px 16.714828491210938px 0px #080f340a;
+    .hide {
+      visibility: hidden;
+    }
+    .title {
+      text-align: center;
+      font-family: $thic600;
+      font-size: 2rem;
+      // background-color: green;
+    }
+    .cancel {
+      display: flex;
+      justify-content: flex-end;
+      p {
+        color: $color1;
+        font-size: 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+    .swap-icon {
+      font-size: 2.4rem;
+      color: #6a737d;
+      cursor: pointer;
+    }
+  }
+  .content {
+    padding: 0 1rem;
+    // background-color: green;
+    min-height: 60rem;
+    .wrapper {
+      padding: 2rem 1rem;
+      .scanned-result {
+        margin-top: 3rem;
+        font-family: $thic600;
+        font-size: 2rem;
+      }
+      .title {
+        color: $color6;
+        font-size: 2.2rem;
+        font-family: $thic600;
+        // background-color: green;
+      }
+      .accounts-wrapper {
+        .accounts {
+          padding: 2rem 0;
+          display: flex;
+          flex-direction: column;
+          // background-color: blue;
+          .account {
+            display: flex;
+            align-items: center;
+            column-gap: 1.6rem;
+            padding: 2rem 0rem;
+            img {
+              min-width: 2.8rem;
+              min-height: 2.8rem;
+              width: 2.8rem;
+              height: 2.8rem;
+              object-fit: cover;
+            }
+            .details {
+              display: flex;
+              // align-items: center;
+              flex-direction: column;
+              row-gap: 0.3rem;
+              .account-name {
+                color: $color6;
+                font-size: 2.2rem;
+                font-family: $thic600;
+              }
+              .public-key {
+                color: $color3;
+                font-size: 1.8rem;
+                font-family: $thic500;
+              }
+            }
+            &:hover {
+              background-color: $hover-bg-default;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .contacts-wrapper {
+      }
+    }
+  }
+}

@@ -18,16 +18,16 @@ export const useGetBalance = () => {
     console.log('hook 2');
 
     const getBalance = async () => {
-      let provider: any = new ethers.providers.JsonRpcProvider(
-        activeNetwork.providerURL
-      );
       try {
+        let provider: any = new ethers.providers.JsonRpcProvider(
+          activeNetwork.providerURL
+        );
         let amount = await provider.getBalance(activeAccount.publicKey);
         amount = ethers.utils.formatEther(amount);
 
         setData({ amount, symbol: activeNetwork.symbol });
       } catch (error) {
-        // console.log(error);
+        console.log('error');
       }
     };
     getBalance();
@@ -35,4 +35,3 @@ export const useGetBalance = () => {
 
   return data;
 };
-
