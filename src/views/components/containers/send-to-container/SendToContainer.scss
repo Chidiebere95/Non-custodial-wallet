@@ -42,10 +42,30 @@
     min-height: 60rem;
     .wrapper {
       padding: 2rem 1rem;
-      .scanned-result {
-        margin-top: 3rem;
-        font-family: $thic600;
-        font-size: 2rem;
+      .result-wrapper {
+        width: 100%;
+        min-height: 4rem;
+        border-radius: 1rem;
+        border: 1px solid #d73847;
+        background-color: #fceced;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .not-evm {
+          width: 100%;
+          min-height: 100%;
+          padding: 2rem;
+          // display: flex;
+          // align-items: center;
+          // background-color: green;
+
+          p {
+            color: #d73847;
+            font-size: 1.4rem;
+            font-family: $thic600;
+          }
+        }
       }
       .title {
         color: $color6;

@@ -10,30 +10,55 @@ import QRScanner from '../../../molecules/qr-scanner/QRScanner';
 import Container from '../../../containers/container/Container';
 import SendToContainer from '../../../containers/send-to-container/SendToContainer';
 import SendContainer from '../../../containers/send-container/SendContainer';
+import ConfirmContainer from '../../../containers/confirm-container/ConfirmContainer';
 
 interface Iprops {
   setActionMain: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Send({ setActionMain }: Iprops) {
-  const [showQRScanner, setShowQRScanner] = useState(false);
-  const [scannedResult, setScannedResult] = useState('');
-  const [publicAddressInputValue, setPublicAddressInputValue] = useState('');
-  const [action, setAction] = useState('send');
+  const [publicAddressInputValueResult, setPublicAddressInputValueResult] =
+    useState('');
+  const [scanningQRCode, setScanningQRCode] = useState(false);
+  const [action, setAction] = useState('send-to');
+  const [selectedAccount, setSelectedAccount] = useState<{
+    name: string;
+    publicKey: string;
+  }>({ name: '', publicKey: '' });
+
+  console.log('scanningQRCode', scanningQRCode);
 
   return (
     <div className='send-wrapper'>
       {action === 'send-to' && (
         <Container>
-          <SendToContainer setActionMain={setActionMain} />
+          <SendToContainer
+            setActionMain={setActionMain}
+            // selectedAccount={selectedAccount}
+            setSelectedAccount={setSelectedAccount}
+            setAction={setAction}
+            publicAddressInputValueResult={publicAddressInputValueResult}
+            setPublicAddressInputValueResult={setPublicAddressInputValueResult}
+            setScanningQRCode={setScanningQRCode}
+          />
         </Container>
       )}
       {action === 'send' && (
         <Container>
-          <SendContainer setActionMain={setActionMain} />
+          <SendContainer
+            selectedAccount={selectedAccount}
+            setAction={setAction}
+            publicAddressInputValueResult={publicAddressInputValueResult}
+            setPublicAddressInputValueResult={setPublicAddressInputValueResult}
+            scanningQRCode={scanningQRCode}
+          />
         </Container>
       )}
-
+      {action === 'confirm' && (
+        <Container>
+          <ConfirmContainer setActionMain={setActionMain} />
+        </Container>
+      )}
     </div>
   );
 }

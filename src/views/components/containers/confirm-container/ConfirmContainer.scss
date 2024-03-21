@@ -1,0 +1,210 @@
+@import '../../../../assets/scss/colors.scss';
+@import '../../../../assets/scss/index.scss';
+
+.confirm-container {
+  // background-color: green;
+  .header {
+    height: 5.6rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.2rem;
+    // box-shadow: 0px 5.969581604003906px 16.714828491210938px 0px #080f340a;
+    .back {
+      display: flex;
+      justify-content: flex-start;
+      .btn {
+        display: flex;
+        color: $color1;
+        font-size: 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+        align-items: center;
+        column-gap: 0.5rem;
+        // background-color: green;
+      }
+    }
+    .title {
+      text-align: center;
+      font-family: $thic600;
+      font-size: 2rem;
+      // background-color: green;
+    }
+    .cancel {
+      display: flex;
+      justify-content: flex-end;
+      p {
+        color: $color1;
+        font-size: 1.4rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+    .swap-icon {
+      font-size: 2.4rem;
+      color: #6a737d;
+      cursor: pointer;
+    }
+  }
+  .content {
+    // background-color: green;
+    min-height: 60rem;
+    .main {
+      // padding: 0 1rem;
+      .send-direction {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        border-top: 1px solid $color4;
+        border-bottom: 1px solid $color4;
+        padding: 1rem 2.8rem;
+        .account {
+          display: flex;
+          align-items: center;
+          column-gap: 1rem;
+          img {
+            min-width: 2.4rem;
+            min-height: 2.4rem;
+            width: 2.4rem;
+            height: 2.4rem;
+          }
+        }
+        .icon {
+          width: 4rem;
+          height: 4rem;
+          min-width: 4rem;
+          min-height: 4rem;
+          border-radius: 50%;
+          border: 1px solid $color4;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          color: $color4;
+        }
+      }
+      .send-info-wrapper {
+        display: block;
+        padding: 2rem 2rem;
+        background-color: $color2;
+        .send-info {
+          // display: flex;
+          // flex-direction: column;
+          // row-gap: 2rem;
+          display: inline-block;
+
+          .token {
+            border: 1px solid $color6;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15rem;
+            height: 3rem;
+            margin-bottom: 1rem;
+            p {
+              font-family: $thic500;
+              color: $color3;
+              font-size: 1.5rem;
+              text-transform: uppercase;
+            }
+          }
+          .value {
+            display: flex;
+            align-items: center;
+            column-gap: 1rem;
+            img {
+              min-width: 1.8rem;
+              min-height: 1.8rem;
+              width: 1.8rem;
+              height: 1.8rem;
+            }
+            p {
+              font-family: $thic500;
+              font-size: 3rem;
+              color: $color3;
+            }
+          }
+        }
+      }
+      .con {
+        margin: 2rem 0 15rem;
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 2rem;
+        .estimated-fee-wrapper {
+          width: 100%;
+          height: 10rem;
+          border-radius: 1.2rem;
+          border: 1px solid $color3;
+          padding: 1.9rem;
+          display: flex;
+          row-gap: 0.5rem;
+          flex-direction: column;
+          justify-content: center;
+          .estimated-fee {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .title {
+              font-family: $thic600;
+              font-size: 1.6rem;
+              color: $color3;
+            }
+            .amount {
+              font-family: $thic900;
+              font-size: 1.9rem;
+              color: $color3;
+            }
+          }
+          .max-fee-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .market {
+              display: flex;
+              align-items: center;
+              column-gap: 1rem;
+              .title {
+                font-family: $thic500;
+                font-size: 1.5rem;
+                color: $color3;
+              }
+              .time {
+                font-family: $thic500;
+                font-size: 1.5rem;
+                color: $color1;
+              }
+            }
+            .max-fee {
+              display: flex;
+              align-items: center;
+              column-gap: 1rem;
+              .title {
+                font-family: $thic900;
+                font-size: 1.7rem;
+                color: $color3;
+              }
+              .amount {
+                font-family: $thic600;
+                font-size: 1.5rem;
+                color: $color3;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .btns {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 2rem;
+    border-top: 1px solid $color3;
+  }
+}
