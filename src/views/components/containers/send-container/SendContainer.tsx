@@ -19,6 +19,7 @@ interface Iprops {
     React.SetStateAction<string>
   >;
   scanningQRCode: boolean;
+  checkingAddressType: boolean;
 }
 
 function SendContainer({
@@ -27,6 +28,7 @@ function SendContainer({
   publicAddressInputValueResult,
   setPublicAddressInputValueResult,
   scanningQRCode,
+  checkingAddressType,
 }: Iprops) {
   const [inputWidth, setInputWidth] = useState(20);
 
@@ -46,144 +48,151 @@ function SendContainer({
 
   return (
     <>
-      <div className='send-container'>
-        <div className='header'>
-          <div className='hide'></div>
-          <p className='title'>Send</p>
-          {/* <div className='cancel' onClick={() => setActionMain('')}>
+      {checkingAddressType ? (
+        <div className='loading'>Loading...</div>
+      ) : (
+        <>
+          {' '}
+          <div className='send-container'>
+            <div className='header'>
+              <div className='hide'></div>
+              <p className='title'>Send</p>
+              {/* <div className='cancel' onClick={() => setActionMain('')}>
           <p>Cancel</p>
         </div> */}
-        </div>
-        <div className='content'>
-          <>
-            <div className='main'>
-              <div className='account'>
-                {scanningQRCode && (
-                  <>
-                    <div
-                      className={`details ${
-                        (publicAddressInputValueResult === 'smart contract' ||
-                          publicAddressInputValueResult === 'address') &&
-                        'details-2'
-                      }`}
-                      // className={`details `}
-                    >
-                      <p className='account-name'>{selectedAccount.name}</p>
-                      {publicAddressInputValueResult !== 'smart contract' &&
-                        publicAddressInputValueResult !== 'address' && (
-                          <p className='account-address'>
-                            {selectedAccount.publicKey}
-                          </p>
-                        )}
-                      {/* <p className='account-address'>{selectedAccount.publicKey}</p> */}
-                    </div>
-                    <div
-                      className='cancel'
-                      onClick={() => {
-                        setAction('send-to');
-                        setPublicAddressInputValueResult('');
-                      }}
-                    >
-                      <LiaTimesSolid />
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className='con'>
-                {publicAddressInputValueResult === 'smart contract' && (
-                  <div className='result-wrapper'>
-                    <div className='icon'>
-                      <FaExclamation />
-                    </div>
-                    <div className='details'>
-                      <p>
-                        Warning: you are about to send to a token contract which
-                        could result in a loss of funds.{' '}
-                        <span className='link'> Learn more</span>
-                      </p>
-                      <p className=''>
-                        <span className='link'>I understand</span>
-                      </p>
-                    </div>
+            </div>
+            <div className='content'>
+              <>
+                <div className='main'>
+                  <div className='account'>
+                    <>
+                      <div
+                        // className={`details ${
+                        //   (publicAddressInputValueResult === 'smart contract' ||
+                        //     publicAddressInputValueResult === 'address') &&
+                        //   'details-2'
+                        // }`}
+                        className={`details `}
+                      >
+                        <p className='account-name'>{selectedAccount.name}</p>
+                        {/* {publicAddressInputValueResult !== 'smart contract' &&
+                      publicAddressInputValueResult !== 'address' && (
+                        <p className='account-address'>
+                          {selectedAccount.publicKey}
+                        </p>
+                      )} */}
+                        <p className='account-address'>
+                          {selectedAccount.publicKey}
+                        </p>
+                      </div>
+                      <div
+                        className='cancel'
+                        onClick={() => {
+                          setAction('send-to');
+                          setPublicAddressInputValueResult('');
+                        }}
+                      >
+                        <LiaTimesSolid />
+                      </div>
+                    </>
                   </div>
-                )}
-                <div className='sec'>
-                  <p className='title'>Asset:</p>
-                  <div className='wrapper'>
-                    <div className='box'>
-                      <div className='asset'>
-                        <img src={accountDefault} alt='' className='' />
+                  <div className='con'>
+                    {publicAddressInputValueResult === 'smart contract' && (
+                      <div className='result-wrapper'>
+                        <div className='icon'>
+                          <FaExclamation />
+                        </div>
                         <div className='details'>
-                          <p className='symbol'>BNB</p>
-                          <p className='balance-wrapper'>
-                            <span className='balance'>Balance:</span>
-                            <span className='amount'>0.0038 BNB</span>
+                          <p>
+                            Warning: you are about to send to a token contract
+                            which could result in a loss of funds.{' '}
+                            <span className='link'> Learn more</span>
+                          </p>
+                          <p className=''>
+                            <span className='link'>I understand</span>
                           </p>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='sec amount-wrapper'>
-                  <p className='title'>Amount:</p>
-                  <div className='box'>
-                    <div className='amount'>
-                      <div className='details'>
-                        <div className='input-wrapper'>
-                          <input
-                            type='number'
-                            style={{ width: inputWidth + 'px' }}
-                            onChange={handleInputChange}
-                            placeholder='0'
-                          />
-                          <p className='symbol'>BNB</p>
+                    )}
+                    <div className='sec'>
+                      <p className='title'>Asset:</p>
+                      <div className='wrapper'>
+                        <div className='box'>
+                          <div className='asset'>
+                            <img src={accountDefault} alt='' className='' />
+                            <div className='details'>
+                              <p className='symbol'>BNB</p>
+                              <p className='balance-wrapper'>
+                                <span className='balance'>Balance:</span>
+                                <span className='amount'>0.0038 BNB</span>
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                        <p className='balance-wrapper'>0.0038 BNB</p>
+                      </div>
+                    </div>
+                    <div className='sec amount-wrapper'>
+                      <p className='title'>Amount:</p>
+                      <div className='box'>
+                        <div className='amount'>
+                          <div className='details'>
+                            <div className='input-wrapper'>
+                              <input
+                                type='number'
+                                style={{ width: inputWidth + 'px' }}
+                                onChange={handleInputChange}
+                                placeholder='0'
+                              />
+                              <p className='symbol'>BNB</p>
+                            </div>
+                            <p className='balance-wrapper'>0.0038 BNB</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='estimated-fee-wrapper'>
+                      <div className='estimated-fee'>
+                        <p className='title'>Estimated fee</p>
+                        <p className='amount'>0.00494 BNB</p>
+                      </div>
+                      <div className='max-fee-wrapper'>
+                        <div className='market'>
+                          <p className='title'>Market</p>
+                          <p className='time'>-15s</p>
+                        </div>
+                        <div className='max-fee'>
+                          <p className='title'>Max fee:</p>
+                          <p className='amount'>2992.22 BNB</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className='estimated-fee-wrapper'>
-                  <div className='estimated-fee'>
-                    <p className='title'>Estimated fee</p>
-                    <p className='amount'>0.00494 BNB</p>
-                  </div>
-                  <div className='max-fee-wrapper'>
-                    <div className='market'>
-                      <p className='title'>Market</p>
-                      <p className='time'>-15s</p>
-                    </div>
-                    <div className='max-fee'>
-                      <p className='title'>Max fee:</p>
-                      <p className='amount'>2992.22 BNB</p>
-                    </div>
-                  </div>
+                <div className='btns'>
+                  <Button
+                    text='Cancel'
+                    width='50rem'
+                    onClick={() => {
+                      // setShowImportTokensModal(true);
+                      // setShowConfirmImportTokenModal(false);
+                    }}
+                    variant='secondary'
+                  />
+                  <Button
+                    text='Next'
+                    width='50rem'
+                    onClick={() => {
+                      // setShowImportTokensModal(true);
+                      // setShowConfirmImportTokenModal(false);
+                    }}
+                    variant='primary'
+                  />
                 </div>
-              </div>
+              </>
             </div>
-            <div className='btns'>
-              <Button
-                text='Cancel'
-                width='50rem'
-                onClick={() => {
-                  // setShowImportTokensModal(true);
-                  // setShowConfirmImportTokenModal(false);
-                }}
-                variant='secondary'
-              />
-              <Button
-                text='Next'
-                width='50rem'
-                onClick={() => {
-                  // setShowImportTokensModal(true);
-                  // setShowConfirmImportTokenModal(false);
-                }}
-                variant='primary'
-              />
-            </div>
-          </>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

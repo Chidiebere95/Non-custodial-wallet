@@ -11,7 +11,6 @@ import { RootState } from '../../../../store/store';
 // const Web3 = require('web3');
 interface IProps {
   placeHolder: string;
-  showQRScanner: boolean;
   setShowQRScanner: React.Dispatch<React.SetStateAction<boolean>>;
   name: string;
   // publicAddressInputValue: string;
@@ -23,25 +22,22 @@ interface IProps {
       publicKey: string;
     }>
   >;
-  setAction: React.Dispatch<React.SetStateAction<string>>;
   setPublicAddressInputValueResult: React.Dispatch<
     React.SetStateAction<string>
   >;
   setCheckingPublicAddressInputValue: React.Dispatch<
     React.SetStateAction<boolean>
   >;
+  setCheckingAddressType: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const InputGroup2 = ({
   placeHolder,
-  showQRScanner,
   setShowQRScanner,
   name,
-  // publicAddressInputValue,
-  // setPublicAddressInputValue,
   setSelectedAccount,
-  setAction,
   setPublicAddressInputValueResult,
   setCheckingPublicAddressInputValue,
+  setCheckingAddressType,
 }: IProps): JSX.Element => {
   const dispatch = useDispatch();
   const { activeNetwork } = useSelector((state: RootState) => state.network);
@@ -65,6 +61,7 @@ const InputGroup2 = ({
         const web3 = new Web3(providerUrl);
         async function checkAddressType(publicAddressInputValue: string) {
           // Check if it is not an EVM address
+          setCheckingAddressType(true);
           if (!ethers.utils.isAddress(publicAddressInputValue)) {
             return 'not evm or syntax not complete';
           }
@@ -82,11 +79,13 @@ const InputGroup2 = ({
         checkAddressType(publicAddressInputValue)
           .then((result) => {
             setPublicAddressInputValueResult(result);
+            setCheckingAddressType(false);
           })
           .catch((error) => console.error(error));
       }, 100);
     } else {
       setPublicAddressInputValueResult('');
+      setCheckingAddressType(false);
     }
 
     // Cleanup function to clear the timeout when the component unmounts or the dependency changes
@@ -122,7 +121,10 @@ const InputGroup2 = ({
           {publicAddressInputValue.length > 0 ? (
             <div
               className='cancel'
-              onClick={() => setPublicAddressInputValue('')}
+              onClick={() => {
+                setPublicAddressInputValue('');
+                setCheckingAddressType(false);
+              }}
             >
               <LiaTimesSolid />
             </div>

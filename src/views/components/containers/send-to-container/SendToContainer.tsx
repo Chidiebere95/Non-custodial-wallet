@@ -21,6 +21,7 @@ interface Iprops {
     React.SetStateAction<string>
   >;
   setScanningQRCode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCheckingAddressType: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function SendToContainer({
@@ -30,6 +31,7 @@ function SendToContainer({
   publicAddressInputValueResult,
   setPublicAddressInputValueResult,
   setScanningQRCode,
+  setCheckingAddressType,
 }: Iprops) {
   const { accounts } = useSelector((state: RootState) => state.accounts);
   const [showQRScanner, setShowQRScanner] = useState(false);
@@ -57,18 +59,15 @@ function SendToContainer({
       </div>
       <div className='content'>
         <InputGroup2
-          showQRScanner={showQRScanner}
           setShowQRScanner={setShowQRScanner}
           placeHolder='Enter public address (0x) or ENS name'
           name='public address'
-          // publicAddressInputValue={publicAddressInputValue}
-          // setPublicAddressInputValue={setPublicAddressInputValue}
           setSelectedAccount={setSelectedAccount}
-          setAction={setAction}
           setPublicAddressInputValueResult={setPublicAddressInputValueResult}
           setCheckingPublicAddressInputValue={
             setCheckingPublicAddressInputValue
           }
+          setCheckingAddressType={setCheckingAddressType}
         />
         <div className='wrapper'>
           {/* {scannedResult && <p className='scanned result'>{scannedResult}</p>} */}

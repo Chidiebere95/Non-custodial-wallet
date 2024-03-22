@@ -21,3 +21,4 @@ export async function updateBalances(accounts: any, activeNetwork: any) {
     console.log('error');
   }
 }
+

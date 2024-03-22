@@ -35,3 +35,40 @@ export const useGetBalance = () => {
 
   return data;
 };
+
+// export const useTest = async () => {
+//   const { activeNetwork } = useSelector((state: RootState) => state.network);
+
+//   useEffect(() => {
+//     const test = async () => {
+//       // format later
+//       const providerUrl = activeNetwork.providerURL;
+//       // dispatch(); // Dispatch your action here
+
+//       const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+//       async function checkAddressType(publicAddressInputValue: string) {
+//         // Check if it is not an EVM address
+//         if (!ethers.utils.isAddress(publicAddressInputValue)) {
+//           return 'not evm or syntax not complete';
+//         }
+
+//         // Check if it is a contract
+//         const code = await provider.getCode(publicAddressInputValue);
+//         if (code !== '0x') {
+//           return 'contract';
+//         }
+
+//         // If it is not a contract, it must be a regular address
+//         return 'address';
+//       }
+
+//       checkAddressType(scannedResult)
+//         .then((result) => {
+//           setPublicAddressInputValueResult(result);
+//           setScanningQRCode(true);
+//         })
+//         .catch((error) => console.error(error));
+//     };
+//     test();
+//   }, []);
+// };

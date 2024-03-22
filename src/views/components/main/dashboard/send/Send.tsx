@@ -20,13 +20,14 @@ function Send({ setActionMain }: Iprops) {
   const [publicAddressInputValueResult, setPublicAddressInputValueResult] =
     useState('');
   const [scanningQRCode, setScanningQRCode] = useState(false);
+  const [checkingAddressType, setCheckingAddressType] = useState(false);
   const [action, setAction] = useState('send-to');
   const [selectedAccount, setSelectedAccount] = useState<{
     name: string;
     publicKey: string;
   }>({ name: '', publicKey: '' });
 
-  console.log('scanningQRCode', scanningQRCode);
+  console.log('checkingAddressType', checkingAddressType);
 
   return (
     <div className='send-wrapper'>
@@ -40,6 +41,7 @@ function Send({ setActionMain }: Iprops) {
             publicAddressInputValueResult={publicAddressInputValueResult}
             setPublicAddressInputValueResult={setPublicAddressInputValueResult}
             setScanningQRCode={setScanningQRCode}
+            setCheckingAddressType={setCheckingAddressType}
           />
         </Container>
       )}
@@ -51,6 +53,7 @@ function Send({ setActionMain }: Iprops) {
             publicAddressInputValueResult={publicAddressInputValueResult}
             setPublicAddressInputValueResult={setPublicAddressInputValueResult}
             scanningQRCode={scanningQRCode}
+            checkingAddressType={checkingAddressType}
           />
         </Container>
       )}
