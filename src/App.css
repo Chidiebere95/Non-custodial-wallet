@@ -3,22 +3,26 @@
 :root {
   --primary: #bc4123;
   --secondary: #2b3452;
+  min-width: 400px !important;
+  min-height: 600px !important;
 }
 html {
   font-size: 62.5%;
+  min-width: 400px !important;
+  min-height: 600px !important;
 }
 body {
   margin: 0;
   /* padding: 20px; */
   height: 100vh;
   /* background: var(--secondary); */
+  min-width: 400px !important;
+  min-height: 600px !important;
 }
 * {
   /* color: #fff; */
   margin: 0;
 }
-
-
 
 /* page content */
 main {
@@ -41,4 +45,3 @@ main {
 .dark_theme_color svg path {
   fill: #85d1f0;
 }
-
